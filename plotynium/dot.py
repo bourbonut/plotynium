@@ -7,87 +7,116 @@ from detroit.selection.selection import Selection
 def getter(value):
     return value if callable(value) else itemgetter(value)
 
+def identity(value):
+    def local(*args):
+        return value
+    return local
+
 class ColorMaker:
-    def __init__(self, data, value):
-        self.value = getter(value)
-        self.color_scheme = d3.interpolate_turbo
-        self._color = d3.scale_sequential(
-            [
-                min(map(itemgetter(value), data)),
-                max(map(itemgetter(value), data)),
-            ],
-            self.color_scheme
-        )
+    def __init__(self, data: list, value: str):
+        self._value = getter(value)
+        data = list(map(self._value, data))
+        self._color = d3.scale_sequential([min(data), max(data)], d3.interpolate_turbo)
 
     def __call__(self, d):
-        d = self.value(d)
+        d = self._value(d)
         return self._color(d)
+
+    def set_color_scheme(self, scheme):
+        self._color.set_interpolator(scheme)
+
+class SymbolMaker:
+    def __init__(self, data: list, value: str):
+        self._value = getter(value)
+        data = list(set(map(self._value, data)))
+        self._symbol_type = d3.scale_ordinal(data, d3.SYMBOLS_STROKE)
+
+    def __call__(self, d):
+        d = self._value(d)
+        return d3.symbol(self._symbol_type(d))()
+
+def domain(data, accessor):
+    values = list(map(accessor, data))
+    return [min(values), max(values)]
+
+def attr(maker, data: list, value: str, default: Callable | None = None):
+    return (
+        value
+        if callable(value)
+        else (
+            maker(data, value or default)
+            if value is not None and value in data[0]
+            else default
+        )
+    )
+
 
 class Dot:
     def __init__(
         self,
-        data: list, 
-        x: str | None = None,
-        y: str | None = None,
+        data: list,
+        x: Callable | str | None = None,
+        y: Callable | str | None = None,
         stroke: Callable | str | None = None,
         fill: Callable | str | None = None,
         r: Callable | float | None = None,
+        symbol: Callable | float | None = None,
+        stroke_width: float | int = 1,
     ):
-        self.data = data
-        self.x = getter(x or 0)
-        self.y = getter(y or 1)
-        self.stroke = ColorMaker(data, stroke or "black")
-        self.fill = "none" # ColorMaker(data, fill or "none")
-        self.r = 3
+        self._data = data
+        self.x_label = None if callable(x) else str(x)
+        self.y_label = None if callable(y) else str(y)
+        self._x = getter(x or 0)
+        self._y = getter(y or 1)
+
+        self.x_domain = domain(data, self._x)
+        self.y_domain = domain(data, self._y)
+        self._stroke = attr(ColorMaker, data, stroke, identity(stroke or "black"))
+        self._fill = attr(ColorMaker, data, fill, identity(fill or "none"))
+        self._r = r if callable(r) else identity(r or 3)
+        self._symbol = attr(SymbolMaker, data, symbol, None)
+        self._stroke_width = stroke_width
+
+    def set_color_scheme(self, scheme):
+        if scheme is None:
+            return
+        if isinstance(self._stroke, ColorMaker):
+            self._stroke.set_color_scheme(scheme)
+        if isinstance(self._fill, ColorMaker):
+            self._fill.set_color_scheme(scheme)
 
     def __call__(
         self,
         svg: Selection,
         width: int,
         height: int,
-        margin: tuple[int, int, int, int]
+        margin: tuple[int, int, int, int],
+        x: Callable,
+        y: Callable,
     ):
 
-        (
-            svg.append("g")
-            .attr("fill", self.fill)
-            .attr("stroke-width", 1.5)
-            .select_all("circle")
-            .data(self.data)
-            .join("circle")
-            .attr("transform", lambda d: f"translate({x(self.x(d))}, {y(self.y(d))})")
-            .attr("stroke", self.stroke)
-            .attr("r", 3)
-        )
-
-        (
-            svg.append("g")
-            .attr("transform", f"translate(0, {height - margin.bottom})")
-            .call(d3.axis_bottom(x))
-            .call(lambda g: g.select(".domain").remove())
-            .call(
-                lambda g: g.append("text")
-                .attr("x", width - margin.right)
-                .attr("y", -4)
-                .attr("fill", "#000")
-                .attr("font-weight", "bold")
-                .attr("text-anchor", "end")
-                .text("Component 1")
+        if self._symbol is None:
+            (
+                svg.append("g")
+                .select_all("circle")
+                .data(self._data)
+                .join("circle")
+                .attr("transform", lambda d: f"translate({x(self._x(d))}, {y(self._y(d))})")
+                .attr("stroke", self._stroke)
+                .attr("fill", self._fill)
+                .attr("stroke-width", self._stroke_width)
+                .attr("r", self._r)
             )
-        )
-
-        (
-            svg.append("g")
-            .attr("transform", f"translate({margin.left}, 0)")
-            .call(d3.axis_left(y))
-            .call(lambda g: g.select(".domain").remove())
-            .call(
-                lambda g: g.select(".tick:last-of-type")
-                .select("text")
-                .clone()
-                .attr("x", 4)
-                .attr("text-anchor", "start")
-                .attr("font-weight", "bold")
-                .text("Component 2")
+        else:
+            (
+                svg.append("g")
+                .select_all("circle")
+                .data(self._data)
+                .join("g")
+                .attr("transform", lambda d: f"translate({x(self._x(d))}, {y(self._y(d))})")
+                .append("path")
+                .attr("d", self._symbol)
+                .attr("stroke", self._stroke)
+                .attr("fill", self._fill)
+                .attr("stroke-width", self._stroke_width)
             )
-        )
