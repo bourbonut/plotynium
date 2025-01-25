@@ -1,55 +1,7 @@
-from collections.abc import Callable
-from operator import itemgetter
-
-import detroit as d3
 from detroit.selection.selection import Selection
-
-def getter(value):
-    return value if callable(value) else itemgetter(value)
-
-def identity(value):
-    def local(*args):
-        return value
-    return local
-
-class ColorMaker:
-    def __init__(self, data: list, value: str):
-        self._value = getter(value)
-        data = list(map(self._value, data))
-        self._color = d3.scale_sequential([min(data), max(data)], d3.interpolate_turbo)
-
-    def __call__(self, d):
-        d = self._value(d)
-        return self._color(d)
-
-    def set_color_scheme(self, scheme):
-        self._color.set_interpolator(scheme)
-
-class SymbolMaker:
-    def __init__(self, data: list, value: str):
-        self._value = getter(value)
-        data = list(set(map(self._value, data)))
-        self._symbol_type = d3.scale_ordinal(data, d3.SYMBOLS_STROKE)
-
-    def __call__(self, d):
-        d = self._value(d)
-        return d3.symbol(self._symbol_type(d))()
-
-def domain(data, accessor):
-    values = list(map(accessor, data))
-    return [min(values), max(values)]
-
-def attr(maker, data: list, value: str, default: Callable | None = None):
-    return (
-        value
-        if callable(value)
-        else (
-            maker(data, value or default)
-            if value is not None and value in data[0]
-            else default
-        )
-    )
-
+from collections.abc import Callable
+from ..transformers import getter, Identity, Color, Symbol, Maker
+from ..domain import domain
 
 class Dot:
     def __init__(
@@ -71,18 +23,18 @@ class Dot:
 
         self.x_domain = domain(data, self._x)
         self.y_domain = domain(data, self._y)
-        self._stroke = attr(ColorMaker, data, stroke, identity(stroke or "black"))
-        self._fill = attr(ColorMaker, data, fill, identity(fill or "none"))
-        self._r = r if callable(r) else identity(r or 3)
-        self._symbol = attr(SymbolMaker, data, symbol, None)
+        self._stroke = Color.try_init(data, stroke, Identity(stroke or "black"))
+        self._fill = Color.try_init(data, fill, Identity(fill or "none"))
+        self._r = r if callable(r) else Identity(r or 3)
+        self._symbol = Symbol.try_init(data, symbol)
         self._stroke_width = stroke_width
 
     def set_color_scheme(self, scheme):
         if scheme is None:
             return
-        if isinstance(self._stroke, ColorMaker):
+        if isinstance(self._stroke, Maker):
             self._stroke.set_color_scheme(scheme)
-        if isinstance(self._fill, ColorMaker):
+        if isinstance(self._fill, Maker):
             self._fill.set_color_scheme(scheme)
 
     def __call__(
@@ -120,3 +72,4 @@ class Dot:
                 .attr("fill", self._fill)
                 .attr("stroke-width", self._stroke_width)
             )
+

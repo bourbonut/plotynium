@@ -1,29 +1,21 @@
 from operator import itemgetter
 from collections import namedtuple
 from collections.abc import Callable
+from .options import StyleOptions, ColorOptions, SymbolOptions
+from . import label, domain
 
 import detroit as d3
 
 Margin = namedtuple("Margin", ["top", "right", "bottom", "left"])
-
-def reduce_domain(domains):
-    mins = list(map(itemgetter(0), domains))
-    maxs = list(map(itemgetter(1), domains))
-    return [min(mins), max(maxs)]
-
-def reduce_label(labels):
-    labels = set(labels)
-    if len(labels) == 1:
-        if label := labels.pop():
-            return label
 
 def plot(
     marks: list,
     width: int | None = None,
     height: int | None = None,
     margin: tuple[int, int, int, int] | None = None,
-    color_scheme: Callable | None = None,
-    style: dict | None = None,
+    color: ColorOptions | None = None,
+    style: StyleOptions | None = None,
+    symbol: SymbolOptions | None = None,
 ):
     width = width or 640
     height = height or 438
@@ -35,11 +27,11 @@ def plot(
         .attr("viewBox", f"0 0 {width} {height}")
     )
 
-    x_domain = reduce_domain([mark.x_domain for mark in marks])
-    y_domain = reduce_domain([mark.y_domain for mark in marks])
+    x_domain = domain.reduce([mark.x_domain for mark in marks])
+    y_domain = domain.reduce([mark.y_domain for mark in marks])
 
-    x_label = reduce_label([mark.x_label for mark in marks])
-    y_label = reduce_label([mark.y_label for mark in marks])
+    x_label = label.reduce([mark.x_label for mark in marks])
+    y_label = label.reduce([mark.y_label for mark in marks])
 
     x = (
         d3.scale_linear()
@@ -92,7 +84,8 @@ def plot(
         )
 
     for mark in marks:
-        mark.set_color_scheme(color_scheme)
+        if color is not None:
+            mark.set_color_scheme(color.scheme)
         mark(svg, width, height, margin, x, y)
 
     return svg
