@@ -33,10 +33,6 @@ def plot(
         .attr("viewBox", f"0 0 {width} {height}")
     )
 
-    # Set domains
-    x_domain = domain.reduce([mark.x_domain for mark in marks])
-    y_domain = domain.reduce([mark.y_domain for mark in marks])
-
     # Set labels
     x_label = x_options.label
     y_label = y_options.label
@@ -47,6 +43,7 @@ def plot(
     expected_scaler = characterize_scaler([mark._expected_scaler for mark in marks])
 
     if expected_scaler == Scaler.CONTINOUS:
+        x_domain = domain.reduce([mark.x_domain for mark in marks])
         x = (
             d3.scale_linear()
             .set_domain(x_domain)
@@ -54,12 +51,14 @@ def plot(
             .set_range([margin.left, width - margin.right])
         )
     elif expected_scaler == Scaler.TIME:
+        x_domain = domain.reduce([mark.x_domain for mark in marks])
         x = (
             d3.scale_time()
             .set_domain(x_domain)
             .set_range([margin.left, width - margin.right])
         )
     elif expected_scaler == Scaler.BAND:
+        x_domain = domain.unify([mark.x_domain for mark in marks])
         x = (
             d3.scale_band()
             .set_domain(x_domain)
@@ -69,6 +68,7 @@ def plot(
     else:
         raise ValueError(f"Undefined scaler (found {expected_scaler})")
 
+    y_domain = domain.reduce([mark.y_domain for mark in marks])
     y = (
         d3.scale_linear()
         .set_domain(y_domain)

@@ -1,3 +1,4 @@
+from datetime import datetime
 import detroit as d3
 from detroit.selection.selection import Selection
 from collections.abc import Callable
@@ -32,10 +33,10 @@ class AreaY:
             raise ValueError("'y' must be specified or 'y1' and 'y2' must be specified.")
 
         self.x_domain = domain(data, self._x)
-        self.y_domain = reduce(domain(data, self._y1), domain(data, self._y0))
+        self.y_domain = reduce([domain(data, self._y1), domain(data, self._y0)])
         self.expected_scaler = "sequential"
-        self._stroke = Color.try_init(data, stroke, Identity(stroke or "black"))
-        self._fill = Color.try_init(data, fill, Identity(fill or "none"))
+        self._stroke = Color.try_init(data, stroke, Identity(stroke or "none"))
+        self._fill = Color.try_init(data, fill, Identity(fill or "black"))
         self._stroke_width = stroke_width
         self._expected_scaler = (
             Scaler.TIME if isinstance(self.x_domain[0], datetime) else Scaler.CONTINOUS
