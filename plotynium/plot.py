@@ -2,12 +2,23 @@ from operator import itemgetter
 from collections import namedtuple
 from collections.abc import Callable
 from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions
+from .symbols import symbol_legend
 from .scaler import Scaler, characterize_scaler
 from . import label, domain
 
 import detroit as d3
 
-Margin = namedtuple("Margin", ["top", "right", "bottom", "left"])
+class Margin:
+
+    def __init__(self, top, right, bottom, left):
+        self.top = top
+        self.right = right
+        self.bottom = bottom
+        self.left = left
+
+    @staticmethod
+    def from_tuple(margin: tuple[int, int, int, int]):
+        return Margin(margin[0], margin[1], margin[2], margin[3])
 
 def plot(
     marks: list,
@@ -22,9 +33,14 @@ def plot(
 ):
     width = width or 640
     height = height or 438
-    margin = Margin(*(margin or [20, 30, 30, 40]))
+    margin = Margin.from_tuple(margin or (20, 30, 30, 40))
     x_options = x or XOptions()
     y_options = y or YOptions()
+    color = color or ColorOptions()
+    style = style or StyleOptions()
+    symbol_options = symbol or SymbolOptions()
+    if symbol_options.legend:
+        margin.top += 20
 
     svg = (
         d3.create("svg")
@@ -128,5 +144,11 @@ def plot(
         if color is not None:
             mark.set_color_scheme(color.scheme)
         mark(svg, x, y)
-
+ 
+    if symbol_options.legend:
+        for mark in marks:
+            if hasattr(mark, "_labels"):
+                symbol_legend(svg, mark._labels, margin.left, margin.top, color.scheme)
+                break
+    
     return svg

@@ -6,8 +6,8 @@ import detroit as d3
 class Symbol(Maker):
     def __init__(self, data: list, value: str):
         self._value = getter(value)
-        data = list(set(map(self._value, data)))
-        self._symbol_type = d3.scale_ordinal(data, d3.SYMBOLS_STROKE)
+        self._labels = sorted(set(map(self._value, data)))
+        self._symbol_type = d3.scale_ordinal(self._labels, d3.SYMBOLS_STROKE)
 
     def __call__(self, d):
         d = self._value(d)
