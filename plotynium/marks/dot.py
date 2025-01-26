@@ -2,6 +2,8 @@ from detroit.selection.selection import Selection
 from collections.abc import Callable
 from ..transformers import getter, Identity, Color, Symbol, Maker
 from ..domain import domain
+from ..schemes import Scheme
+from ..scaler import Scaler
 
 class Dot:
     def __init__(
@@ -23,13 +25,15 @@ class Dot:
 
         self.x_domain = domain(data, self._x)
         self.y_domain = domain(data, self._y)
+        self.expected_scaler = "continous"
         self._stroke = Color.try_init(data, stroke, Identity(stroke or "black"))
         self._fill = Color.try_init(data, fill, Identity(fill or "none"))
         self._r = r if callable(r) else Identity(r or 3)
         self._symbol = Symbol.try_init(data, symbol)
         self._stroke_width = stroke_width
+        self._expected_scaler = Scaler.CONTINOUS
 
-    def set_color_scheme(self, scheme):
+    def set_color_scheme(self, scheme: Scheme):
         if scheme is None:
             return
         if isinstance(self._stroke, Maker):
@@ -40,9 +44,6 @@ class Dot:
     def __call__(
         self,
         svg: Selection,
-        width: int,
-        height: int,
-        margin: tuple[int, int, int, int],
         x: Callable,
         y: Callable,
     ):
