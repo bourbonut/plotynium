@@ -30,7 +30,7 @@ class Dot:
         self._fill = Color.try_init(data, fill, Identity(fill or "none"))
         self._r = r if callable(r) else Identity(r or 3)
         self._symbol = Symbol.try_init(data, symbol)
-        self._labels = self._symbol._labels
+        self._labels = self._symbol._labels if isinstance(self._symbol, Symbol) else []
         self._stroke_width = stroke_width
         self._expected_scaler = Scaler.CONTINOUS
 
