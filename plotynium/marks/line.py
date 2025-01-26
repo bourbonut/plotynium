@@ -23,14 +23,11 @@ class Line:
         self._x = getter(x or 0)
         self._y = getter(y or 1)
 
-        self.x_domain = domain(data, self._x)
-        self.y_domain = domain(data, self._y)
+        self.x_domain, self.x_scaler_type = domain(data, self._x)
+        self.y_domain, self.y_scaler_type = domain(data, self._y)
         self._stroke = Color.try_init(data, stroke, Identity(stroke or "black"))
         self._fill = Color.try_init(data, fill, Identity(fill or "none"))
         self._stroke_width = stroke_width
-        self._expected_scaler = (
-            Scaler.TIME if isinstance(self.x_domain[0], datetime) else Scaler.CONTINOUS
-        )
 
     def set_color_scheme(self, scheme: Scheme):
         if scheme is None:
@@ -50,7 +47,7 @@ class Line:
             d3.line()
             .x(
                 (lambda d: x(self._x(d)))
-                if self._expected_scaler == Scaler.CONTINOUS
+                if self.x_scaler_type == Scaler.CONTINOUS
                 else (lambda d: x(self._x(d).timestamp()))
             )
             .y(lambda d: y(self._y(d)))

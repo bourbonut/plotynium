@@ -32,15 +32,20 @@ class AreaY:
         else:
             raise ValueError("'y' must be specified or 'y1' and 'y2' must be specified.")
 
-        self.x_domain = domain(data, self._x)
-        self.y_domain = reduce([domain(data, self._y1), domain(data, self._y0)])
-        self.expected_scaler = "sequential"
+        self.x_domain, self.x_scaler_type = domain(data, self._x)
+        y0_domain, y0_scaler_type = domain(data, self._y0)
+        y1_domain, y1_scaler_type = domain(data, self._y1)
+        if y0_scaler_type == y1_scaler_type:
+            self.y_scaler_type = y0_scaler_type
+        else:
+            raise RuntimeError(
+                "Incoherence between 'y0' and 'y1' domains "
+                f"(found y0 domain: {y0_domain} and y1 domain : {y1_domain})"
+            )
+        self.y_domain = reduce([y0_domain, y1_domain])
         self._stroke = Color.try_init(data, stroke, Identity(stroke or "none"))
         self._fill = Color.try_init(data, fill, Identity(fill or "black"))
         self._stroke_width = stroke_width
-        self._expected_scaler = (
-            Scaler.TIME if isinstance(self.x_domain[0], datetime) else Scaler.CONTINOUS
-        )
 
     def set_color_scheme(self, scheme: Scheme):
         if scheme is None:
@@ -60,7 +65,7 @@ class AreaY:
             d3.area()
             .x(
                 (lambda d: x(self._x(d)))
-                if self._expected_scaler == Scaler.CONTINOUS
+                if self.x_scaler_type == Scaler.CONTINOUS
                 else (lambda d: x(self._x(d).timestamp()))
             )
             .y0(lambda d: y(self._y0(d)))

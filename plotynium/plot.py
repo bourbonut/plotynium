@@ -36,8 +36,8 @@ def plot(
     margin = Margin.from_tuple(margin or (20, 30, 30, 40))
     x_options = x or XOptions()
     y_options = y or YOptions()
-    color = color or ColorOptions()
-    style = style or StyleOptions()
+    color_options = color or ColorOptions()
+    style_options = style or StyleOptions()
     symbol_options = symbol or SymbolOptions()
     if symbol_options.legend:
         margin.top += 20
@@ -56,9 +56,10 @@ def plot(
         x_label = label.reduce([mark.x_label for mark in marks])
         y_label = label.reduce([mark.y_label for mark in marks])
 
-    expected_scaler = characterize_scaler([mark._expected_scaler for mark in marks])
+    x_scaler_type = characterize_scaler([mark.x_scaler_type for mark in marks])
+    y_scaler_type = characterize_scaler([mark.y_scaler_type for mark in marks])
 
-    if expected_scaler == Scaler.CONTINOUS:
+    if x_scaler_type == Scaler.CONTINOUS:
         x_domain = domain.reduce([mark.x_domain for mark in marks])
         x = (
             d3.scale_linear()
@@ -66,14 +67,14 @@ def plot(
             .nice()
             .set_range([margin.left, width - margin.right])
         )
-    elif expected_scaler == Scaler.TIME:
+    elif x_scaler_type == Scaler.TIME:
         x_domain = domain.reduce([mark.x_domain for mark in marks])
         x = (
             d3.scale_time()
             .set_domain(x_domain)
             .set_range([margin.left, width - margin.right])
         )
-    elif expected_scaler == Scaler.BAND:
+    elif x_scaler_type == Scaler.BAND:
         x_domain = domain.unify([mark.x_domain for mark in marks])
         x = (
             d3.scale_band()
@@ -82,15 +83,33 @@ def plot(
             .set_padding(0.1)
         )
     else:
-        raise ValueError(f"Undefined scaler (found {expected_scaler})")
+        raise ValueError(f"Undefined scaler (found {x_scaler_type})")
 
-    y_domain = domain.reduce([mark.y_domain for mark in marks])
-    y = (
-        d3.scale_linear()
-        .set_domain(y_domain)
-        .nice()
-        .set_range([height - margin.bottom, margin.top])
-    )
+    if y_scaler_type == Scaler.CONTINOUS:
+        y_domain = domain.reduce([mark.y_domain for mark in marks])
+        y = (
+            d3.scale_linear()
+            .set_domain(y_domain)
+            .nice()
+            .set_range([height - margin.bottom, margin.top])
+        )
+    elif y_scaler_type == Scaler.TIME:
+        y_domain = domain.reduce([mark.y_domain for mark in marks])
+        y = (
+            d3.scale_time()
+            .set_domain(y_domain)
+            .set_range([height - margin.bottom, margin.top])
+        )
+    elif y_scaler_type == Scaler.BAND:
+        y_domain = domain.unify([mark.y_domain for mark in marks])
+        y = (
+            d3.scale_band()
+            .set_domain(y_domain)
+            .set_range([height - margin.bottom, margin.top])
+            .set_padding(0.1)
+        )
+    else:
+        raise ValueError(f"Undefined scaler (found {y_scaler_type})")
     
     x_axis = (
         svg.append("g")
@@ -141,14 +160,13 @@ def plot(
         )
 
     for mark in marks:
-        if color is not None:
-            mark.set_color_scheme(color.scheme)
+        mark.set_color_scheme(color_options.scheme)
         mark(svg, x, y)
  
     if symbol_options.legend:
         for mark in marks:
             if hasattr(mark, "_labels"):
-                symbol_legend(svg, mark._labels, margin.left, margin.top, color.scheme)
+                symbol_legend(svg, mark._labels, margin.left, margin.top, color_options.scheme)
                 break
     
     return svg

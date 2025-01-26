@@ -1,7 +1,7 @@
 from detroit.selection.selection import Selection
 from collections.abc import Callable
 from ..transformers import getter, Identity, Color, Symbol, Maker
-from ..domain import domain, ordered_unique_domain
+from ..domain import domain
 from ..schemes import Scheme
 from ..options import SortOptions
 from ..scaler import Scaler
@@ -27,12 +27,11 @@ class BarY:
         self._x = getter(x or 0)
         self._y = getter(y or 1)
 
-        self.x_domain = ordered_unique_domain(data, self._x)
-        self.y_domain = domain(data, self._y)
+        self.x_domain, self.x_scaler_type = domain(data, self._x)
+        self.y_domain, self.y_scaler_type = domain(data, self._y)
         self._stroke = Color.try_init(data, stroke, Identity(stroke or "none"))
         self._fill = Color.try_init(data, fill, Identity(fill or "black"))
         self._stroke_width = stroke_width
-        self._expected_scaler = Scaler.BAND
 
     def set_color_scheme(self, scheme: Scheme):
         if scheme is None:
