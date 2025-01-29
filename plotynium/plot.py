@@ -16,15 +16,47 @@ class Margin:
         self.bottom = bottom
         self.left = left
 
-    @staticmethod
-    def from_tuple(margin: tuple[int, int, int, int]):
-        return Margin(margin[0], margin[1], margin[2], margin[3])
+def make_scaler(
+    scaler_type: Scaler,
+    domains: list,
+    range_vals: list,
+    nice: bool = False,
+):
+    if scaler_type == Scaler.CONTINOUS:
+        scaler = (
+            d3.scale_linear()
+            .set_domain(domain.reduce(domains))
+            .set_range(range_vals)
+        )
+    elif scaler_type == Scaler.TIME:
+        scaler = (
+            d3.scale_time()
+            .set_domain(domain.reduce(domains))
+            .set_range(range_vals)
+        )
+    elif scaler_type == Scaler.BAND:
+        scaler = (
+            d3.scale_band()
+            .set_domain(domain.unify(domains))
+            .set_range(range_vals)
+        )
+    else:
+        raise ValueError(f"Undefined scaler (found {x_scaler_type})")
+
+    if nice and scaler_type in [Scaler.CONTINOUS, Scaler.TIME]:
+        scaler = scaler.nice()
+
+    return scaler
+
 
 def plot(
     marks: list,
-    width: int | None = None,
-    height: int | None = None,
-    margin: tuple[int, int, int, int] | None = None,
+    width: int = 640,
+    height: int = 438,
+    margin_top: int = 20,
+    margin_right: int = 10,
+    margin_bottom: int = 40,
+    margin_left: int = 40,
     x: XOptions | None = None,
     y: YOptions | None = None,
     color: ColorOptions | None = None,
@@ -33,7 +65,7 @@ def plot(
 ):
     width = width or 640
     height = height or 438
-    margin = Margin.from_tuple(margin or (20, 30, 30, 40))
+    margin = Margin(margin_top, margin_right, margin_bottom, margin_left)
     x_options = x or XOptions()
     y_options = y or YOptions()
     color_options = color or ColorOptions()
@@ -59,58 +91,15 @@ def plot(
     x_scaler_type = characterize_scaler([mark.x_scaler_type for mark in marks])
     y_scaler_type = characterize_scaler([mark.y_scaler_type for mark in marks])
 
-    if x_scaler_type == Scaler.CONTINOUS:
-        x_domain = domain.reduce([mark.x_domain for mark in marks])
-        x = (
-            d3.scale_linear()
-            .set_domain(x_domain)
-            .nice()
-            .set_range([margin.left, width - margin.right])
-        )
-    elif x_scaler_type == Scaler.TIME:
-        x_domain = domain.reduce([mark.x_domain for mark in marks])
-        x = (
-            d3.scale_time()
-            .set_domain(x_domain)
-            .set_range([margin.left, width - margin.right])
-        )
-    elif x_scaler_type == Scaler.BAND:
-        x_domain = domain.unify([mark.x_domain for mark in marks])
-        x = (
-            d3.scale_band()
-            .set_domain(x_domain)
-            .set_range([margin.left, width - margin.right])
-            .set_padding(0.1)
-        )
-    else:
-        raise ValueError(f"Undefined scaler (found {x_scaler_type})")
+    x_domains = [mark.x_domain for mark in marks]
+    y_domains = [mark.y_domain for mark in marks]
 
-    if y_scaler_type == Scaler.CONTINOUS:
-        y_domain = domain.reduce([mark.y_domain for mark in marks])
-        y = (
-            d3.scale_linear()
-            .set_domain(y_domain)
-            .nice()
-            .set_range([height - margin.bottom, margin.top])
-        )
-    elif y_scaler_type == Scaler.TIME:
-        y_domain = domain.reduce([mark.y_domain for mark in marks])
-        y = (
-            d3.scale_time()
-            .set_domain(y_domain)
-            .set_range([height - margin.bottom, margin.top])
-        )
-    elif y_scaler_type == Scaler.BAND:
-        y_domain = domain.unify([mark.y_domain for mark in marks])
-        y = (
-            d3.scale_band()
-            .set_domain(y_domain)
-            .set_range([height - margin.bottom, margin.top])
-            .set_padding(0.1)
-        )
-    else:
-        raise ValueError(f"Undefined scaler (found {y_scaler_type})")
-    
+    x_ranges = [margin.left, width - margin.right]
+    y_ranges = [height - margin.bottom, margin.top]
+
+    x = make_scaler(x_scaler_type, x_domains, x_ranges, nice=x_options.nice)
+    y = make_scaler(y_scaler_type, y_domains, y_ranges, nice=y_options.nice)
+   
     x_axis = (
         svg.append("g")
         .attr("transform", f"translate(0, {height - margin.bottom})")
@@ -127,8 +116,8 @@ def plot(
     if x_label is not None:
         x_axis.call(
             lambda g: g.append("text")
-            .attr("x", width - margin.right)
-            .attr("y", -4)
+            .attr("x", (x_ranges[0] + x_ranges[1]) // 2 + 3 * len(x_label))
+            .attr("y", (margin.top + margin.bottom) // 2 - 10)
             .attr("fill", "#000")
             .attr("font-weight", "bold")
             .attr("text-anchor", "end")
