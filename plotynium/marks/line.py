@@ -5,7 +5,7 @@ from collections.abc import Callable
 from ..transformers import getter, Identity, Color, Symbol, Maker
 from ..domain import domain
 from ..schemes import Scheme
-from ..scaler import Scaler
+from ..scaler import Scaler, determine_scaler
 
 class Line:
     def __init__(
@@ -23,8 +23,10 @@ class Line:
         self._x = getter(x or 0)
         self._y = getter(y or 1)
 
-        self.x_domain, self.x_scaler_type = domain(data, self._x)
-        self.y_domain, self.y_scaler_type = domain(data, self._y)
+        self.x_domain = domain(data, self._x)
+        self.y_domain = domain(data, self._y)
+        self.x_scaler_type = determine_scaler(data, self._x)
+        self.y_scaler_type = determine_scaler(data, self._y)
         self._stroke = Color.try_init(data, stroke, Identity(stroke or "black"))
         self._fill = Color.try_init(data, fill, Identity(fill or "none"))
         self._stroke_width = stroke_width

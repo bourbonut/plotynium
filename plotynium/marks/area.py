@@ -5,7 +5,7 @@ from collections.abc import Callable
 from ..transformers import getter, Identity, Color, Symbol, Maker
 from ..domain import domain, reduce
 from ..schemes import Scheme
-from ..scaler import Scaler
+from ..scaler import Scaler, determine_scaler
 
 class AreaY:
     def __init__(
@@ -32,9 +32,13 @@ class AreaY:
         else:
             raise ValueError("'y' must be specified or 'y1' and 'y2' must be specified.")
 
-        self.x_domain, self.x_scaler_type = domain(data, self._x)
-        y0_domain, y0_scaler_type = domain(data, self._y0)
-        y1_domain, y1_scaler_type = domain(data, self._y1)
+        self.x_domain = domain(data, self._x)
+        y0_domain = domain(data, self._y0)
+        y1_domain = domain(data, self._y1)
+
+        self.x_scaler_type = determine_scaler(data, self._x)
+        y0_scaler_type = determine_scaler(data, self._y0)
+        y1_scaler_type = determine_scaler(data, self._y1)
         if y0_scaler_type == y1_scaler_type:
             self.y_scaler_type = y0_scaler_type
         else:

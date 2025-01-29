@@ -1,11 +1,10 @@
 from datetime import datetime
 from collections.abc import Callable
 from operator import itemgetter
-from .scaler import Scaler
 
-def domain(data: list, accessor: Callable) -> tuple[list, Scaler]:
+def domain(data: list, accessor: Callable) -> list:
     sample = accessor(data[0])
-    if isinstance(sample, str):
+    if isinstance(sample, str): # Band case
         uniques = set()
         values = []
         for value in map(accessor, data):
@@ -13,10 +12,9 @@ def domain(data: list, accessor: Callable) -> tuple[list, Scaler]:
                 continue
             uniques.add(value)
             values.append(value)
-        return values, Scaler.BAND
+        return values
     values = list(map(accessor, data))
-    scaler_type = Scaler.TIME if isinstance(sample, datetime) else Scaler.CONTINOUS
-    return [min(values), max(values)], scaler_type
+    return [min(values), max(values)]
 
 def reduce(domains):
     mins = list(map(itemgetter(0), domains))

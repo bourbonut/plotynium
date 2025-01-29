@@ -3,50 +3,10 @@ from collections import namedtuple
 from collections.abc import Callable
 from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions
 from .symbols import symbol_legend
-from .scaler import Scaler, characterize_scaler
+from .scaler import Scaler, make_scaler
 from . import label, domain
 
 import detroit as d3
-
-class Margin:
-
-    def __init__(self, top, right, bottom, left):
-        self.top = top
-        self.right = right
-        self.bottom = bottom
-        self.left = left
-
-def make_scaler(
-    scaler_type: Scaler,
-    domains: list,
-    range_vals: list,
-    nice: bool = False,
-):
-    if scaler_type == Scaler.CONTINOUS:
-        scaler = (
-            d3.scale_linear()
-            .set_domain(domain.reduce(domains))
-            .set_range(range_vals)
-        )
-    elif scaler_type == Scaler.TIME:
-        scaler = (
-            d3.scale_time()
-            .set_domain(domain.reduce(domains))
-            .set_range(range_vals)
-        )
-    elif scaler_type == Scaler.BAND:
-        scaler = (
-            d3.scale_band()
-            .set_domain(domain.unify(domains))
-            .set_range(range_vals)
-        )
-    else:
-        raise ValueError(f"Undefined scaler (found {x_scaler_type})")
-
-    if nice and scaler_type in [Scaler.CONTINOUS, Scaler.TIME]:
-        scaler = scaler.nice()
-
-    return scaler
 
 
 def plot(
@@ -65,14 +25,13 @@ def plot(
 ):
     width = width or 640
     height = height or 438
-    margin = Margin(margin_top, margin_right, margin_bottom, margin_left)
     x_options = x or XOptions()
     y_options = y or YOptions()
     color_options = color or ColorOptions()
     style_options = style or StyleOptions()
     symbol_options = symbol or SymbolOptions()
     if symbol_options.legend:
-        margin.top += 20
+        margin_top += 20
 
     svg = (
         d3.create("svg")
@@ -88,21 +47,21 @@ def plot(
         x_label = label.reduce([mark.x_label for mark in marks])
         y_label = label.reduce([mark.y_label for mark in marks])
 
-    x_scaler_type = characterize_scaler([mark.x_scaler_type for mark in marks])
-    y_scaler_type = characterize_scaler([mark.y_scaler_type for mark in marks])
+    x_scaler_types = [mark.x_scaler_type for mark in marks]
+    y_scaler_types = [mark.y_scaler_type for mark in marks]
 
     x_domains = [mark.x_domain for mark in marks]
     y_domains = [mark.y_domain for mark in marks]
 
-    x_ranges = [margin.left, width - margin.right]
-    y_ranges = [height - margin.bottom, margin.top]
+    x_ranges = [margin_left, width - margin_right]
+    y_ranges = [height - margin_bottom, margin_top]
 
-    x = make_scaler(x_scaler_type, x_domains, x_ranges, nice=x_options.nice)
-    y = make_scaler(y_scaler_type, y_domains, y_ranges, nice=y_options.nice)
+    x = make_scaler(x_scaler_types, x_domains, x_ranges, nice=x_options.nice)
+    y = make_scaler(y_scaler_types, y_domains, y_ranges, nice=y_options.nice)
    
     x_axis = (
         svg.append("g")
-        .attr("transform", f"translate(0, {height - margin.bottom})")
+        .attr("transform", f"translate(0, {height - margin_bottom})")
         .call(d3.axis_bottom(x))
         .call(lambda g: g.select(".domain").remove())
     )
@@ -110,14 +69,14 @@ def plot(
         x_axis.call(lambda g: g.select_all(".tick")
             .select_all("line")
             .clone()
-            .attr("y2", -height + margin.top + margin.bottom)
+            .attr("y2", -height + margin_top + margin_bottom)
             .attr("stroke-opacity", 0.1)
         )
     if x_label is not None:
         x_axis.call(
             lambda g: g.append("text")
             .attr("x", (x_ranges[0] + x_ranges[1]) // 2 + 3 * len(x_label))
-            .attr("y", (margin.top + margin.bottom) // 2 - 10)
+            .attr("y", (margin_top + margin_bottom) // 2 - 10)
             .attr("fill", "#000")
             .attr("font-weight", "bold")
             .attr("text-anchor", "end")
@@ -126,7 +85,7 @@ def plot(
 
     y_axis = (
         svg.append("g")
-        .attr("transform", f"translate({margin.left}, 0)")
+        .attr("transform", f"translate({margin_left}, 0)")
         .call(d3.axis_left(y))
         .call(lambda g: g.select(".domain").remove())
     )
@@ -134,7 +93,7 @@ def plot(
         y_axis.call(lambda g: g.select_all(".tick")
             .select_all("line")
             .clone()
-            .attr("x2", width - margin.left - margin.right)
+            .attr("x2", width - margin_left - margin_right)
             .attr("stroke-opacity", 0.1)
         )
     if y_label is not None:
@@ -155,7 +114,7 @@ def plot(
     if symbol_options.legend:
         for mark in marks:
             if hasattr(mark, "_labels"):
-                symbol_legend(svg, mark._labels, margin.left, margin.top, color_options.scheme)
+                symbol_legend(svg, mark._labels, margin_left, margin_top, color_options.scheme)
                 break
     
     return svg
