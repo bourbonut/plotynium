@@ -1,13 +1,15 @@
-from datetime import datetime
-import detroit as d3
-from detroit.selection.selection import Selection
 from collections.abc import Callable
-from ..transformers import getter, Identity, Color, Symbol, Maker
-from ..domain import domain, reduce
-from ..schemes import Scheme
-from ..scaler import Scaler, determine_scaler
+from detroit.selection.selection import Selection
 
-class AreaY:
+import detroit as d3
+
+from .style import Style
+from ..domain import domain, reduce
+from ..scaler import determine_scaler, Scaler
+from ..options import SortOptions
+from ..transformers import getter, Identity
+
+class AreaY(Style):
     def __init__(
         self,
         data: list,
@@ -15,14 +17,20 @@ class AreaY:
         y: Callable | str | None = None,
         y1: Callable | str | None = None,
         y2: Callable | str | None = None,
-        stroke: Callable | str | None = None,
         fill: Callable | str | None = None,
-        stroke_width: float | int = 1,
+        fill_opacity: float = 1.,
+        stroke: Callable | str | None = None,
+        stroke_width: float = 1.,
+        stroke_opacity: float = 1.,
+        stroke_dasharray: str | None = None,
+        opacity: float = 1.,
     ):
         self._data = data
         self.x_label = None if callable(x) else str(x)
         self.y_label = None if callable(y) else str(y)
         self._x = getter(x or 0)
+        self._y = getter(y or 1)
+
         if y is not None:
             self._y1 = getter(y or 1)
             self._y0 = Identity(0)
@@ -32,13 +40,13 @@ class AreaY:
         else:
             raise ValueError("'y' must be specified or 'y1' and 'y2' must be specified.")
 
-        self.x_domain = domain(data, self._x)
-        y0_domain = domain(data, self._y0)
-        y1_domain = domain(data, self._y1)
+        self.x_domain = domain(self._data, self._x)
+        y0_domain = domain(self._data, self._y0)
+        y1_domain = domain(self._data, self._y1)
 
-        self.x_scaler_type = determine_scaler(data, self._x)
-        y0_scaler_type = determine_scaler(data, self._y0)
-        y1_scaler_type = determine_scaler(data, self._y1)
+        self.x_scaler_type = determine_scaler(self._data, self._x)
+        y0_scaler_type = determine_scaler(self._data, self._y0)
+        y1_scaler_type = determine_scaler(self._data, self._y1)
         if y0_scaler_type == y1_scaler_type:
             self.y_scaler_type = y0_scaler_type
         else:
@@ -46,18 +54,22 @@ class AreaY:
                 "Incoherence between 'y0' and 'y1' domains "
                 f"(found y0 domain: {y0_domain} and y1 domain : {y1_domain})"
             )
-        self.y_domain = reduce([y0_domain, y1_domain])
-        self._stroke = Color.try_init(data, stroke, Identity(stroke or "none"))
-        self._fill = Color.try_init(data, fill, Identity(fill or "black"))
-        self._stroke_width = stroke_width
 
-    def set_color_scheme(self, scheme: Scheme):
-        if scheme is None:
-            return
-        if isinstance(self._stroke, Maker):
-            self._stroke.set_color_scheme(scheme)
-        if isinstance(self._fill, Maker):
-            self._fill.set_color_scheme(scheme)
+        self.y_domain = reduce([y0_domain, y1_domain])
+
+        Style.__init__(
+            self,
+            data=data,
+            default_fill="black",
+            default_stroke="none",
+            fill=fill,
+            fill_opacity=fill_opacity,
+            stroke=stroke,
+            stroke_width=stroke_width,
+            stroke_opacity=stroke_opacity,
+            stroke_dasharray=stroke_dasharray,
+            opacity=opacity,
+        )
 
     def __call__(
         self,

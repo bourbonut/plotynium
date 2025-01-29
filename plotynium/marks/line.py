@@ -1,21 +1,25 @@
-from datetime import datetime
-import detroit as d3
-from detroit.selection.selection import Selection
 from collections.abc import Callable
-from ..transformers import getter, Identity, Color, Symbol, Maker
+from detroit.selection.selection import Selection
+
+import detroit as d3
+
+from .style import Style
 from ..domain import domain
-from ..schemes import Scheme
 from ..scaler import Scaler, determine_scaler
 
-class Line:
+class Line(Style):
     def __init__(
         self,
         data: list,
         x: Callable | str | None = None,
         y: Callable | str | None = None,
-        stroke: Callable | str | None = None,
         fill: Callable | str | None = None,
-        stroke_width: float | int = 1,
+        fill_opacity: float = 1.,
+        stroke: Callable | str | None = None,
+        stroke_width: float = 1.,
+        stroke_opacity: float = 1.,
+        stroke_dasharray: str | None = None,
+        opacity: float = 1.,
     ):
         self._data = data
         self.x_label = None if callable(x) else str(x)
@@ -23,21 +27,24 @@ class Line:
         self._x = getter(x or 0)
         self._y = getter(y or 1)
 
-        self.x_domain = domain(data, self._x)
-        self.y_domain = domain(data, self._y)
-        self.x_scaler_type = determine_scaler(data, self._x)
-        self.y_scaler_type = determine_scaler(data, self._y)
-        self._stroke = Color.try_init(data, stroke, Identity(stroke or "black"))
-        self._fill = Color.try_init(data, fill, Identity(fill or "none"))
-        self._stroke_width = stroke_width
+        self.x_domain = domain(self._data, self._x)
+        self.y_domain = domain(self._data, self._y)
+        self.x_scaler_type = determine_scaler(self._data, self._x)
+        self.y_scaler_type = determine_scaler(self._data, self._y)
 
-    def set_color_scheme(self, scheme: Scheme):
-        if scheme is None:
-            return
-        if isinstance(self._stroke, Maker):
-            self._stroke.set_color_scheme(scheme)
-        if isinstance(self._fill, Maker):
-            self._fill.set_color_scheme(scheme)
+        Style.__init__(
+            self,
+            data=data,
+            default_fill="none",
+            default_stroke="black",
+            fill=fill,
+            fill_opacity=fill_opacity,
+            stroke=stroke,
+            stroke_width=stroke_width,
+            stroke_opacity=stroke_opacity,
+            stroke_dasharray=stroke_dasharray,
+            opacity=opacity,
+        )
 
     def __call__(
         self,

@@ -108,7 +108,7 @@ def plot(
         )
 
     for mark in marks:
-        mark.set_color_scheme(color_options.scheme)
+        mark.scheme = color_options.scheme
         mark(svg, x, y)
  
     if symbol_options.legend:
