@@ -21,10 +21,12 @@ class SortOptions:
 
 @dataclass
 class XOptions:
+    nice: bool = field(default=False)
     grid: bool = field(default=False)
     label: str | None = field(default=None)
 
 @dataclass
 class YOptions:
+    nice: bool = field(default=False)
     grid: bool = field(default=False)
     label: str | None = field(default=None)
