@@ -49,6 +49,7 @@ class BarY:
     ):
         (
             svg.append("g")
+            .attr("class", "bars")
             .select_all()
             .data(self._data)
             .join("rect")

@@ -60,6 +60,7 @@ class Dot:
         if self._symbol is None:
             (
                 svg.append("g")
+                .attr("class", "dots")
                 .select_all("circle")
                 .data(self._data)
                 .join("circle")
@@ -72,6 +73,7 @@ class Dot:
         else:
             (
                 svg.append("g")
+                .attr("class", "dots")
                 .select_all("circle")
                 .data(self._data)
                 .join("g")

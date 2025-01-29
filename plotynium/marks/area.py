@@ -74,6 +74,7 @@ class AreaY:
 
         (
             svg.append("path")
+            .attr("class", "area")
             .attr("fill", self._fill)
             .attr("stroke", self._stroke)
             .attr("stroke-width", self._stroke_width)
