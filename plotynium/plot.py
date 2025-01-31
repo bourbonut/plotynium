@@ -76,7 +76,7 @@ def plot(
         x_axis.call(
             lambda g: g.append("text")
             .attr("x", (x_ranges[0] + x_ranges[1]) // 2 + 3 * len(x_label))
-            .attr("y", (margin_top + margin_bottom) // 2 - 10)
+            .attr("y", (margin_bottom + 20) // 2)
             .attr("fill", "#000")
             .attr("font-weight", "bold")
             .attr("text-anchor", "end")
@@ -93,7 +93,7 @@ def plot(
         y_axis.call(lambda g: g.select_all(".tick")
             .select_all("line")
             .clone()
-            .attr("x2", width - margin_left - margin_right)
+            .attr("x2", width - margin_right - margin_left)
             .attr("stroke-opacity", 0.1)
         )
     if y_label is not None:

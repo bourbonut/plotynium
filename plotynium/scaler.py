@@ -33,7 +33,7 @@ def make_scaler(
     scaler_types: list[Scaler],
     domains: list[list | tuple[float, float]],
     range_vals: list[tuple[int, int]],
-    nice: bool = False,
+    nice: bool = True,
 ):
     scaler_type = reduce(scaler_types)
 
