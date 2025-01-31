@@ -13,10 +13,10 @@ def plot(
     marks: list,
     width: int = 640,
     height: int = 438,
-    margin_top: int = 20,
+    margin_top: int = 10,
     margin_right: int = 10,
-    margin_bottom: int = 40,
-    margin_left: int = 40,
+    margin_bottom: int = 45,
+    margin_left: int = 45,
     x: XOptions | None = None,
     y: YOptions | None = None,
     color: ColorOptions | None = None,
@@ -30,8 +30,8 @@ def plot(
     color_options = color or ColorOptions()
     style_options = style or StyleOptions()
     symbol_options = symbol or SymbolOptions()
-    if symbol_options.legend:
-        margin_top += 20
+    margin_top = max(margin_top, 30) if symbol_options.legend else margin_top
+    # legend_offset = 30 if symbol_options.legend else 0
 
     svg = (
         d3.create("svg")
@@ -65,23 +65,6 @@ def plot(
         .call(d3.axis_bottom(x))
         .call(lambda g: g.select(".domain").remove())
     )
-    if x_options.grid:
-        x_axis.call(lambda g: g.select_all(".tick")
-            .select_all("line")
-            .clone()
-            .attr("y2", -height + margin_top + margin_bottom)
-            .attr("stroke-opacity", 0.1)
-        )
-    if x_label is not None:
-        x_axis.call(
-            lambda g: g.append("text")
-            .attr("x", (x_ranges[0] + x_ranges[1]) // 2 + 3 * len(x_label))
-            .attr("y", (margin_bottom + 20) // 2)
-            .attr("fill", "#000")
-            .attr("font-weight", "bold")
-            .attr("text-anchor", "end")
-            .text(x_label)
-        )
 
     y_axis = (
         svg.append("g")
@@ -89,27 +72,49 @@ def plot(
         .call(d3.axis_left(y))
         .call(lambda g: g.select(".domain").remove())
     )
-    if y_options.grid:
-        y_axis.call(lambda g: g.select_all(".tick")
-            .select_all("line")
-            .clone()
-            .attr("x2", width - margin_right - margin_left)
-            .attr("stroke-opacity", 0.1)
-        )
-    if y_label is not None:
-        y_axis.call(
-            lambda g: g.select(".tick:last-of-type")
-            .select("text")
-            .clone()
-            .attr("x", 4)
-            .attr("text-anchor", "start")
-            .attr("font-weight", "bold")
-            .text(y_label)
-        )
 
     for mark in marks:
         mark.scheme = color_options.scheme
         mark(svg, x, y)
+
+    if x_options.grid:
+        x_axis.call(lambda g: g.select_all(".tick")
+            .select_all("line")
+            .clone()
+            .attr("y2", y.range[1] - y.range[0])
+            .attr("stroke-opacity", 0.1)
+        )
+    if x_label is not None:
+        x_axis.call(
+            lambda g: g.append("text")
+            .attr("x", (x.range[0] + x.range[1]) // 2 + 3 * len(x_label))
+            .attr("y", (margin_bottom + 20) // 2)
+            .attr("fill", "#000")
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "end")
+            .text(x_label)
+        )
+
+    if y_options.grid:
+        y_axis.call(lambda g: g.select_all(".tick")
+            .select_all("line")
+            .clone()
+            .attr("x2", x.range[1] - x.range[0])
+            .attr("stroke-opacity", 0.1)
+        )
+    if y_label is not None:
+        y_axis.call(
+            lambda g: g.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -(y.range[0] + y.range[1]) // 2 + 3 * len(y_label))
+            .attr("y", -(margin_left + 20) // 2)
+            # .attr("x", max(-margin_left + 5, -len(y_label) * 3))
+            # .attr("y", margin_top // 2 + (3 * legend_offset) // 4 + 2.5)
+            .attr("fill", "#000")
+            .attr("text-anchor", "start")
+            .attr("font-weight", "bold")
+            .text(y_label)
+        )
  
     if symbol_options.legend:
         for mark in marks:

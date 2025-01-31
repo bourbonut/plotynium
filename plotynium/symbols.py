@@ -29,11 +29,10 @@ def symbol_legend(
     scheme: Scheme,
 ):
     nb_columns = len(labels)
-    offset = 40
-    symbol_size = 3
+    symbol_size = 5
+    label_length = max(map(lambda label: len(str(label)), labels)) * 3
+    offset = 2 * (symbol_size + label_length) + 16
     font_size = 12
-    dx = margin_left - symbol_size * 4
-    dy = margin_top - 20 - symbol_size * 1.5
 
     symbol_type = d3.scale_ordinal(labels, d3.SYMBOLS_STROKE)
     color = d3.scale_sequential([min(labels), max(labels)], scheme)
@@ -41,6 +40,7 @@ def symbol_legend(
     legend = (
         svg.append("g")
         .attr("class", "legend")
+        .attr("transform", f"translate({margin_left // 2}, {margin_top // 2})")
         .select_all("legend")
         .data(labels)
         .enter()
@@ -48,7 +48,7 @@ def symbol_legend(
 
     g = (
         legend.append("g")
-        .attr("transform", lambda _, i: f"translate({i * offset + dx}, {dy})")
+        .attr("transform", lambda _, i: f"translate({i * offset}, 0)")
     )
 
     (
@@ -60,7 +60,7 @@ def symbol_legend(
 
     (
         g.append("text")
-        .attr("x", -16)
+        .attr("x", symbol_size * 0.5 + label_length + 4)
         .attr("y", font_size // 3)
         .text(lambda d: str(d))
         .style("fill", "black")
