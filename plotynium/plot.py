@@ -105,7 +105,7 @@ def plot(
         y_axis.call(
             lambda g: g.append("text")
             .attr("transform", "rotate(-90)")
-            .attr("x", -(y.range[0] + y.range[1]) // 2 + 3 * len(y_label))
+            .attr("x", -(y.range[0] + y.range[1]) // 2 - 3 * len(y_label))
             .attr("y", -(margin_left + 20) // 2)
             .attr("fill", "#000")
             .attr("text-anchor", "start")
