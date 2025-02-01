@@ -28,7 +28,7 @@ class Dot(Style):
         symbol: Callable | float | None = None,
         fill_opacity: float = 1.,
         stroke: Callable | str | None = None,
-        stroke_width: float = 1.,
+        stroke_width: float = 1.5,
         stroke_opacity: float = 1.,
         stroke_dasharray: str | None = None,
         opacity: float = 1.,
