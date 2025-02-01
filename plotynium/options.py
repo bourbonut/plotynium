@@ -51,7 +51,7 @@ class StyleOptions:
 
 @dataclass
 class SortOptions:
-    by: str
+    by: str = field(default="")
     descending: bool = field(default=False)
 
     @staticmethod

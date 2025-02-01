@@ -4,7 +4,7 @@ from detroit.selection.selection import Selection
 import detroit as d3
 
 from .style import Style
-from ..options import SortOptions
+from ..options import SortOptions, init_options
 from ..transformers import getter, Identity, Color, Symbol, Maker
 from ..domain import domain
 from ..scaler import Scaler, determine_scaler
@@ -15,7 +15,7 @@ class BarY(Style):
         data: list,
         x: Callable | str | None = None,
         y: Callable | str | None = None,
-        sort: SortOptions | None = None,
+        sort: SortOptions | dict | None = None,
         fill: Callable | str | None = None,
         fill_opacity: float = 1.,
         stroke: Callable | str | None = None,
@@ -24,7 +24,8 @@ class BarY(Style):
         stroke_dasharray: str | None = None,
         opacity: float = 1.,
     ):
-        if sort is not None:
+        sort = init_options(sort, SortOptions)
+        if sort.by != "":
             data = sorted(data, key=getter(sort.by))
             if sort.descending:
                 data = list(reversed(data))
