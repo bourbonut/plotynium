@@ -17,6 +17,7 @@ def plot(
     margin_right: int = 10,
     margin_bottom: int = 45,
     margin_left: int = 45,
+    grid: bool = False,
     x: XOptions | dict | None = None,
     y: YOptions | dict | None = None,
     color: ColorOptions | dict | None = None,
@@ -65,10 +66,6 @@ def plot(
     x = make_scaler(x_scaler_types, x_domains, x_ranges, nice=x_options.nice)
     y = make_scaler(y_scaler_types, y_domains, y_ranges, nice=y_options.nice)
 
-    for mark in marks:
-        mark.scheme = color_options.scheme
-        mark(svg, x, y)
-   
     x_axis = (
         svg.append("g")
         .attr("transform", f"translate(0, {height - margin_bottom})")
@@ -85,7 +82,7 @@ def plot(
         .call(lambda g: g.select(".domain").remove())
     )
 
-    if x_options.grid:
+    if x_options.grid or grid:
         x_axis.call(lambda g: g.select_all(".tick")
             .select_all("line")
             .clone()
@@ -103,7 +100,7 @@ def plot(
             .text(x_label)
         )
 
-    if y_options.grid:
+    if y_options.grid or grid:
         y_axis.call(lambda g: g.select_all(".tick")
             .select_all("line")
             .clone()
@@ -121,6 +118,10 @@ def plot(
             .attr("font-weight", "bold")
             .text(y_label)
         )
+
+    for mark in marks:
+        mark.scheme = color_options.scheme
+        mark(svg, x, y)
  
     if symbol_options.legend:
         for mark in marks:
