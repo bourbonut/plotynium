@@ -64,6 +64,10 @@ def plot(
 
     x = make_scaler(x_scaler_types, x_domains, x_ranges, nice=x_options.nice)
     y = make_scaler(y_scaler_types, y_domains, y_ranges, nice=y_options.nice)
+
+    for mark in marks:
+        mark.scheme = color_options.scheme
+        mark(svg, x, y)
    
     x_axis = (
         svg.append("g")
@@ -80,11 +84,6 @@ def plot(
         .call(lambda g: g.attr("font-size", "inherit").attr("font-family", "inherit"))
         .call(lambda g: g.select(".domain").remove())
     )
-
-
-    for mark in marks:
-        mark.scheme = color_options.scheme
-        mark(svg, x, y)
 
     if x_options.grid:
         x_axis.call(lambda g: g.select_all(".tick")
