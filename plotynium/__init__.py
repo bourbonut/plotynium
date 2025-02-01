@@ -4,4 +4,5 @@ from .marks import (
     AreaY as area_y,
     Line as line,
     BarY as bar_y,
+    RuleY as rule_y,
 )

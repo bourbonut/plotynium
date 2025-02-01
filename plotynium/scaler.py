@@ -21,7 +21,7 @@ def determine_scaler(data: list, accessor: Callable):
 
 
 def reduce(scaler_types: list):
-    scalers = set(scaler_types)
+    scalers = set(scaler_types) - {None}
     if len(scalers) > 1:
         raise RuntimeError(f"Found different scalers {scalers}. Some marks cannot be associated between each other.")
     elif len(scalers) == 0:
