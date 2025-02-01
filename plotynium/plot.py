@@ -1,7 +1,7 @@
 from operator import itemgetter
 from collections import namedtuple
 from collections.abc import Callable
-from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions
+from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions, init_options
 from .symbols import symbol_legend
 from .scaler import Scaler, make_scaler
 from . import label, domain
@@ -17,19 +17,19 @@ def plot(
     margin_right: int = 10,
     margin_bottom: int = 45,
     margin_left: int = 45,
-    x: XOptions | None = None,
-    y: YOptions | None = None,
-    color: ColorOptions | None = None,
-    style: StyleOptions | None = None,
-    symbol: SymbolOptions | None = None,
+    x: XOptions | dict | None = None,
+    y: YOptions | dict | None = None,
+    color: ColorOptions | dict | None = None,
+    style: StyleOptions | dict | None = None,
+    symbol: SymbolOptions | dict | None = None,
 ):
     width = width or 640
     height = height or 438
-    x_options = x or XOptions()
-    y_options = y or YOptions()
-    color_options = color or ColorOptions()
-    style_options = style or StyleOptions()
-    symbol_options = symbol or SymbolOptions()
+    x_options = init_options(x, XOptions)
+    y_options = init_options(y, YOptions)
+    color_options = init_options(color, ColorOptions)
+    style_options = init_options(style, StyleOptions)
+    symbol_options = init_options(symbol, SymbolOptions)
     margin_top = max(margin_top, 40) if symbol_options.legend else margin_top
 
     svg = (
