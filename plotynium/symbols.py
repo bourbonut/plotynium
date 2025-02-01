@@ -27,12 +27,12 @@ def symbol_legend(
     margin_left: int,
     margin_top: int,
     scheme: Scheme,
+    font_size: int = 12,
 ):
     nb_columns = len(labels)
     symbol_size = 5
     label_length = max(map(lambda label: len(str(label)), labels)) * 3
     offset = 2 * (symbol_size + label_length) + 16
-    font_size = 12
 
     symbol_type = d3.scale_ordinal(labels, d3.SYMBOLS_STROKE)
     color = d3.scale_sequential([min(labels), max(labels)], scheme)
@@ -63,6 +63,6 @@ def symbol_legend(
         .attr("x", symbol_size * 0.5 + label_length + 4)
         .attr("y", font_size // 3)
         .text(lambda d: str(d))
-        .style("fill", "black")
+        .style("fill", "currentColor")
         .style("font-size", font_size)
     )

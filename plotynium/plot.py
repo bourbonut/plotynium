@@ -30,14 +30,21 @@ def plot(
     color_options = color or ColorOptions()
     style_options = style or StyleOptions()
     symbol_options = symbol or SymbolOptions()
-    margin_top = max(margin_top, 30) if symbol_options.legend else margin_top
+    margin_top = max(margin_top, 40) if symbol_options.legend else margin_top
 
     svg = (
         d3.create("svg")
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", f"0 0 {width} {height}")
+        .style("font-size", style_options.font_size)
+        .style("font-family", style_options.font_family)
     )
+    default_style = StyleOptions()
+    if style_options.background != default_style.background:
+        svg.style("background", style_options.background)
+    if style_options.color != default_style.color:
+        svg.style("color", style_options.color)
 
     # Set labels
     x_label = x_options.label
@@ -62,6 +69,7 @@ def plot(
         svg.append("g")
         .attr("transform", f"translate(0, {height - margin_bottom})")
         .call(d3.axis_bottom(x))
+        .call(lambda g: g.attr("font-size", "inherit").attr("font-family", "inherit"))
         .call(lambda g: g.select(".domain").remove())
     )
 
@@ -69,8 +77,10 @@ def plot(
         svg.append("g")
         .attr("transform", f"translate({margin_left}, 0)")
         .call(d3.axis_left(y))
+        .call(lambda g: g.attr("font-size", "inherit").attr("font-family", "inherit"))
         .call(lambda g: g.select(".domain").remove())
     )
+
 
     for mark in marks:
         mark.scheme = color_options.scheme
@@ -116,7 +126,7 @@ def plot(
     if symbol_options.legend:
         for mark in marks:
             if hasattr(mark, "_labels"):
-                symbol_legend(svg, mark._labels, margin_left, margin_top, color_options.scheme)
+                symbol_legend(svg, mark._labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
                 break
     
     return svg
