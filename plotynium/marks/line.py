@@ -63,8 +63,9 @@ class Line(Style):
         )
 
         (
-            svg.append("path")
+            svg.append("g")
             .attr("class", "line")
+            .append("path")
             .attr("fill", self._fill)
             .attr("stroke", self._stroke)
             .attr("stroke-width", self._stroke_width)
