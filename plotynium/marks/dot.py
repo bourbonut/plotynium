@@ -77,7 +77,8 @@ class Dot(Style):
                 .select_all("circle")
                 .data(self._data)
                 .join("circle")
-                .attr("transform", lambda d: f"translate({x(self._x(d))}, {y(self._y(d))})")
+                .attr("cx", lambda d: x(self._x(d)))
+                .attr("cy", lambda d: y(self._y(d)))
                 .attr("stroke", self._stroke)
                 .attr("fill", self._fill)
                 .attr("stroke-width", self._stroke_width)
@@ -87,7 +88,7 @@ class Dot(Style):
             (
                 svg.append("g")
                 .attr("class", "dots")
-                .select_all("circle")
+                .select_all("symbol")
                 .data(self._data)
                 .join("g")
                 .attr("transform", lambda d: f"translate({x(self._x(d))}, {y(self._y(d))})")

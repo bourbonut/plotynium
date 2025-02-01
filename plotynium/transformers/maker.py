@@ -1,5 +1,6 @@
 from __future__ import annotations
 from ..schemes import Scheme
+from ..interpolations import Interpolation
 from collections.abc import Callable
 from abc import ABC, abstractmethod
 from typing import Any
@@ -14,7 +15,7 @@ class Maker(ABC):
     def __call__(self, d: Any):
         pass
 
-    def set_color_scheme(self, scheme: Scheme):
+    def set_color_scheme(self, scheme: Interpolation | Scheme):
         return
 
     @staticmethod

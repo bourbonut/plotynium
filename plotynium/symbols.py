@@ -2,6 +2,7 @@ import detroit as d3
 from detroit.selection.selection import Selection
 from enum import Enum
 from .schemes import Scheme
+from .interpolations import Interpolation
 
 class SymbolFill(Enum):
     CIRCLE = d3.symbol_circle
@@ -26,7 +27,7 @@ def symbol_legend(
     labels: list,
     margin_left: int,
     margin_top: int,
-    scheme: Scheme,
+    scheme: Interpolation | Scheme,
     font_size: int = 12,
 ):
     nb_columns = len(labels)

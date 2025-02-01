@@ -2,6 +2,8 @@ from collections.abc import Callable
 
 from ..transformers import getter, Identity, Color, Symbol
 from ..schemes import Scheme
+from ..interpolations import Interpolation
+from ..options import ColorOptions
 
 import detroit as d3
 
@@ -28,13 +30,14 @@ class Style:
         self._stroke_dasharray = stroke_dasharray
         self._stroke_opacity = stroke_opacity
         self._opacity = opacity
-        self._scheme = d3.interpolate_turbo
+        self._scheme = ColorOptions().scheme
 
     @property
-    def scheme(self) -> Scheme:
+    def scheme(self) -> Interpolation | Scheme:
         return self._scheme
 
     @scheme.setter
-    def scheme(self, scheme: Scheme):
+    def scheme(self, scheme: Interpolation | Scheme):
         self._fill.set_color_scheme(scheme)
         self._stroke.set_color_scheme(scheme)
+        self._scheme = scheme

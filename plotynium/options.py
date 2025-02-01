@@ -1,12 +1,13 @@
 from dataclasses import dataclass, field
 from .schemes import Scheme
+from .interpolations import Interpolation
 from typing import TypeVar
 
 T = TypeVar("T")
 
 @dataclass
 class ColorOptions:
-    scheme: Scheme = field(default=Scheme.TURBO)
+    scheme: Interpolation | Scheme = field(default=Interpolation.TURBO)
 
     @staticmethod
     def new(values: dict | None = None):
