@@ -54,6 +54,7 @@ def make_scaler(
             d3.scale_band()
             .set_domain(domain.unify(domains))
             .set_range(range_vals)
+            .set_padding(0.1)
         )
     else:
         raise ValueError(f"Undefined scaler (found {x_scaler_type})")
