@@ -31,7 +31,6 @@ def plot(
     style_options = style or StyleOptions()
     symbol_options = symbol or SymbolOptions()
     margin_top = max(margin_top, 30) if symbol_options.legend else margin_top
-    # legend_offset = 30 if symbol_options.legend else 0
 
     svg = (
         d3.create("svg")
@@ -108,8 +107,6 @@ def plot(
             .attr("transform", "rotate(-90)")
             .attr("x", -(y.range[0] + y.range[1]) // 2 + 3 * len(y_label))
             .attr("y", -(margin_left + 20) // 2)
-            # .attr("x", max(-margin_left + 5, -len(y_label) * 3))
-            # .attr("y", margin_top // 2 + (3 * legend_offset) // 4 + 2.5)
             .attr("fill", "#000")
             .attr("text-anchor", "start")
             .attr("font-weight", "bold")
