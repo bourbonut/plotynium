@@ -67,7 +67,7 @@ class SortOptions:
 
 @dataclass
 class XOptions:
-    nice: bool = field(default=True)
+    nice: bool = field(default=False)
     grid: bool = field(default=False)
     label: str | None = field(default=None)
 

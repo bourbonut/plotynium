@@ -6,6 +6,7 @@ import detroit as d3
 from .style import Style
 from ..domain import domain
 from ..scaler import Scaler, determine_scaler
+from ..transformers import getter, Identity
 
 class Line(Style):
     def __init__(
