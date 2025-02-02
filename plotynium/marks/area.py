@@ -7,7 +7,7 @@ from .style import Style
 from ..domain import domain, reduce
 from ..scaler import determine_scaler, Scaler
 from ..options import SortOptions
-from ..transformers import getter, Identity
+from ..utils import getter, Constant
 
 class AreaY(Style):
     def __init__(
@@ -33,7 +33,7 @@ class AreaY(Style):
 
         if y is not None:
             self._y1 = getter(y or 1)
-            self._y0 = Identity(0)
+            self._y0 = Constant(0)
         elif y1 is not None or y2 is not None:
             self._y0 = getter(y1)
             self._y1 = getter(y2)

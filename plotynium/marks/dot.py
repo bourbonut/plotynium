@@ -7,7 +7,7 @@ import detroit as d3
 from .style import Style
 from ..domain import domain
 from ..scaler import Scaler, determine_scaler
-from ..transformers import getter, Identity, Color, Symbol, Maker
+from ..utils import getter, Constant, Symbol
 
 def center(scale):
     if isinstance(scale, ScaleBand):
@@ -44,7 +44,7 @@ class Dot(Style):
         self.x_scaler_type = determine_scaler(self._data, self._x)
         self.y_scaler_type = determine_scaler(self._data, self._y)
 
-        self._r = r if callable(r) else Identity(r or 3)
+        self._r = r if callable(r) else Constant(r or 3)
         self._symbol = Symbol.try_init(data, symbol)
         self._labels = self._symbol._labels if isinstance(self._symbol, Symbol) else []
 

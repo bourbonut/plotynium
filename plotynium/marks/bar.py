@@ -5,7 +5,7 @@ import detroit as d3
 
 from .style import Style
 from ..options import SortOptions, init_options
-from ..transformers import getter, Identity, Color, Symbol, Maker
+from ..utils import getter
 from ..domain import domain
 from ..scaler import Scaler, determine_scaler
 

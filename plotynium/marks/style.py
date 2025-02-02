@@ -1,6 +1,6 @@
 from collections.abc import Callable
 
-from ..transformers import getter, Identity, Color, Symbol
+from ..utils import getter, Identity, Color, Symbol
 from ..schemes import Scheme
 from ..interpolations import Interpolation
 from ..options import ColorOptions
