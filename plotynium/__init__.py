@@ -6,6 +6,7 @@ from .marks import (
     BarY as bar_y,
     RuleY as rule_y,
     AxisX as axis_x,
+    AxisY as axis_y,
 )
 from .schemes import Scheme
 from .interpolations import Interpolation
