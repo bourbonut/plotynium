@@ -51,10 +51,12 @@ class AxisX:
         x: Callable,
         y: Callable,
         height: int,
+        margin_top: int,
         margin_bottom: int,
         **kwargs,
     ):
-        y = self._y or Constant(height - margin_bottom)
+        dy = height - margin_bottom if self._anchor == "bottom" else margin_top
+        y = self._y or Constant(dy)
         dir = -1 if self._anchor == "top" else 1
 
         if hasattr(x, "bandwidth"):
@@ -94,7 +96,11 @@ class AxisX:
 
         if self._label is not None:
             tx = (x.range[0] + x.range[1]) // 2
-            ty = height - (margin_bottom - 20) // 2
+            ty = (
+                height - margin_bottom // 4
+                if self._anchor == "bottom" else
+                margin_top // 4
+            )
             (
                 svg.append("g")
                 .attr("aria-label", "x-axis label")
@@ -147,10 +153,13 @@ class AxisY:
         svg: Selection,
         x: Callable,
         y: Callable,
+        width: int,
         margin_left: int,
+        margin_right: int,
         **kwargs,
     ):
-        x = self._x or Constant(margin_left)
+        dx = margin_left if self._anchor == "left" else width - margin_right
+        x = self._x or Constant(dx)
         dir = -1 if self._anchor == "left" else 1
 
         if hasattr(y, "bandwidth"):
@@ -191,7 +200,11 @@ class AxisY:
 
         if self._label is not None:
             tx = -(y.range[0] + y.range[1]) // 2
-            ty = (margin_left - 20) // 2
+            ty = (
+                margin_left // 4
+                if self._anchor == "left" else
+                width - margin_right //  4
+            )
             (
                 svg.append("g")
                 .attr("aria-label", "y-axis label")

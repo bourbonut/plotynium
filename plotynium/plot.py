@@ -44,6 +44,15 @@ def plot(
         .style("font-family", style_options.font_family)
     )
 
+    (
+        svg.append("rect")
+        .attr("fill", "grey")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", width)
+        .attr("height", height)
+    )
+
     default_style = StyleOptions()
     if style_options.background != default_style.background:
         svg.style("background", style_options.background)
