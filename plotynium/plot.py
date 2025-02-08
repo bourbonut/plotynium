@@ -1,7 +1,7 @@
 from operator import itemgetter
 from collections import namedtuple
 from collections.abc import Callable
-from .marks.axis import AxisX, AxisY
+from .marks import AxisX, AxisY, GridX, GridY
 from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions, init_options
 from .symbols import symbol_legend
 from .scaler import Scaler, make_scaler
@@ -82,9 +82,29 @@ def plot(
         y_tick_format = y.tick_format() if hasattr(y, "tick_format") else y.domain
         marks.append(AxisY(y_ticks, tick_format=y_tick_format, label=y_label))
 
+    # Set x grid
+    if not any(map(lambda mark: isinstance(mark, GridX), marks)) and x_options.grid or grid:
+        x_ticks = x.ticks() if hasattr(x, "ticks") else x.domain
+        marks.append(GridX(x_ticks))
+
+    # Set y grid
+    if not any(map(lambda mark: isinstance(mark, GridY), marks)) and y_options.grid or grid:
+        y_ticks = y.ticks() if hasattr(y, "ticks") else y.domain
+        marks.append(GridY(y_ticks))
+
     for mark in marks:
         mark.scheme = color_options.scheme
-        mark(svg, x, y, height=height, margin_left=margin_left, margin_bottom=margin_bottom)
+        mark(
+            svg,
+            x,
+            y,
+            width=width,
+            height=height,
+            margin_top=margin_top,
+            margin_bottom=margin_bottom,
+            margin_left=margin_left,
+            margin_right=margin_right,
+        )
 
     if symbol_options.legend:
         for mark in marks:

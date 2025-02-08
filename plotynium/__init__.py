@@ -7,6 +7,8 @@ from .marks import (
     RuleY as rule_y,
     AxisX as axis_x,
     AxisY as axis_y,
+    GridX as grid_x,
+    GridY as grid_y,
 )
 from .schemes import Scheme
 from .interpolations import Interpolation
