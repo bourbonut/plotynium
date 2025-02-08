@@ -57,6 +57,11 @@ class AxisX:
         y = self._y or Constant(height - margin_bottom)
         dir = -1 if self._anchor == "top" else 1
 
+        if hasattr(x, "bandwidth"):
+            offset = x.bandwidth / 2
+        else:
+            offset = 0
+
         ticks = (
             svg.append("g")
             .attr("aria-label", "x-axis tick")
@@ -65,7 +70,7 @@ class AxisX:
             .select_all("path")
             .data(self._data)
             .join("path")
-            .attr("transform", lambda d: f"translate({x(d)}, {y(d)})")
+            .attr("transform", lambda d: f"translate({x(d) + offset}, {y(d)})")
             .attr("d", f"M0,0L0,{dir * self._tick_size}")
         )
         if self._stroke_opacity != 1.:
@@ -83,7 +88,7 @@ class AxisX:
             .data(self._data)
             .join("text")
             .attr("y", "0.71em" if self._anchor == "bottom" else "0px")
-            .attr("transform", lambda d: f"translate({x(d)}, {y(d)})")
+            .attr("transform", lambda d: f"translate({x(d) + offset}, {y(d)})")
             .text(lambda d: str(self._tick_format(d)))
         )
 
@@ -148,6 +153,11 @@ class AxisY:
         x = self._x or Constant(margin_left)
         dir = -1 if self._anchor == "left" else 1
 
+        if hasattr(y, "bandwidth"):
+            offset = y.bandwidth / 2
+        else:
+            offset = 0
+
         ticks = (
             svg.append("g")
             .attr("aria-label", "y-axis tick")
@@ -156,7 +166,7 @@ class AxisY:
             .select_all("path")
             .data(self._data)
             .join("path")
-            .attr("transform", lambda d: f"translate({x(d)}, {y(d)})")
+            .attr("transform", lambda d: f"translate({x(d)}, {y(d) + offset})")
             .attr("d", f"M0,0L{dir * self._tick_size},0")
         )
 
@@ -175,7 +185,7 @@ class AxisY:
             .data(self._data)
             .join("text")
             .attr("y", "0.32em")
-            .attr("transform", lambda d: f"translate({x(d)}, {y(d)})")
+            .attr("transform", lambda d: f"translate({x(d)}, {y(d) + offset})")
             .text(lambda d: str(self._tick_format(d)))
         )
 
