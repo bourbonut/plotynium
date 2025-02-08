@@ -38,7 +38,7 @@ def plot(
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", f"0 0 {width} {height}")
-        .style("font-size", style_options.font_size)
+        .style("font-size", f"{style_options.font_size}px")
         .style("font-family", style_options.font_family)
     )
 

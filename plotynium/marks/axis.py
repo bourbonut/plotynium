@@ -64,7 +64,6 @@ class AxisX:
             .attr("d", f"M0,0L0,{self._tick_size}")
         )
 
-        # TODO: add center position
         (
             svg.append("g")
             .attr("aria-label", "x-axis tick label")
@@ -76,6 +75,19 @@ class AxisX:
             .attr("transform", lambda d: f"translate({x(d) - len(str(d)) * 3}, {y(d)})")
             .text(lambda d: str(d))
         )
+
+        if self._label is not None:
+            tx = (x.range[0] + x.range[1]) // 2
+            ty = height - (margin_bottom - 20) // 2
+            (
+                svg.append("g")
+                .attr("aria-label", "x-axis label")
+                .attr("text-anchor", "middle")
+                .attr("transform", f"translate(0.5, 0)")
+                .append("text")
+                .attr("transform", f"translate({tx}, {ty})")
+                .text(self._label)
+            )
 
 class AxisY:
     def __init__(
@@ -133,7 +145,6 @@ class AxisY:
             .attr("d", f"M0,0L{-self._tick_size},0")
         )
 
-        # TODO: add center position
         (
             svg.append("g")
             .attr("aria-label", "y-axis tick label")
@@ -145,3 +156,16 @@ class AxisY:
             .attr("transform", lambda d: f"translate({x(d) - len(str(d)) * 6}, {y(d)})")
             .text(lambda d: str(d))
         )
+
+        if self._label is not None:
+            tx = -(y.range[0] + y.range[1]) // 2
+            ty = (margin_left - 20) // 2
+            (
+                svg.append("g")
+                .attr("aria-label", "y-axis label")
+                .attr("text-anchor", "middle")
+                .attr("transform", f"matrix(0 -1 1 0 0.5 0)")
+                .append("text")
+                .attr("transform", f"translate({tx}, {ty})")
+                .text(self._label)
+            )
