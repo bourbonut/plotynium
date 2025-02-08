@@ -14,23 +14,21 @@ class AxisX:
         y: Callable[..., float] | str | None = None,
         anchor: Literal["top", "bottom"] = "bottom",
         label: str | None = None,
-        label_anchor: Literal["center", "left", "right"] = "center",
         tick_rotate: float = 0.,
         tick_size: int = 6,
         tick_format: Callable | None = None,
         color: str | None = None,
         stroke: str | None = None,
         stroke_opacity: float = 1.,
-        stroke_width: int = 1,
+        stroke_width: float = 1,
     ):
         self._data = data or d3.ticks(0, 1, 10)
         self._y = None if y is None else getter(y)
         self._anchor = anchor
         self._label = label
-        self._label_anchor = label_anchor
         self._tick_rotate = tick_rotate
         self._tick_size = tick_size
-        self._tick_format = Identity()
+        self._tick_format = tick_format if callable(tick_format) else Identity()
         self._color = color or "currentColor"
         self._stroke = stroke or "currentColor"
         self._stroke_opacity = stroke_opacity
@@ -46,12 +44,9 @@ class AxisX:
         **kwargs,
     ):
         y = self._y or Constant(height - margin_bottom)
-        if callable(self._tick_format):
-            text_func = self._tick_format
-        else:
-            text_func = Identity()
+        dir = -1 if self._anchor == "top" else 1
 
-        (
+        ticks = (
             svg.append("g")
             .attr("aria-label", "x-axis tick")
             .attr("transform", f"translate(0.5, 0)")
@@ -61,20 +56,24 @@ class AxisX:
             .data(self._data)
             .join("path")
             .attr("transform", lambda d: f"translate({x(d)}, {y(d)})")
-            .attr("d", f"M0,0L0,{self._tick_size}")
+            .attr("d", f"M0,0L0,{dir * self._tick_size}")
         )
+        if self._stroke_opacity != 1.:
+            ticks.attr("stroke-opacity", self._stroke_opacity)
+        if self._stroke_width != 1.:
+            ticks.attr("stroke-width", self._stroke_width)
 
         (
             svg.append("g")
             .attr("aria-label", "x-axis tick label")
-            .attr("transform", f"translate(0.5, 9.5)")
+            .attr("transform", f"translate(0.5, {dir * (self._tick_size + 2.5)})")
             .attr("text-anchor", "middle")
             .select_all("text")
             .data(self._data)
             .join("text")
-            .attr("y", "0.71em")
+            .attr("y", "0.71em" if self._anchor == "bottom" else "0px")
             .attr("transform", lambda d: f"translate({x(d)}, {y(d)})")
-            .text(lambda d: str(d))
+            .text(lambda d: str(self._tick_format(d)))
         )
 
         if self._label is not None:
@@ -95,25 +94,23 @@ class AxisY:
         self,
         data: list | None = None,
         x: Callable[..., float] | str | None = None,
-        anchor: Literal["top", "bottom"] = "bottom",
+        anchor: Literal["left", "right"] = "left",
         label: str | None = None,
-        label_anchor: Literal["center", "left", "right"] = "center",
         tick_rotate: float = 0.,
         tick_size: int = 6,
         tick_format: Callable | None = None,
         color: str | None = None,
         stroke: str | None = None,
         stroke_opacity: float = 1.,
-        stroke_width: int = 1,
+        stroke_width: float = 1,
     ):
         self._data = data or d3.ticks(0, 1, 10)
         self._x = None if x is None else getter(x)
         self._anchor = anchor
         self._label = label
-        self._label_anchor = label_anchor
         self._tick_rotate = tick_rotate
         self._tick_size = tick_size
-        self._tick_format = Identity()
+        self._tick_format = tick_format if callable(tick_format) else Identity()
         self._color = color or "currentColor"
         self._stroke = stroke or "currentColor"
         self._stroke_opacity = stroke_opacity
@@ -128,12 +125,9 @@ class AxisY:
         **kwargs,
     ):
         x = self._x or Constant(margin_left)
-        if callable(self._tick_format):
-            text_func = self._tick_format
-        else:
-            text_func = Identity()
+        dir = -1 if self._anchor == "left" else 1
 
-        (
+        ticks = (
             svg.append("g")
             .attr("aria-label", "y-axis tick")
             .attr("transform", f"translate(0, 0.5)")
@@ -143,20 +137,25 @@ class AxisY:
             .data(self._data)
             .join("path")
             .attr("transform", lambda d: f"translate({x(d)}, {y(d)})")
-            .attr("d", f"M0,0L{-self._tick_size},0")
+            .attr("d", f"M0,0L{dir * self._tick_size},0")
         )
+
+        if self._stroke_opacity != 1.:
+            ticks.attr("stroke-opacity", self._stroke_opacity)
+        if self._stroke_width != 1.:
+            ticks.attr("stroke-width", self._stroke_width)
 
         (
             svg.append("g")
             .attr("aria-label", "y-axis tick label")
-            .attr("transform", f"translate(-8.5, 0.5)")
-            .attr("text-anchor", "end")
+            .attr("transform", f"translate({dir * (self._tick_size + 2.5)}, 0.5)")
+            .attr("text-anchor", "end" if self._anchor == "left" else "start")
             .select_all("text")
             .data(self._data)
             .join("text")
             .attr("y", "0.32em")
             .attr("transform", lambda d: f"translate({x(d)}, {y(d)})")
-            .text(lambda d: str(d))
+            .text(lambda d: str(self._tick_format(d)))
         )
 
         if self._label is not None:
