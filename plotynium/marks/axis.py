@@ -58,7 +58,6 @@ class AxisX:
         ticks = (
             svg.append("g")
             .attr("aria-label", "x-axis tick")
-            .attr("transform", f"translate(0.5, 0)")
             .attr("stroke", self._stroke)
             .attr("fill", "none")
             .select_all("path")
@@ -75,7 +74,7 @@ class AxisX:
         (
             svg.append("g")
             .attr("aria-label", "x-axis tick label")
-            .attr("transform", f"translate(0.5, {dir * (self._tick_size + 2.5)})")
+            .attr("transform", f"translate(0, {dir * (self._tick_size + 2.5)})")
             .attr("text-anchor", "middle")
             .select_all("text")
             .data(self._data)
@@ -146,7 +145,6 @@ class AxisY:
         ticks = (
             svg.append("g")
             .attr("aria-label", "y-axis tick")
-            .attr("transform", f"translate(0, 0.5)")
             .attr("stroke", self._stroke)
             .attr("fill", "none")
             .select_all("path")
@@ -164,7 +162,7 @@ class AxisY:
         (
             svg.append("g")
             .attr("aria-label", "y-axis tick label")
-            .attr("transform", f"translate({dir * (self._tick_size + 2.5)}, 0.5)")
+            .attr("transform", f"translate({dir * (self._tick_size + 2.5)}, 0)")
             .attr("text-anchor", "end" if self._anchor == "left" else "start")
             .select_all("text")
             .data(self._data)

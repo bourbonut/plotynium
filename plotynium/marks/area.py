@@ -76,6 +76,7 @@ class AreaY(Style):
         svg: Selection,
         x: Callable,
         y: Callable,
+        **kwargs,
     ):
         area = (
             d3.area()

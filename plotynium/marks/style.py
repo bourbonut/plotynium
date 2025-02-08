@@ -1,6 +1,6 @@
 from collections.abc import Callable
 
-from ..utils import getter, Identity, Color, Symbol
+from ..utils import getter, Constant, Color, Symbol
 from ..schemes import Scheme
 from ..interpolations import Interpolation
 from ..options import ColorOptions
@@ -22,10 +22,10 @@ class Style:
         stroke_dasharray: str | None = None,
         opacity: float = 1.,
     ):
-        self._fill = Color.try_init(data, fill, Identity(fill or default_fill))
+        self._fill = Color.try_init(data, fill, Constant(fill or default_fill))
         self._fill_opacity = fill_opacity
 
-        self._stroke = Color.try_init(data, stroke, Identity(stroke or default_stroke))
+        self._stroke = Color.try_init(data, stroke, Constant(stroke or default_stroke))
         self._stroke_width = stroke_width
         self._stroke_dasharray = stroke_dasharray
         self._stroke_opacity = stroke_opacity

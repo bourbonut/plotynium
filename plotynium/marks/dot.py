@@ -67,6 +67,7 @@ class Dot(Style):
         svg: Selection,
         x: Callable,
         y: Callable,
+        **kwargs,
     ):
         x = center(x)
         y = center(y)

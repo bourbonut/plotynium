@@ -1,6 +1,7 @@
 from operator import itemgetter
 from collections import namedtuple
 from collections.abc import Callable
+from .marks.axis import AxisX, AxisY
 from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions, init_options
 from .symbols import symbol_legend
 from .scaler import Scaler, make_scaler
@@ -24,6 +25,7 @@ def plot(
     style: StyleOptions | dict | None = None,
     symbol: SymbolOptions | dict | None = None,
 ):
+    marks = list(marks)
     width = width or 640
     height = height or 438
     x_options = init_options(x, XOptions)
@@ -55,6 +57,7 @@ def plot(
         x_label = label.reduce([mark.x_label for mark in marks])
         y_label = label.reduce([mark.y_label for mark in marks])
 
+    # Set scalers
     x_scaler_types = [mark.x_scaler_type for mark in marks]
     y_scaler_types = [mark.y_scaler_type for mark in marks]
 
@@ -66,6 +69,18 @@ def plot(
 
     x = make_scaler(x_scaler_types, x_domains, x_ranges, nice=x_options.nice)
     y = make_scaler(y_scaler_types, y_domains, y_ranges, nice=y_options.nice)
+
+    # Set x axis
+    if not any(map(lambda mark: isinstance(mark, AxisX), marks)):
+        x_ticks = x.ticks() if hasattr(x, "ticks") else x.domain
+        x_tick_format = x.tick_format() if hasattr(x, "tick_format") else x.domain
+        marks.append(AxisX(x_ticks, tick_format=x_tick_format, label=x_label))
+
+    # Set y axis
+    if not any(map(lambda mark: isinstance(mark, AxisY), marks)):
+        y_ticks = y.ticks() if hasattr(y, "ticks") else y.domain
+        y_tick_format = y.tick_format() if hasattr(y, "tick_format") else y.domain
+        marks.append(AxisY(y_ticks, tick_format=y_tick_format, label=y_label))
 
     for mark in marks:
         mark.scheme = color_options.scheme

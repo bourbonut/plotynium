@@ -60,6 +60,7 @@ class BarY(Style):
         svg: Selection,
         x: Callable,
         y: Callable,
+        **kwargs,
     ):
         (
             svg.append("g")

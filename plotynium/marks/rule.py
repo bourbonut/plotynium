@@ -50,6 +50,7 @@ class RuleY(Style):
         svg: Selection,
         x: Callable,
         y: Callable,
+        **kwargs,
     ):
         line = (
             d3.line()
