@@ -74,13 +74,13 @@ def plot(
     if not any(map(lambda mark: isinstance(mark, AxisX), marks)):
         x_ticks = x.ticks() if hasattr(x, "ticks") else x.domain
         x_tick_format = x.tick_format() if hasattr(x, "tick_format") else x.domain
-        marks.append(AxisX(x_ticks, tick_format=x_tick_format, label=x_label))
+        marks.append(AxisX(x_ticks, tick_format=x_tick_format, label=x_label, fill=style_options.color))
 
     # Set y axis
     if not any(map(lambda mark: isinstance(mark, AxisY), marks)):
         y_ticks = y.ticks() if hasattr(y, "ticks") else y.domain
         y_tick_format = y.tick_format() if hasattr(y, "tick_format") else y.domain
-        marks.append(AxisY(y_ticks, tick_format=y_tick_format, label=y_label))
+        marks.append(AxisY(y_ticks, tick_format=y_tick_format, label=y_label, fill=style_options.color))
 
     # Set x grid
     if not any(map(lambda mark: isinstance(mark, GridX), marks)) and x_options.grid or grid:

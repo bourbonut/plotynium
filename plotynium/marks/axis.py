@@ -17,6 +17,7 @@ class AxisX:
         y: Callable[..., float] | str | None = None,
         anchor: Literal["top", "bottom"] = "bottom",
         label: str | None = None,
+        fill: str | None = None,
         tick_rotate: float = 0.,
         tick_size: int = 6,
         tick_format: Callable | None = None,
@@ -29,6 +30,7 @@ class AxisX:
         self._y = None if y is None else getter(y)
         self._anchor = anchor
         self._label = label
+        self._fill = fill or "inherit"
         self._tick_rotate = tick_rotate
         self._tick_size = tick_size
         self._tick_format = tick_format if callable(tick_format) else Identity()
@@ -59,7 +61,7 @@ class AxisX:
             svg.append("g")
             .attr("aria-label", "x-axis tick")
             .attr("stroke", self._stroke)
-            .attr("fill", "none")
+            .attr("fill", self._fill)
             .select_all("path")
             .data(self._data)
             .join("path")
@@ -76,6 +78,7 @@ class AxisX:
             .attr("aria-label", "x-axis tick label")
             .attr("transform", f"translate(0, {dir * (self._tick_size + 2.5)})")
             .attr("text-anchor", "middle")
+            .attr("fill", self._fill)
             .select_all("text")
             .data(self._data)
             .join("text")
@@ -91,6 +94,7 @@ class AxisX:
                 svg.append("g")
                 .attr("aria-label", "x-axis label")
                 .attr("text-anchor", "middle")
+                .attr("fill", self._fill)
                 .attr("transform", f"translate(0.5, 0)")
                 .append("text")
                 .attr("transform", f"translate({tx}, {ty})")
@@ -105,6 +109,7 @@ class AxisY:
         y: Callable | str | None = None,
         anchor: Literal["left", "right"] = "left",
         label: str | None = None,
+        fill: str | None = None,
         tick_rotate: float = 0.,
         tick_size: int = 6,
         tick_format: Callable | None = None,
@@ -117,6 +122,7 @@ class AxisY:
         self._y = y or Identity()
         self._anchor = anchor
         self._label = label
+        self._fill = fill or "inherit"
         self._tick_rotate = tick_rotate
         self._tick_size = tick_size
         self._tick_format = tick_format if callable(tick_format) else Identity()
@@ -146,7 +152,7 @@ class AxisY:
             svg.append("g")
             .attr("aria-label", "y-axis tick")
             .attr("stroke", self._stroke)
-            .attr("fill", "none")
+            .attr("fill", self._fill)
             .select_all("path")
             .data(self._data)
             .join("path")
@@ -164,6 +170,7 @@ class AxisY:
             .attr("aria-label", "y-axis tick label")
             .attr("transform", f"translate({dir * (self._tick_size + 2.5)}, 0)")
             .attr("text-anchor", "end" if self._anchor == "left" else "start")
+            .attr("fill", self._fill)
             .select_all("text")
             .data(self._data)
             .join("text")
@@ -179,6 +186,7 @@ class AxisY:
                 svg.append("g")
                 .attr("aria-label", "y-axis label")
                 .attr("text-anchor", "middle")
+                .attr("fill", self._fill)
                 .attr("transform", f"matrix(0 -1 1 0 0.5 0)")
                 .append("text")
                 .attr("transform", f"translate({tx}, {ty})")
