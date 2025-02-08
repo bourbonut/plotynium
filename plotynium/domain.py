@@ -18,8 +18,8 @@ def domain(data: list, accessor: Callable) -> list:
 
 def reduce(domains):
     domains = [domain for domain in domains if domain is not None]
-    mins = list(map(itemgetter(0), domains))
-    maxs = list(map(itemgetter(1), domains))
+    mins = list(map(itemgetter(0), domains)) or [0.]
+    maxs = list(map(itemgetter(1), domains)) or [1.]
     return [min(mins), max(maxs)]
 
 def unify(domains):

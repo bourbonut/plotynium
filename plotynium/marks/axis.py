@@ -6,33 +6,42 @@ from inspect import signature
 import detroit as d3
 
 from ..utils import getter, Identity, Constant
+from ..domain import domain
+from ..scaler import determine_scaler
 
 class AxisX:
     def __init__(
         self,
         data: list | None = None,
+        x: Callable | str | None = None,
         y: Callable[..., float] | str | None = None,
         anchor: Literal["top", "bottom"] = "bottom",
         label: str | None = None,
         tick_rotate: float = 0.,
         tick_size: int = 6,
         tick_format: Callable | None = None,
-        color: str | None = None,
         stroke: str | None = None,
         stroke_opacity: float = 1.,
         stroke_width: float = 1,
     ):
         self._data = data or d3.ticks(0, 1, 10)
+        self._x = x or Identity()
         self._y = None if y is None else getter(y)
         self._anchor = anchor
         self._label = label
         self._tick_rotate = tick_rotate
         self._tick_size = tick_size
         self._tick_format = tick_format if callable(tick_format) else Identity()
-        self._color = color or "currentColor"
         self._stroke = stroke or "currentColor"
         self._stroke_opacity = stroke_opacity
         self._stroke_width = stroke_width
+
+        self.x_label = self._label
+        self.y_label = None
+        self.x_domain = domain(self._data, self._x)
+        self.y_domain = None
+        self.x_scaler_type = determine_scaler(self._data, self._x)
+        self.y_scaler_type = None
 
     def __call__(
         self,
@@ -94,27 +103,34 @@ class AxisY:
         self,
         data: list | None = None,
         x: Callable[..., float] | str | None = None,
+        y: Callable | str | None = None,
         anchor: Literal["left", "right"] = "left",
         label: str | None = None,
         tick_rotate: float = 0.,
         tick_size: int = 6,
         tick_format: Callable | None = None,
-        color: str | None = None,
         stroke: str | None = None,
         stroke_opacity: float = 1.,
         stroke_width: float = 1,
     ):
         self._data = data or d3.ticks(0, 1, 10)
         self._x = None if x is None else getter(x)
+        self._y = y or Identity()
         self._anchor = anchor
         self._label = label
         self._tick_rotate = tick_rotate
         self._tick_size = tick_size
         self._tick_format = tick_format if callable(tick_format) else Identity()
-        self._color = color or "currentColor"
         self._stroke = stroke or "currentColor"
         self._stroke_opacity = stroke_opacity
         self._stroke_width = stroke_width
+
+        self.x_label = None
+        self.y_label = self._label
+        self.x_domain = None
+        self.y_domain = domain(self._data, self._y)
+        self.x_scaler_type = None
+        self.y_scaler_type = determine_scaler(self._data, self._y)
 
     def __call__(
         self,

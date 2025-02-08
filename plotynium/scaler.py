@@ -25,7 +25,7 @@ def reduce(scaler_types: list):
     if len(scalers) > 1:
         raise RuntimeError(f"Found different scalers {scalers}. Some marks cannot be associated between each other.")
     elif len(scalers) == 0:
-        raise ValueError("Cannot identify scaler for marks.")
+        return Scaler.CONTINOUS
     return scalers.pop()
 
 
