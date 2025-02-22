@@ -32,7 +32,7 @@ def reduce(scaler_types: list):
 def make_scaler(
     scaler_types: list[Scaler],
     domains: list[list | tuple[float, float]],
-    range_vals: list[tuple[int, int]],
+    range_vals: list[int | float],
     nice: bool = True,
 ):
     scaler_type = reduce(scaler_types)
@@ -57,7 +57,7 @@ def make_scaler(
             .set_padding(0.1)
         )
     else:
-        raise ValueError(f"Undefined scaler (found {x_scaler_type})")
+        raise ValueError(f"Undefined scaler (found {scaler_type})")
 
     if nice and scaler_type in [Scaler.CONTINOUS, Scaler.TIME]:
         scaler = scaler.nice()
