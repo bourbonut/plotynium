@@ -24,7 +24,7 @@ def test_reduce(domains, expected):
     assert reduce(domains) == expected
 
 def test_unify_ok():
-    assert unify([[0., 1.]]) == (0., 1.)
+    assert unify([[0., 1.], [0., 1.]]) == (0., 1.)
 
 def test_unify_too_many():
     with pytest.raises(RuntimeError):
