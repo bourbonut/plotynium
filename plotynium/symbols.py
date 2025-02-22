@@ -7,7 +7,7 @@ from .interpolations import Interpolation
 class SymbolFill(Enum):
     CIRCLE = d3.symbol_circle
     CROSS = d3.symbol_cross
-    DIAMON = d3.symbol_diamond
+    DIAMOND = d3.symbol_diamond
     SQUARE = d3.symbol_square
     STAR = d3.symbol_star
     TRIANGLE = d3.symbol_triangle
@@ -16,11 +16,11 @@ class SymbolFill(Enum):
 class SymbolStroke(Enum):
     ASTERISK = d3.symbol_asterisk
     CIRCLE = d3.symbol_circle
-    DIAMOND2 = d3.symbol_diamond2
+    DIAMOND = d3.symbol_diamond2
     PLUS = d3.symbol_plus
-    SQUARE2 = d3.symbol_square2
+    SQUARE = d3.symbol_square2
     TIMES = d3.symbol_times
-    TRIANGLE2 = d3.symbol_triangle2
+    TRIANGLE = d3.symbol_triangle2
 
 def symbol_legend(
     svg: Selection,
@@ -36,7 +36,7 @@ def symbol_legend(
     offset = 2 * (symbol_size + label_length) + 16
 
     symbol_type = d3.scale_ordinal(labels, d3.SYMBOLS_STROKE)
-    color = d3.scale_sequential([min(labels), max(labels)], scheme)
+    color = d3.scale_sequential([0, len(labels)], scheme)
 
     legend = (
         svg.append("g")
@@ -55,7 +55,7 @@ def symbol_legend(
     (
         g.append("path")
         .attr("d", lambda d: d3.symbol(symbol_type(d))())
-        .style("stroke", color)
+        .style("stroke", lambda _, i: color(i))
         .style("fill", "none")
     )
 
