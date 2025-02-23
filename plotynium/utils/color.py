@@ -13,7 +13,7 @@ class Color(Maker):
         data = list(map(self._value, data))
         self._color = d3.scale_sequential([min(data), max(data)], ColorOptions().scheme)
 
-    def __call__(self, d: Any):
+    def __call__(self, d: Any) -> str:
         d = self._value(d)
         return self._color(d)
 

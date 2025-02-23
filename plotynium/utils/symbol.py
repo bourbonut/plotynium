@@ -9,7 +9,7 @@ class Symbol(Maker):
         self._labels = sorted(set(map(self._value, data)))
         self._symbol_type = d3.scale_ordinal(self._labels, d3.SYMBOLS_STROKE)
 
-    def __call__(self, d):
+    def __call__(self, d) -> str:
         d = self._value(d)
         return d3.symbol(self._symbol_type(d))()
 
