@@ -8,18 +8,19 @@ from ..domain import domain, reduce
 from ..scaler import determine_scaler, Scaler
 from ..options import SortOptions
 from ..utils import getter, Constant
+from ..types import Data, Index, T
 
-class AreaY(Style):
+class AreaY(Style[T]):
     def __init__(
         self,
-        data: list,
-        x: Callable | str | None = None,
-        y: Callable | str | None = None,
-        y1: Callable | str | None = None,
-        y2: Callable | str | None = None,
-        fill: Callable | str | None = None,
+        data: list[T],
+        x: Callable[[T], Data] | Index | str | None = None,
+        y: Callable[[T], Data] | Index | str | None = None,
+        y1: Callable[[T], Data] | Index | str | None = None,
+        y2: Callable[[T], Data] | Index | str | None = None,
+        fill: Callable[[T], str] | str | None = None,
         fill_opacity: float = 1.,
-        stroke: Callable | str | None = None,
+        stroke: Callable[[T], str] | str | None = None,
         stroke_width: float = 1.,
         stroke_opacity: float = 1.,
         stroke_dasharray: str | None = None,

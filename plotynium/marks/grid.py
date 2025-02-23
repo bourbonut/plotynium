@@ -2,20 +2,22 @@ from typing import Literal
 from detroit.selection.selection import Selection
 from collections.abc import Callable
 from inspect import signature
+from typing import Generic
 
 import detroit as d3
 
 from ..utils import getter, Identity, Constant
 from ..domain import domain
 from ..scaler import determine_scaler
+from ..types import Data, T
 
-class GridX:
+class GridX(Generic[T]):
     def __init__(
         self,
-        data: list | None = None,
-        x: Callable | str | None = None,
-        y1: Callable | None = None,
-        y2: Callable | None = None,
+        data: list[T] | None = None,
+        x: Callable[[T], Data] | str | None = None,
+        y1: Callable[[T], Data] | None = None,
+        y2: Callable[[T], Data] | None = None,
         stroke: str | None = None,
         stroke_opacity: float = 0.1,
         stroke_width: float = 1,
@@ -71,13 +73,13 @@ class GridX:
             .attr("y2", y2)
         )
 
-class GridY:
+class GridY(Generic[T]):
     def __init__(
         self,
-        data: list | None = None,
-        x1: Callable | None = None,
-        x2: Callable | None = None,
-        y: Callable | str | None = None,
+        data: list[T] | None = None,
+        x1: Callable[[T], Data] | None = None,
+        x2: Callable[[T], Data] | None = None,
+        y: Callable[[T], Data] | str | None = None,
         stroke: str | None = None,
         stroke_opacity: float = 0.1,
         stroke_width: float = 1,

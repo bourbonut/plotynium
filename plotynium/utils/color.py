@@ -1,19 +1,20 @@
 from ..options import ColorOptions
 from ..schemes import Scheme
 from ..interpolations import Interpolation
+from ..types import Index, T, Data
 from .getter import getter
 from .maker import Maker
 from typing import Any
 from collections.abc import Callable
 import detroit as d3
 
-class Color(Maker):
-    def __init__(self, data: list, value: str):
+class Color(Maker[T, str]):
+    def __init__(self, data: list, value: str | Index):
         self._value = getter(value)
         data = list(map(self._value, data))
         self._color = d3.scale_sequential([min(data), max(data)], ColorOptions().scheme)
 
-    def __call__(self, d: Any) -> str:
+    def __call__(self, d: T) -> str:
         d = self._value(d)
         return self._color(d)
 
@@ -21,7 +22,7 @@ class Color(Maker):
         self._color.set_interpolator(scheme)
 
     @staticmethod
-    def try_init(data: list, value: str | Callable, default: Maker | None = None) -> Callable | None:
+    def try_init(data: list[T], value: str | Index | Callable[[T], str], default: Maker[T, str] | None = None) -> Callable[[T], str] | None:
         return (
             value
             if callable(value)

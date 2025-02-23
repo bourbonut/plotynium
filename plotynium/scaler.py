@@ -1,8 +1,13 @@
 from datetime import datetime
 from enum import Enum, auto
-from . import domain
-import detroit as d3
 from collections.abc import Callable
+
+from .domain import reduce as domain_reduce, unify
+
+import detroit as d3
+from detroit.scale.band import ScaleBand
+from detroit.scale.time import Calendar
+from detroit.scale.linear import ScaleLinear
 
 class Scaler(Enum):
     BAND = auto()
@@ -10,7 +15,7 @@ class Scaler(Enum):
     TIME = auto()
 
 
-def determine_scaler(data: list, accessor: Callable):
+def determine_scaler(data: list, accessor: Callable) -> Scaler:
     sample = accessor(data[0])
     if isinstance(sample, str):
         return Scaler.BAND
@@ -20,7 +25,7 @@ def determine_scaler(data: list, accessor: Callable):
         return Scaler.CONTINUOUS
 
 
-def reduce(scaler_types: list):
+def reduce(scaler_types: list[Scaler | None]) -> Scaler:
     scalers = set(scaler_types) - {None}
     if len(scalers) > 1:
         raise RuntimeError(f"Found different scalers {scalers}. Some marks cannot be associated between each other.")
@@ -30,29 +35,29 @@ def reduce(scaler_types: list):
 
 
 def make_scaler(
-    scaler_types: list[Scaler],
+    scaler_types: list[Scaler | None],
     domains: list[list | tuple[float, float]],
     range_vals: list[int | float],
     nice: bool = True,
-):
+) -> Calendar | ScaleLinear | ScaleBand:
     scaler_type = reduce(scaler_types)
 
     if scaler_type == Scaler.CONTINUOUS:
         scaler = (
             d3.scale_linear()
-            .set_domain(domain.reduce(domains))
+            .set_domain(domain_reduce(domains))
             .set_range(range_vals)
         )
     elif scaler_type == Scaler.TIME:
         scaler = (
             d3.scale_time()
-            .set_domain(domain.reduce(domains))
+            .set_domain(domain_reduce(domains))
             .set_range(range_vals)
         )
     elif scaler_type == Scaler.BAND:
         scaler = (
             d3.scale_band()
-            .set_domain(domain.unify(domains))
+            .set_domain(unify(domains))
             .set_range(range_vals)
             .set_padding(0.1)
         )

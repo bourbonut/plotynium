@@ -7,16 +7,17 @@ from .style import Style
 from ..domain import domain
 from ..scaler import Scaler, determine_scaler
 from ..utils import getter
+from ..types import Data, T
 
-class Line(Style):
+class Line(Style[T]):
     def __init__(
         self,
-        data: list,
-        x: Callable | str | None = None,
-        y: Callable | str | None = None,
-        fill: Callable | str | None = None,
+        data: list[T],
+        x: Callable[[T], Data] | str | None = None,
+        y: Callable[[T], Data] | str | None = None,
+        fill: Callable[[T], str] | str | None = None,
         fill_opacity: float = 1.,
-        stroke: Callable | str | None = None,
+        stroke: Callable[[T], str] | str | None = None,
         stroke_width: float = 1.,
         stroke_opacity: float = 1.,
         stroke_dasharray: str | None = None,

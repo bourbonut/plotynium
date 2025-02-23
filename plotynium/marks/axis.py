@@ -2,25 +2,27 @@ from typing import Literal
 from detroit.selection.selection import Selection
 from collections.abc import Callable
 from inspect import signature
+from typing import Generic
 
 import detroit as d3
 
 from ..utils import getter, Identity, Constant
 from ..domain import domain
 from ..scaler import determine_scaler
+from ..types import Index, Data, T
 
-class AxisX:
+class AxisX(Generic[T]):
     def __init__(
         self,
-        data: list | None = None,
-        x: Callable | str | None = None,
+        data: list[T] | None = None,
+        x: Callable[[T], Data] | str | None = None,
         y: Callable[..., float] | str | None = None,
         anchor: Literal["top", "bottom"] = "bottom",
         label: str | None = None,
         fill: str | None = None,
         tick_rotate: float = 0.,
         tick_size: int = 6,
-        tick_format: Callable | None = None,
+        tick_format: Callable[[T], str] | None = None,
         stroke: str | None = None,
         stroke_opacity: float = 1.,
         stroke_width: float = 1,
@@ -112,18 +114,18 @@ class AxisX:
                 .text(self._label)
             )
 
-class AxisY:
+class AxisY(Generic[T]):
     def __init__(
         self,
-        data: list | None = None,
+        data: list[T] | None = None,
         x: Callable[..., float] | str | None = None,
-        y: Callable | str | None = None,
+        y: Callable[[T], Data] | str | None = None,
         anchor: Literal["left", "right"] = "left",
         label: str | None = None,
         fill: str | None = None,
         tick_rotate: float = 0.,
         tick_size: int = 6,
-        tick_format: Callable | None = None,
+        tick_format: Callable[[T], str] | None = None,
         stroke: str | None = None,
         stroke_opacity: float = 1.,
         stroke_width: float = 1,

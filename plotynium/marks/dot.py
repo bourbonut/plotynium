@@ -8,8 +8,9 @@ from .style import Style
 from ..domain import domain
 from ..scaler import Scaler, determine_scaler
 from ..utils import getter, Constant, Symbol
+from ..types import Data, T
 
-def center(scale):
+def center(scale: Callable) -> Callable[[T], float]:
     if isinstance(scale, ScaleBand):
         offset = max(0, scale.bandwidth) / 2
         def scale_center(d):
@@ -17,17 +18,17 @@ def center(scale):
         return scale_center
     return scale
 
-class Dot(Style):
+class Dot(Style[T]):
     def __init__(
         self,
-        data: list,
-        x: Callable | str | None = None,
-        y: Callable | str | None = None,
-        r: Callable | float | None = None,
-        symbol: Callable | float | None = None,
-        fill: Callable | str | None = None,
+        data: list[T],
+        x: Callable[[T], Data] | str | None = None,
+        y: Callable[[T], Data] | str | None = None,
+        r: Callable[[T], float] | float | None = None,
+        symbol: Callable[[T], str] | str | None = None,
+        fill: Callable[[T], str] | str | None = None,
         fill_opacity: float = 1.,
-        stroke: Callable | str | None = None,
+        stroke: Callable[[T], str] | str | None = None,
         stroke_width: float = 1.5,
         stroke_opacity: float = 1.,
         stroke_dasharray: str | None = None,
@@ -99,4 +100,3 @@ class Dot(Style):
                 .attr("fill", self._fill)
                 .attr("stroke-width", self._stroke_width)
             )
-

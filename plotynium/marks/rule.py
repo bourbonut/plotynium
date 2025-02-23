@@ -7,14 +7,15 @@ from .style import Style
 from ..domain import domain
 from ..scaler import Scaler, determine_scaler
 from ..utils import Identity, getter
+from ..types import Data, T
 
-class RuleY(Style):
+class RuleY(Style[T]):
     def __init__(
         self,
-        y: list,
-        fill: Callable | str | None = None,
+        y: list[T],
+        fill: Callable[[T], str] | str | None = None,
         fill_opacity: float = 1.,
-        stroke: Callable | str | None = None,
+        stroke: Callable[[T], str] | str | None = None,
         stroke_width: float = 1.5,
         stroke_opacity: float = 1.,
         stroke_dasharray: str | None = None,

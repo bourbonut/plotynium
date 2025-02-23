@@ -1,16 +1,22 @@
 from dataclasses import dataclass, field
 from .schemes import Scheme
 from .interpolations import Interpolation
+from .types import T
 from typing import TypeVar
 
-T = TypeVar("T")
+TColorOptions = TypeVar("TColorOptions", bound="ColorOptions")
+TSymbolOptions = TypeVar("TSymbolOptions", bound="SymbolOptions")
+TStyleOptions = TypeVar("TStyleOptions", bound="StyleOptions")
+TSortOptions = TypeVar("TSortOptions", bound="SortOptions")
+TXOptions = TypeVar("TXOptions", bound="XOptions")
+TYOptions = TypeVar("TYOptions", bound="YOptions")
 
 @dataclass
 class ColorOptions:
     scheme: Interpolation | Scheme = field(default=Interpolation.TURBO)
 
     @staticmethod
-    def new(values: dict | None = None):
+    def new(values: dict | None = None) -> TColorOptions:
         default_values = ColorOptions()
         if values is None:
             return default_values
@@ -23,7 +29,7 @@ class SymbolOptions:
     legend: bool = field(default=False)
 
     @staticmethod
-    def new(values: dict | None = None):
+    def new(values: dict | None = None) -> TSymbolOptions:
         default_values = SymbolOptions()
         if values is None:
             return default_values
@@ -39,7 +45,7 @@ class StyleOptions:
     font_family: str = field(default="sans-serif")
 
     @staticmethod
-    def new(values: dict | None = None):
+    def new(values: dict | None = None) -> TStyleOptions:
         default_values = StyleOptions()
         if values is None:
             return default_values
@@ -56,7 +62,7 @@ class SortOptions:
     descending: bool = field(default=False)
 
     @staticmethod
-    def new(values: dict | None = None):
+    def new(values: dict | None = None) -> TSortOptions:
         default_values = SortOptions()
         if values is None:
             return default_values
@@ -72,7 +78,7 @@ class XOptions:
     label: str | None = field(default=None)
 
     @staticmethod
-    def new(values: dict | None = None):
+    def new(values: dict | None = None) -> TXOptions:
         default_values = XOptions()
         if values is None:
             return default_values
@@ -89,7 +95,7 @@ class YOptions:
     label: str | None = field(default=None)
 
     @staticmethod
-    def new(values: dict | None = None):
+    def new(values: dict | None = None) -> TYOptions:
         default_values = YOptions()
         if values is None:
             return default_values

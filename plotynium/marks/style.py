@@ -1,22 +1,24 @@
 from collections.abc import Callable
+from typing import Generic
 
 from ..utils import getter, Constant, Color, Symbol
 from ..schemes import Scheme
 from ..interpolations import Interpolation
 from ..options import ColorOptions
+from ..types import T
 
 import detroit as d3
 
-class Style:
+class Style(Generic[T]):
 
     def __init__(
         self,
-        data: list,
+        data: list[T],
         default_stroke: str,
         default_fill: str,
-        fill: Callable | str | None = None,
+        fill: Callable[[T], str] | str | None = None,
         fill_opacity: float = 1.,
-        stroke: Callable | str | None = None,
+        stroke: Callable[[T], str] | str | None = None,
         stroke_width: float = 1.,
         stroke_opacity: float = 1.,
         stroke_dasharray: str | None = None,

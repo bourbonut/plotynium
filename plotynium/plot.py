@@ -5,6 +5,7 @@ from .marks import AxisX, AxisY, GridX, GridY
 from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions, init_options
 from .symbols import symbol_legend
 from .scaler import Scaler, make_scaler
+from .types import Mark
 from . import label, domain
 
 import detroit as d3
@@ -12,7 +13,7 @@ from detroit.selection.selection import Selection
 
 
 def plot(
-    marks: list,
+    marks: list[Mark],
     width: int = 640,
     height: int = 438,
     margin_top: int = 10,
