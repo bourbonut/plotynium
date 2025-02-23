@@ -8,6 +8,7 @@ from .scaler import Scaler, make_scaler
 from . import label, domain
 
 import detroit as d3
+from detroit.selection.selection import Selection
 
 
 def plot(
@@ -24,7 +25,7 @@ def plot(
     color: ColorOptions | dict | None = None,
     style: StyleOptions | dict | None = None,
     symbol: SymbolOptions | dict | None = None,
-):
+) -> Selection:
     marks = list(marks)
     width = width or 640
     height = height or 438
