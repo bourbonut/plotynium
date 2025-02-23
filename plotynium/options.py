@@ -84,7 +84,7 @@ class XOptions:
 
 @dataclass
 class YOptions:
-    nice: bool = field(default=False)
+    nice: bool = field(default=True)
     grid: bool = field(default=False)
     label: str | None = field(default=None)
 

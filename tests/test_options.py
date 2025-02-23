@@ -74,19 +74,19 @@ def test_x_options_new():
 
 def test_y_options_default():
     y_options = YOptions()
-    assert y_options.nice is False
+    assert y_options.nice is True
     assert y_options.grid is False
     assert y_options.label is None
 
 def test_y_options_new():
     y_options = YOptions.new(
         {
-            "nice": True,
+            "nice": False,
             "grid": True,
             "label": "y_label",
         }
     )
-    assert y_options.nice is True
+    assert y_options.nice is False
     assert y_options.grid is True
     assert y_options.label == "y_label"
 
