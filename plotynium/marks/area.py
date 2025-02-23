@@ -31,12 +31,12 @@ class AreaY(Style):
         self._x = getter(x or 0)
         self._y = getter(y or 1)
 
-        if y is not None:
-            self._y1 = getter(y or 1)
-            self._y0 = Constant(0)
-        elif y1 is not None or y2 is not None:
+        if y1 is not None and y2 is not None:
             self._y0 = getter(y1)
             self._y1 = getter(y2)
+        elif y1 is None and y2 is None:
+            self._y1 = getter(y or 1)
+            self._y0 = Constant(0)
         else:
             raise ValueError("'y' must be specified or 'y1' and 'y2' must be specified.")
 
