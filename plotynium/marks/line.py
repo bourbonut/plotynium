@@ -58,7 +58,7 @@ class Line(Style):
             d3.line()
             .x(
                 (lambda d: x(self._x(d)))
-                if self.x_scaler_type == Scaler.CONTINOUS
+                if self.x_scaler_type == Scaler.CONTINUOUS
                 else (lambda d: x(self._x(d).timestamp()))
             )
             .y(lambda d: y(self._y(d)))

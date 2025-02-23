@@ -6,7 +6,7 @@ import detroit as d3
 from .style import Style
 from ..domain import domain
 from ..scaler import Scaler, determine_scaler
-from ..utils import getter
+from ..utils import Identity, getter
 
 class RuleY(Style):
     def __init__(
@@ -29,7 +29,7 @@ class RuleY(Style):
         self.x_domain = None
         self.y_domain = [min(self._values), max(self._values)]
         self.x_scaler_type = None
-        self.y_scaler_type = None
+        self.y_scaler_type = determine_scaler(self._values, Identity())
 
         Style.__init__(
             self,
@@ -54,12 +54,12 @@ class RuleY(Style):
     ):
         line = (
             d3.line()
-            .x(
-                (lambda d: x(self._x(d)))
-                if self.x_scaler_type == Scaler.CONTINOUS
-                else (lambda d: x(self._x(d).timestamp()))
+            .x(lambda d: x(self._x(d)))
+            .y(
+                lambda d: y(self._y(d))
+                if self.y_scaler_type == Scaler.CONTINUOUS
+                else (lambda d: y(self._y(d).timestamp()))
             )
-            .y(lambda d: y(self._y(d)))
         )
         values = [[[x.domain[0], v], [x.domain[1], v]] for v in self._values]
         (

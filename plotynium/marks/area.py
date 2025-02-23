@@ -82,7 +82,7 @@ class AreaY(Style):
             d3.area()
             .x(
                 (lambda d: x(self._x(d)))
-                if self.x_scaler_type == Scaler.CONTINOUS
+                if self.x_scaler_type == Scaler.CONTINUOUS
                 else (lambda d: x(self._x(d).timestamp()))
             )
             .y0(lambda d: y(self._y0(d)))

@@ -7,7 +7,7 @@ import pytest
 
 ALL_SCALER = [
     Scaler.BAND,
-    Scaler.CONTINOUS,
+    Scaler.CONTINUOUS,
     Scaler.TIME,
 ]
 
@@ -18,7 +18,7 @@ def test_scaler_all_different():
 @pytest.mark.parametrize(
     "data, accessor, expected",
     [
-        [[(x, x * 2) for x in range(10)], (lambda d: d[0]), Scaler.CONTINOUS],
+        [[(x, x * 2) for x in range(10)], (lambda d: d[0]), Scaler.CONTINUOUS],
         [[(x, datetime.now()) for x in range(10)], (lambda d: d[1]), Scaler.TIME],
         [[(v, i) for i, v in enumerate("aabbc")], (lambda d: d[0]), Scaler.BAND],
     ]
@@ -31,16 +31,16 @@ def test_reduce_ok():
 
 def test_reduce_different():
     with pytest.raises(RuntimeError):
-        reduce([Scaler.CONTINOUS, Scaler.BAND])
+        reduce([Scaler.CONTINUOUS, Scaler.BAND])
 
 def test_reduce_no_scaler_type():
-    assert reduce([]) == Scaler.CONTINOUS
+    assert reduce([]) == Scaler.CONTINUOUS
 
 
 @pytest.mark.parametrize(
     "scaler_types, domains, range_vals, expected",
     [
-        [[Scaler.CONTINOUS], [[0., 1.]], [0., 1.], ScaleLinear],
+        [[Scaler.CONTINUOUS], [[0., 1.]], [0., 1.], ScaleLinear],
         [[Scaler.TIME], [[datetime.now() - timedelta(seconds=10), datetime.now()]], [0., 1.], Calendar],
         [[Scaler.BAND], [["a", "b", "c"]], [0., 1.], ScaleBand],
     ]

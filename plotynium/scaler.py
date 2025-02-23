@@ -6,7 +6,7 @@ from collections.abc import Callable
 
 class Scaler(Enum):
     BAND = auto()
-    CONTINOUS = auto()
+    CONTINUOUS = auto()
     TIME = auto()
 
 
@@ -17,7 +17,7 @@ def determine_scaler(data: list, accessor: Callable):
     elif isinstance(sample, datetime):
         return Scaler.TIME
     else:
-        return Scaler.CONTINOUS
+        return Scaler.CONTINUOUS
 
 
 def reduce(scaler_types: list):
@@ -25,7 +25,7 @@ def reduce(scaler_types: list):
     if len(scalers) > 1:
         raise RuntimeError(f"Found different scalers {scalers}. Some marks cannot be associated between each other.")
     elif len(scalers) == 0:
-        return Scaler.CONTINOUS
+        return Scaler.CONTINUOUS
     return scalers.pop()
 
 
@@ -37,7 +37,7 @@ def make_scaler(
 ):
     scaler_type = reduce(scaler_types)
 
-    if scaler_type == Scaler.CONTINOUS:
+    if scaler_type == Scaler.CONTINUOUS:
         scaler = (
             d3.scale_linear()
             .set_domain(domain.reduce(domains))
@@ -59,7 +59,7 @@ def make_scaler(
     else:
         raise ValueError(f"Undefined scaler (found {scaler_type})")
 
-    if nice and scaler_type in [Scaler.CONTINOUS, Scaler.TIME]:
+    if nice and scaler_type in [Scaler.CONTINUOUS, Scaler.TIME]:
         scaler = scaler.nice()
 
     return scaler
