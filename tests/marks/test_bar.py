@@ -3,6 +3,8 @@ from plotynium.utils.constant import Constant
 from plotynium.scaler import Scaler
 import pytest
 import detroit as d3
+import random
+from copy import copy
 
 from datetime import datetime
 
@@ -25,6 +27,16 @@ def test_bar_y_default():
     assert bar_y._stroke(None) == "none"
     assert isinstance(bar_y._fill, Constant)
     assert bar_y._fill(None) == "black"
+
+def test_bar_y_sort_by():
+    data = [
+        {"letter": letter, "freq": freq / 10}
+        for letter, freq in zip("aaabbbcccdd", range(11))
+    ]
+    copied = copy(data)
+    random.shuffle(copied)
+    bar_y = BarY(copied, x="letter", y="freq", sort={"by": "freq", "descending": True})
+    assert bar_y._data == list(reversed(data))
 
 def test_bar_y_call():
     bar_y = BarY([[x, y] for x, y in zip("aaabbbcccdd", range(11))])
