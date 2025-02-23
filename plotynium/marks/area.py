@@ -26,8 +26,8 @@ class AreaY(Style):
         opacity: float = 1.,
     ):
         self._data = data
-        self.x_label = None if callable(x) else str(x)
-        self.y_label = None if callable(y) else str(y)
+        self.x_label = None if callable(x) else x
+        self.y_label = None if callable(y) else y
         self._x = getter(x or 0)
         self._y = getter(y or 1)
 
