@@ -56,9 +56,9 @@ class RuleY(Style):
             d3.line()
             .x(lambda d: x(self._x(d)))
             .y(
-                lambda d: y(self._y(d))
-                if self.y_scaler_type == Scaler.CONTINUOUS
-                else (lambda d: y(self._y(d).timestamp()))
+                (lambda d: y(self._y(d).timestamp()))
+                if self.y_scaler_type == Scaler.TIME
+                else lambda d: y(self._y(d))
             )
         )
         values = [[[x.domain[0], v], [x.domain[1], v]] for v in self._values]
