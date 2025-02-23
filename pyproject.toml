@@ -6,7 +6,7 @@ authors = [
   { name = "Benjamin BOURBON", email = "ben.bourbon06@gmail.com"},
 ]
 requires-python = ">=3.9"
-dependencies = ["detroit"]
+dependencies = ["detroit==2.2.0"]
 license = {"text" = "MIT"}
 
 [project.urls]
