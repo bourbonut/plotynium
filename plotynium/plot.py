@@ -17,9 +17,9 @@ def plot(
     width: int = 640,
     height: int = 438,
     margin_top: int = 10,
-    margin_right: int = 10,
-    margin_bottom: int = 45,
     margin_left: int = 45,
+    margin_bottom: int = 45,
+    margin_right: int = 10,
     grid: bool = False,
     x: XOptions | dict | None = None,
     y: YOptions | dict | None = None,
@@ -27,6 +27,43 @@ def plot(
     style: StyleOptions | dict | None = None,
     symbol: SymbolOptions | dict | None = None,
 ) -> Selection:
+    """
+    Generates a SVG plot from the given marks and different specified options
+
+    Parameters
+    ----------
+    marks : list[Mark]
+        List of marks represented on the plot
+    width : int
+        Width size
+    height : int
+        Height size
+    margin_top : int
+        Margin top value
+    margin_left : int
+        Margin left value
+    margin_bottom : int
+        Margin bottom value
+    margin_right : int
+        Margin right value
+    grid : bool
+        `True` to add all lines to form a grid
+    x : XOptions | dict | None
+        X axis options
+    y : YOptions | dict | None
+        Y axis options
+    color : ColorOptions | dict | None
+        Color scheme options
+    style : StyleOptions | dict | None
+        Style options
+    symbol : SymbolOptions | dict | None
+        Symbol options
+
+    Returns
+    -------
+    Selection
+        Generated SVG plot
+    """
     marks = list(marks)
     width = width or 640
     height = height or 438

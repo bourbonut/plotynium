@@ -10,6 +10,9 @@ from detroit.scale.time import Calendar
 from detroit.scale.linear import ScaleLinear
 
 class Scaler(Enum):
+    """
+    All types of scalers
+    """
     BAND = auto()
     CONTINUOUS = auto()
     TIME = auto()

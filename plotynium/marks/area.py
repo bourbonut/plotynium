@@ -11,6 +11,44 @@ from ..utils import getter, Constant
 from ..types import Data, Index, T
 
 class AreaY(Style[T]):
+    """
+    Marker for drawing areas defined by y positions.
+
+    Parameters
+    ----------
+    data : list[T]
+        List where point coordinates are stored.
+    x : Callable[[T], Data] | str | None
+        X accessor function or key value
+    y : Callable[[T], Data] | str | None
+        Y accessor function or key value when area begins from `y = 0` (do not specify
+        `y1` or `y2` if you choose this argument).
+    y1 : Callable[[T], Data] | str | None
+        Y accessor function or key value for y positions for the bottom area's part (do
+        not specify `y` argument if you choose the this argument).
+    y2 : Callable[[T], Data] | str | None
+        Y accessor function or key value for y positions for the top area's part (do
+        not specify `y` argument if you choose the this argument).
+    fill : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `fill` attribute.
+    fill_opacity : float
+        Fill opacity value included in [0, 1].
+    stroke : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `stroke` attribute.
+    stroke_width : float
+        Stroke width value.
+    stroke_opacity : float
+        Stroke opacity value included in [0, 1].
+    stroke_dasharray : str | None
+        Stroke dasharray value.
+    opacity : float
+        General opacity value included in [0, 1].
+
+    Raises
+    ------
+    RuntimeError
+        When incoherence found between 'y0' and 'y1' domains
+    """
     def __init__(
         self,
         data: list[T],
@@ -79,6 +117,20 @@ class AreaY(Style[T]):
         y: Callable,
         **kwargs,
     ):
+        """
+        Add an area defined by y values on SVG content.
+
+        Parameters
+        ----------
+        svg : Selection
+            SVG Content
+        x : Callable
+            X scaler from `plot` function
+        y : Callable
+            Y scaler from `plot` function
+        **kwargs
+            Additional keyword arguments not used
+        """
         area = (
             d3.area()
             .x(

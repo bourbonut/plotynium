@@ -11,6 +11,19 @@ from ..utils import getter, Constant, Symbol
 from ..types import Data, T
 
 def center(scale: Callable) -> Callable[[T], float]:
+    """
+    Centralize tick coordinates if `scale` argument has a `bandwidth`.
+
+    Parameters
+    ----------
+    scale : Callable
+        Scaler from `detroit`.
+
+    Returns
+    -------
+    Callable[[T], float]
+        Modified scaler.
+    """
     if isinstance(scale, ScaleBand):
         offset = max(0, scale.bandwidth) / 2
         def scale_center(d):
@@ -19,6 +32,36 @@ def center(scale: Callable) -> Callable[[T], float]:
     return scale
 
 class Dot(Style[T]):
+    """
+    Marker for add dots (as symbols or circles) given point coordinates.
+
+    Parameters
+    ----------
+    data : list[T]
+        List where points coordinates are stored.
+    x : Callable[[T], Data] | str | None
+        X accessor function or key value
+    y : Callable[[T], Data] | str | None
+        Y accessor function or key value
+    r : Callable[[T], float] | str | None
+        Key value or function which returns circle radius given data.
+    symbol : Callable[[T], str] | str | None
+        Key value or function which returns symbol path given data.
+    fill : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `fill` attribute.
+    fill_opacity : float
+        Fill opacity value included in [0, 1].
+    stroke : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `stroke` attribute.
+    stroke_width : float
+        Stroke width value.
+    stroke_opacity : float
+        Stroke opacity value included in [0, 1].
+    stroke_dasharray : str | None
+        Stroke dasharray value.
+    opacity : float
+        General opacity value included in [0, 1].
+    """
     def __init__(
         self,
         data: list[T],
@@ -70,6 +113,20 @@ class Dot(Style[T]):
         y: Callable,
         **kwargs,
     ):
+        """
+        Add circles or symbols on the SVG content.
+
+        Parameters
+        ----------
+        svg : Selection
+            SVG content
+        x : Callable
+            X scaler from `plot` function
+        y : Callable
+            Y scaler from `plot` function
+        **kwargs
+            Additional keyword arguments not used
+        """
         x = center(x)
         y = center(y)
         if self._symbol is None:

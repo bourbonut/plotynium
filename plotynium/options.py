@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from .schemes import Scheme
 from .interpolations import Interpolation
-from .types import T
+from .types import T, Index
 from typing import TypeVar
 
 TColorOptions = TypeVar("TColorOptions", bound="ColorOptions")
@@ -13,6 +13,15 @@ TYOptions = TypeVar("TYOptions", bound="YOptions")
 
 @dataclass
 class ColorOptions:
+    """
+    Color options applied on circles, lines, rectangles or symbols
+    when it is possible.
+
+    Attributes
+    ----------
+    scheme : Interpolation | Scheme
+        Scheme
+    """
     scheme: Interpolation | Scheme = field(default=Interpolation.TURBO)
 
     @staticmethod
@@ -26,6 +35,14 @@ class ColorOptions:
 
 @dataclass
 class SymbolOptions:
+    """
+    Symbol options used for dots mark when symbols are specified.
+
+    Attributes
+    ----------
+    legend : bool
+        `True` if you want a legend given symbols
+    """
     legend: bool = field(default=False)
 
     @staticmethod
@@ -39,6 +56,20 @@ class SymbolOptions:
 
 @dataclass
 class StyleOptions:
+    """
+    Style options of the plot
+
+    Attributes
+    ----------
+    background : str
+        Background color
+    color : str
+        Color for text and axis
+    font_size : str
+        Font size of text
+    font_family : str
+        Font family of text
+    """
     background: str = field(default="none")
     color: str = field(default="black")
     font_size: int = field(default=12)
@@ -58,7 +89,17 @@ class StyleOptions:
 
 @dataclass
 class SortOptions:
-    by: str = field(default="")
+    """
+    Sort options for bar mark
+
+    Attributes
+    ----------
+    by : Index | str
+        Index or key value used for accessing each element in data
+    descending : bool
+        `True` if you want to apply descending order on data
+    """
+    by: Index | str = field(default="")
     descending: bool = field(default=False)
 
     @staticmethod
@@ -73,6 +114,18 @@ class SortOptions:
 
 @dataclass
 class XOptions:
+    """
+    Options for x axis
+
+    Attributes
+    ----------
+    nice : bool
+        `True` to have nicer values for x axis domain
+    grid : bool
+        `True` to add lines based on each x ticks
+    label : str | None
+        Label of the x axis
+    """
     nice: bool = field(default=False)
     grid: bool = field(default=False)
     label: str | None = field(default=None)
@@ -90,6 +143,18 @@ class XOptions:
 
 @dataclass
 class YOptions:
+    """
+    Options for y axis
+
+    Attributes
+    ----------
+    nice : bool
+        `True` to have nicer values for y axis domain
+    grid : bool
+        `True` to add lines based on each y ticks
+    label : str | None
+        Label of the y axis
+    """
     nice: bool = field(default=True)
     grid: bool = field(default=False)
     label: str | None = field(default=None)
@@ -106,4 +171,19 @@ class YOptions:
         )
 
 def init_options(values: T | dict | None, option_class: type[T]) -> T:
+    """
+    Initialize an option class from dictionary values
+
+    Parameters
+    ----------
+    values : T | dict | None
+        Dictionary option values
+    option_class : type[T]
+        Option class
+
+    Returns
+    -------
+    T
+        Instance of the option class
+    """
     return values if isinstance(values, option_class) else option_class.new(values)

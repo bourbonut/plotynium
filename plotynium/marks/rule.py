@@ -10,6 +10,28 @@ from ..utils import Identity, getter
 from ..types import Data, T
 
 class RuleY(Style[T]):
+    """
+    Marker for adding horizontal line given a list of y positions
+
+    Parameters
+    ----------
+    y : list[T]
+        List of y positions where horizontal lines will be placed.
+    fill : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `fill` attribute.
+    fill_opacity : float
+        Fill opacity value included in [0, 1].
+    stroke : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `stroke` attribute.
+    stroke_width : float
+        Stroke width value.
+    stroke_opacity : float
+        Stroke opacity value included in [0, 1].
+    stroke_dasharray : str | None
+        Stroke dasharray value.
+    opacity : float
+        General opacity value included in [0, 1].
+    """
     def __init__(
         self,
         y: list[T],
@@ -53,6 +75,20 @@ class RuleY(Style[T]):
         y: Callable,
         **kwargs,
     ):
+        """
+        Add horizontal lines on SVG content.
+
+        Parameters
+        ----------
+        svg : Selection
+            SVG Content
+        x : Callable
+            X scaler from `plot` function
+        y : Callable
+            Y scaler from `plot` function
+        **kwargs
+            Additional keyword arguments not used
+        """
         line = (
             d3.line()
             .x(lambda d: x(self._x(d)))

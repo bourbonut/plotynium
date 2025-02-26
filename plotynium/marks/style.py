@@ -10,7 +10,32 @@ from ..types import T
 import detroit as d3
 
 class Style(Generic[T]):
+    """
+    Primary class for managing all style values.
 
+    Parameters
+    ----------
+    data: list[T]
+        List of data used for `fill` and `stroke` attributes
+    default_stroke: str
+        Default constant value for `stroke` attribute.
+    default_fill: str
+        Default constant value for `fill` attribute.
+    fill: Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `fill` attribute.
+    fill_opacity: float
+        Fill opacity value included in [0, 1].
+    stroke: Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `stroke` attribute.
+    stroke_width : float
+        Stroke width value.
+    stroke_opacity : float
+        Stroke opacity value included in [0, 1].
+    stroke_dasharray : str | None
+        Stroke dasharray value.
+    opacity : float
+        General opacity value included in [0, 1].
+    """
     def __init__(
         self,
         data: list[T],
@@ -36,10 +61,26 @@ class Style(Generic[T]):
 
     @property
     def scheme(self) -> Interpolation | Scheme:
+        """
+        Returns the current color scheme.
+
+        Returns
+        -------
+        Interpolation | Scheme
+            Current used color scheme
+        """
         return self._scheme
 
     @scheme.setter
     def scheme(self, scheme: Interpolation | Scheme):
+        """
+        Sets the color scheme
+
+        Parameters
+        ----------
+        scheme : Interpolation | Scheme
+            Color scheme to be set
+        """
         self._fill.set_color_scheme(scheme)
         self._stroke.set_color_scheme(scheme)
         self._scheme = scheme

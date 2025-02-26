@@ -12,6 +12,28 @@ from ..scaler import determine_scaler
 from ..types import Data, T
 
 class GridX(Generic[T]):
+    """
+    Marker for adding vertical lines from x ticks.
+
+    Parameters
+    ----------
+    data : list[T]
+        List of x positions where vertical lines will be placed.
+    x : Callable[[T], Data] | str | None
+        X accessor function or key value
+    y1 : Callable[[T], Data] | str | None
+        Y accessor function or key value for tail coordinates of the lines
+    y2 : Callable[[T], Data] | str | None
+        Y accessor function or key value for head coordinates of the lines
+    stroke : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `stroke` attribute.
+    stroke_width : float
+        Stroke width value.
+    stroke_opacity : float
+        Stroke opacity value included in [0, 1].
+    stroke_dasharray : str | None
+        Stroke dasharray value.
+    """
     def __init__(
         self,
         data: list[T] | None = None,
@@ -49,6 +71,26 @@ class GridX(Generic[T]):
         margin_bottom: int,
         **kwargs,
     ):
+        """
+        Add vertical lines from x ticks.
+
+        Parameters
+        ----------
+        svg : Selection
+            SVG Content
+        x : Callable
+            X scaler from `plot` function
+        y : Callable
+            Y scaler from `plot` function
+        height : int
+            Height value
+        margin_top : int
+            Margin top value
+        margin_bottom : int
+            Margin bottom value
+        **kwargs
+            Additional keyword arguments not used
+        """
         y1 = self._y1 or Constant(margin_top)
         y2 = self._y2 or Constant(height - margin_bottom)
         g = (
@@ -74,6 +116,28 @@ class GridX(Generic[T]):
         )
 
 class GridY(Generic[T]):
+    """
+    Marker for adding horizontal lines from y ticks.
+
+    Parameters
+    ----------
+    data : list[T]
+        List of y positions where horizontal lines will be placed.
+    x1 : Callable[[T], Data] | str | None
+        X accessor function or key value for tail coordinates of the lines
+    x2 : Callable[[T], Data] | str | None
+        X accessor function or key value for head coordinates of the lines
+    y : Callable[[T], Data] | str | None
+        Y accessor function or key value
+    stroke : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `stroke` attribute.
+    stroke_width : float
+        Stroke width value.
+    stroke_opacity : float
+        Stroke opacity value included in [0, 1].
+    stroke_dasharray : str | None
+        Stroke dasharray value.
+    """
     def __init__(
         self,
         data: list[T] | None = None,
@@ -111,6 +175,26 @@ class GridY(Generic[T]):
         margin_right: int,
         **kwargs,
     ):
+        """
+        Add horizontal lines from y ticks.
+
+        Parameters
+        ----------
+        svg : Selection
+            SVG Content
+        x : Callable
+            X scaler from `plot` function
+        y : Callable
+            Y scaler from `plot` function
+        width : int
+            Width value
+        margin_left : int
+            Margin left value
+        margin_right : int
+            Margin right value
+        **kwargs
+            Additional keyword arguments not used
+        """
         x1 = self._x1 or Constant(margin_left)
         x2 = self._x2 or Constant(width - margin_right)
         g = (

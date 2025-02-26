@@ -5,6 +5,9 @@ from .schemes import Scheme
 from .interpolations import Interpolation
 
 class SymbolFill(Enum):
+    """
+    All available symbols with `fill` attribute for changing its color
+    """
     CIRCLE = d3.symbol_circle
     CROSS = d3.symbol_cross
     DIAMOND = d3.symbol_diamond
@@ -14,6 +17,9 @@ class SymbolFill(Enum):
     WYE = d3.symbol_wye
 
 class SymbolStroke(Enum):
+    """
+    All available symbols with `stroke` attribute for changing its color
+    """
     ASTERISK = d3.symbol_asterisk
     CIRCLE = d3.symbol_circle
     DIAMOND = d3.symbol_diamond2
@@ -30,6 +36,24 @@ def symbol_legend(
     scheme: Interpolation | Scheme,
     font_size: int = 12,
 ):
+    """
+    Adds to the SVG input, a legend described by labels associated with symbols
+
+    Parameters
+    ----------
+    svg : Selection
+        SVG on which the legend will be added
+    labels : list
+        Labels to make the legend
+    margin_left : int
+        Margin left value
+    margin_top : int
+        Margin top value
+    scheme : Interpolation | Scheme
+        Color scheme
+    font_size : int
+        Font size of labels
+    """
     nb_columns = len(labels)
     symbol_size = 5
     label_length = max(map(lambda label: len(str(label)), labels)) * 3

@@ -1,6 +1,9 @@
 import detroit as d3
 
 class Scheme:
+    """
+    All available schemes for color scheme
+    """
     CATEGORY_10 = d3.scale_ordinal(d3.SCHEME_CATEGORY_10)
     ACCENT = d3.scale_ordinal(d3.SCHEME_ACCENT)
     DARK_2 = d3.scale_ordinal(d3.SCHEME_DARK_2)

@@ -10,6 +10,32 @@ from ..utils import getter
 from ..types import Data, T
 
 class Line(Style[T]):
+    """
+    Marker for drawing lines between point coordinates.
+
+    Parameters
+    ----------
+    data : list[T]
+        List where point coordinates are stored.
+    x : Callable[[T], Data] | str | None
+        X accessor function or key value
+    y : Callable[[T], Data] | str | None
+        Y accessor function or key value
+    fill : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `fill` attribute.
+    fill_opacity : float
+        Fill opacity value included in [0, 1].
+    stroke : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `stroke` attribute.
+    stroke_width : float
+        Stroke width value.
+    stroke_opacity : float
+        Stroke opacity value included in [0, 1].
+    stroke_dasharray : str | None
+        Stroke dasharray value.
+    opacity : float
+        General opacity value included in [0, 1].
+    """
     def __init__(
         self,
         data: list[T],
@@ -55,6 +81,20 @@ class Line(Style[T]):
         y: Callable,
         **kwargs,
     ):
+        """
+        Add lines from stored points on SVG content.
+
+        Parameters
+        ----------
+        svg : Selection
+            SVG Content
+        x : Callable
+            X scaler from `plot` function
+        y : Callable
+            Y scaler from `plot` function
+        **kwargs
+            Additional keyword arguments not used
+        """
         line = (
             d3.line()
             .x(

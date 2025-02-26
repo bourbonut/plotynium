@@ -12,6 +12,38 @@ from ..scaler import determine_scaler
 from ..types import Index, Data, T
 
 class AxisX(Generic[T]):
+    """
+    Marker for making an X axis.
+
+    Parameters
+    ----------
+    data : list[T] | None
+        List of data for making X axis
+    x : Callable[[T], Data] | str | None
+        X accessor function or key value
+    y : Callable[..., float] | str | None
+        Y accessor function or key value
+    anchor : Literal["top", "bottom"]
+        Anchor location, where `"top"` orientates ticks up and sets the axis position
+        on the top of the plot whereas `"bottom"` orientates ticks down and sets the
+        axis position on the bottom.
+    label : str | None
+        Label of the x axis.
+    fill : str | None
+        Fill color value.
+    tick_rotate : float
+        Tick rotation value.
+    tick_size : int
+        Tick size value.
+    tick_format : Callable[[T], str] | None
+        Tick format function which takes a data and returns a string.
+    stroke : str | None
+        Stroke color value.
+    stroke_opacity : float
+        Stroke opacity value included in [0, 1].
+    stroke_width : float
+        Stroke width value.
+    """
     def __init__(
         self,
         data: list[T] | None = None,
@@ -57,6 +89,26 @@ class AxisX(Generic[T]):
         margin_bottom: int,
         **kwargs,
     ):
+        """
+        Add X axis to SVG content
+
+        Parameters
+        ----------
+        svg : Selection
+            SVG Content
+        x : Callable
+            X scaler from `plot` function
+        y : Callable
+            Y scaler from `plot` function
+        height : int
+            Height value
+        margin_top : int
+            Margin top value
+        margin_bottom : int
+            Margin bottom value
+        **kwargs
+            Additional keyword arguments not used
+        """
         dy = height - margin_bottom if self._anchor == "bottom" else margin_top
         y = self._y or Constant(dy)
         dir = -1 if self._anchor == "top" else 1
@@ -115,6 +167,38 @@ class AxisX(Generic[T]):
             )
 
 class AxisY(Generic[T]):
+    """
+    Marker for making an Y axis.
+
+    Parameters
+    ----------
+    data : list[T] | None
+        List of data for making Y axis
+    x : Callable[[T], Data] | str | None
+        X accessor function or key value
+    y : Callable[..., float] | str | None
+        Y accessor function or key value
+    anchor : Literal["left", "right"]
+        Anchor location, where `"left"` orientates ticks on left side and sets the axis
+        position on the left of the plot whereas `"right"` orientates ticks on right
+        side and sets the axis position on the right.
+    label : str | None
+        Label of the x axis.
+    fill : str | None
+        Fill color value.
+    tick_rotate : float
+        Tick rotation value.
+    tick_size : int
+        Tick size value.
+    tick_format : Callable[[T], str] | None
+        Tick format function which takes a data and returns a string.
+    stroke : str | None
+        Stroke color value.
+    stroke_opacity : float
+        Stroke opacity value included in [0, 1].
+    stroke_width : float
+        Stroke width value.
+    """
     def __init__(
         self,
         data: list[T] | None = None,
@@ -160,6 +244,26 @@ class AxisY(Generic[T]):
         margin_right: int,
         **kwargs,
     ):
+        """
+        Add Y axis to SVG content
+
+        Parameters
+        ----------
+        svg : Selection
+            SVG Content
+        x : Callable
+            X scaler from `plot` function
+        y : Callable
+            Y scaler from `plot` function
+        width : int
+            Width value
+        margin_left : int
+            Margin left value
+        margin_right : int
+            Margin right value
+        **kwargs
+            Additional keyword arguments not used
+        """
         dx = margin_left if self._anchor == "left" else width - margin_right
         x = self._x or Constant(dx)
         dir = -1 if self._anchor == "left" else 1

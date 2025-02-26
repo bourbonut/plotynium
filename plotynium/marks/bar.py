@@ -11,6 +11,34 @@ from ..scaler import Scaler, determine_scaler
 from ..types import Index, T, Data
 
 class BarY(Style[T]):
+    """
+    Marker for drawing vertical bars based on given data.
+
+    Parameters
+    ----------
+    data : list[T]
+        List where bar information are stored.
+    x : Callable[[T], Data] | str | None
+        X accessor function or key value
+    y : Callable[[T], Data] | str | None
+        Y accessor function or key value
+    sort: SortOptions | dict | None
+        Sort options used for ordering bars
+    fill : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `fill` attribute.
+    fill_opacity : float
+        Fill opacity value included in [0, 1].
+    stroke : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `stroke` attribute.
+    stroke_width : float
+        Stroke width value.
+    stroke_opacity : float
+        Stroke opacity value included in [0, 1].
+    stroke_dasharray : str | None
+        Stroke dasharray value.
+    opacity : float
+        General opacity value included in [0, 1].
+    """
     def __init__(
         self,
         data: list[T],
@@ -63,6 +91,20 @@ class BarY(Style[T]):
         y: Callable,
         **kwargs,
     ):
+        """
+        Add vertical bars on SVG content.
+
+        Parameters
+        ----------
+        svg : Selection
+            SVG Content
+        x : Callable
+            X scaler from `plot` function
+        y : Callable
+            Y scaler from `plot` function
+        **kwargs
+            Additional keyword arguments not used
+        """
         (
             svg.append("g")
             .attr("class", "bars")
