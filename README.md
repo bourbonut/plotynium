@@ -40,5 +40,5 @@ with open("pca.svg", "w") as file:
 ```
 
 <p align="center">
-    <img src="./assets/pca.png"></img>
+    <img src="./docs/pca.png"></img>
 </p>
