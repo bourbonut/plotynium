@@ -42,7 +42,7 @@ Plotynium is a *Data Visualization* framework for Python, inspired by [Observabl
 ## Example
 
 <figure markdown="span">
-    ![](./pca.svg)
+    ![](./images/pca.svg)
 </figure>
 
 ```py
