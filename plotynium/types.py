@@ -48,10 +48,10 @@ class Mark(Protocol):
         svg : Selection
             SVG content defined by a `Selection` class from `detroit`
         x : Callable
-            This argument is scaler for x axis which behaves like a function. By
+            This argument is a scaler for x axis which behaves like a function. By
             passing a data, it returns the x position on the plot.
         y : Callable
-            This argument is scaler for y axis which behaves like a function. By
+            This argument is a scaler for y axis which behaves like a function. By
             passing a data, it returns the y position on the plot.
         """
         ...
