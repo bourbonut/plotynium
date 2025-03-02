@@ -1,25 +1,15 @@
 site_name: Plotynium Documentation
 site_url: https://bourbonut.github.io/plotynium
 
+repo_url: https://github.com/bourbonut/plotynium
+
 theme:
   name: material
+  icon:
+    repo: fontawesome/brands/github
   palette:
-    - media: "(prefers-color-scheme)"
-      toggle:
-        icon: material/brightness-auto
-        name: Switch to light mode
-
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      toggle:
-        icon: material/brightness-4
-        name: Switch to system preference
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -37,3 +27,32 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+
+plugins:
+  search:
+  mkdocstrings:
+    default_handler: python
+    handlers:
+      python:
+        options:
+          show_root_heading: true
+          docstring_style: numpy
+          show_if_no_docstring: true
+          show_docstring_attributes: false
+          show_symbol_type_heading: true
+          show_symbol_type_toc: true
+          separate_signature: true
+          signature_crossrefs: true
+          merge_init_into_class: true
+          parameter_headings: true
+          show_bases: false
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/bourbonut/plotynium/
+      name: Plotynium on Github
+ # version:
+ #   provider: mike
+
+copyright: Copyright &copy; bourbonut
