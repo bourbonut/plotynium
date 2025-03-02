@@ -59,16 +59,30 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/bourbonut/plotynium/
       name: Plotynium on Github
- # version:
- #   provider: mike
 
 nav:
   - Home: index.md
+  - Introduction:
+    - introduction.md
+  - Colorschemes:
+    - colorschemes/interpolations.md
+    - colorschemes/schemes.md
   - API:
     - api/index.md
     - api/plot.md
-    - api/marks.md
+    - "plotynium.marks":
+      - api/marks/area_y.md
+      - api/marks/axis_x.md
+      - api/marks/axis_y.md
+      - api/marks/bar_y.md
+      - api/marks/dot.md
+      - api/marks/grid_x.md
+      - api/marks/grid_y.md
+      - api/marks/line.md
+      - api/marks/rule_y.md
     - api/interpolations.md
     - api/schemes.md
+    - api/options.md
+    - api/types.md
  
 copyright: Copyright &copy; bourbonut
