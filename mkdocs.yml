@@ -1,4 +1,4 @@
-site_name: Plotynium Documentation
+site_name: Plotynium
 site_url: https://bourbonut.github.io/plotynium
 
 repo_url: https://github.com/bourbonut/plotynium
@@ -10,6 +10,13 @@ theme:
   palette:
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
+  features:
+    - navigation.tabs
+    - navigation.indexes
+    - navigation.tabs.sticky
+    - navigation.footer
+    - content.code.annotate
+    - content.code.copy
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -55,4 +62,13 @@ extra:
  # version:
  #   provider: mike
 
+nav:
+  - Home: index.md
+  - API:
+    - api/index.md
+    - api/plot.md
+    - api/marks.md
+    - api/interpolations.md
+    - api/schemes.md
+ 
 copyright: Copyright &copy; bourbonut
