@@ -60,8 +60,8 @@ class BarY(Style[T]):
                 data = list(reversed(data))
 
         self._data = data
-        self.x_label = None if callable(x) else x
-        self.y_label = None if callable(y) else y
+        self.x_label = x if isinstance(x, str) else None
+        self.y_label = y if isinstance(y, str) else None
         self._x = getter(x or 0)
         self._y = getter(y or 1)
 
