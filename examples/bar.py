@@ -7,6 +7,8 @@ URL = "https://static.observableusercontent.com/files/09f63bb9ff086fef80717e2ea8
 alphabet = pl.read_csv(URL)
 
 plot = plot.plot(
+    width=928,
+    height=500,
     marks=[
         plot.bar_y(
             data=alphabet.to_dicts(),
@@ -17,6 +19,7 @@ plot = plot.plot(
         )
     ],
     margin_left=60,
+    style={"color": "#e6edf3"},
 )
 
 with open("bar.svg", "w") as file:
