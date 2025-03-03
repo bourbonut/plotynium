@@ -17,23 +17,28 @@ theme:
     - navigation.footer
     - content.code.annotate
     - content.code.copy
+    - content.code.select
 
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+      use_pygments: true
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
   - attr_list
   - md_in_html
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex:
+      generic: true
 
 plugins:
   search:
@@ -60,10 +65,22 @@ extra:
       link: https://github.com/bourbonut/plotynium/
       name: Plotynium on Github
 
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
 nav:
   - Home: index.md
   - Introduction:
     - introduction.md
+  - Marks:
+    - Area: marks/area.md
+    - Axis: marks/axis.md
+    - Bar: marks/bar.md
+    - Dot: marks/dot.md
+    - Grid: marks/grid.md
+    - Line: marks/line.md
+    - Rule: marks/rule.md
   - Colorschemes:
     - colorschemes/interpolations.md
     - colorschemes/schemes.md
