@@ -66,10 +66,12 @@ class Symbol(Maker[T, str]):
         """
         if callable(value):
             return value
-        elif (
-            isinstance(value, str) and value in data[0]
-        ) or (
-            isinstance(value, int) and value < len(data[0])
+        elif len(data) > 0 and (
+            (
+                isinstance(value, str) and value in data[0]
+            ) or (
+                isinstance(value, int) and value < len(data[0])
+            )
         ):
             return Symbol(data, value)
         else:
