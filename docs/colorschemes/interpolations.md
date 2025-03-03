@@ -1,5 +1,33 @@
 # From `Interpolation`
 
+## Usage
+
+[`Interpolation`][plotynium.interpolations.Interpolation] is usually used for [`ColorOptions`][plotynium.options.ColorOptions].
+
+=== "From `dict`"
+
+    ```python
+    import plotynium as ply
+
+    plot = ply.plot(
+        marks=[...],
+        color={"scheme": ply.Interpolation.MAGMA},
+    )
+    ```
+
+=== "With `ColorOptions`"
+
+    ```python
+    import plotynium as ply
+
+    plot = ply.plot(
+        marks=[...],
+        color=ply.ColorOptions(scheme=ply.Interpolation.MAGMA)
+    )
+    ```
+
+## Available interpolations
+
 `Interpolation.BLUES`
 
 ![](../images/interpolations/scheme_blues.png)

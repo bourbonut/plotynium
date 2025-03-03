@@ -1,5 +1,33 @@
 # From `Scheme`
 
+## Usage
+
+[`Scheme`][plotynium.schemes.Scheme] is usually used for [`ColorOptions`][plotynium.options.ColorOptions].
+
+=== "From `dict`"
+
+    ```python
+    import plotynium as ply
+
+    plot = ply.plot(
+        marks=[...],
+        color={"scheme": ply.Scheme.ACCENT},
+    )
+    ```
+
+=== "With `ColorOptions`"
+
+    ```python
+    import plotynium as ply
+
+    plot = ply.plot(
+        marks=[...],
+        color=ply.ColorOptions(scheme=ply.Scheme.ACCENT)
+    )
+    ```
+
+## Available schemes
+
 `Scheme.ACCENT`
 
 ![](../images/schemes/discrete_scheme_accent.png)
