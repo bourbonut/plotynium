@@ -71,15 +71,21 @@ plot = ply.plot(
             df.to_dicts(),
             x="Component 1",
             y="Component 2",
-            stroke="digit",
-            symbol="digit",
+            stroke="digit", # (1)!
+            symbol="digit", # (2)!
         )
     ],
-    color={"scheme": ply.Interpolation.RAINBOW},
-    symbol={"legend": True},
-    style={"color": "#e6edf3"},
+    color={"scheme": ply.Interpolation.RAINBOW}, # (3)!
+    symbol={"legend": True}, # (4)!
+    style={"color": "#e6edf3"}, # (5)!
 )
 
 with open("pca.svg", "w") as file:
     file.write(str(plot))
 ```
+
+1. Colors of points are chosen given its `digit` value
+2. Symbols of points are chosen given its `digit` value
+3. Check out the [colorscheme section](./colorschemes/interpolations.md) to see all available colorschemes.
+4. It adds a legend of symbols (color included).
+5. Style your plot as you want. Checkout [`StyleOptions`][plotynium.options.StyleOptions] for more option details.
