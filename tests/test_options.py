@@ -5,10 +5,12 @@ import pytest
 def test_color_options_default():
     color_options = ColorOptions()
     assert color_options.scheme == Interpolation.TURBO
+    assert color_options.legend == False
 
 def test_color_options_new():
-    color_options = ColorOptions.new({"scheme": Interpolation.SINEBOW})
+    color_options = ColorOptions.new({"scheme": Interpolation.SINEBOW, "legend": True})
     assert color_options.scheme == Interpolation.SINEBOW
+    assert color_options.legend == True
 
 def test_symbol_options_default():
     symbol_options = SymbolOptions()

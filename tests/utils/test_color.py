@@ -3,6 +3,7 @@ from detroit.scale.sequential import SequentialLinear
 
 def test_color_init():
     color = Color([{"foo": x} for x in range(3)], "foo")
+    assert color.labels == [0, 1, 2]
     assert isinstance(color._color, SequentialLinear)
 
 def test_color_try_init():

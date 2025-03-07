@@ -3,7 +3,7 @@ from detroit.scale.ordinal import ScaleOrdinal
 
 def test_symbol_init():
     symbol = Symbol([{"foo": x} for x in "cba"], "foo")
-    assert symbol._labels == ["a", "b", "c"]
+    assert symbol.labels == ["a", "b", "c"]
     assert isinstance(symbol._symbol_type, ScaleOrdinal)
 
 def test_symbol_try_init():

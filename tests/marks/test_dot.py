@@ -26,7 +26,7 @@ def test_dot_default():
     assert isinstance(dot._r, Constant)
     assert dot._r(None) == 3
     assert dot._symbol is None
-    assert dot._labels == []
+    assert dot.legend_labels == []
 
     assert dot._fill_opacity == 1.
     assert dot._stroke_width == 1.5
@@ -54,7 +54,7 @@ def test_dot_symbol():
     assert isinstance(dot._r, Constant)
     assert dot._r(None) == 3
     assert isinstance(dot._symbol, Symbol)
-    assert dot._labels == ["a", "b", "c"]
+    assert dot.legend_labels == ["a", "b", "c"]
 
 def test_dot_call_circle():
     dot = Dot([[x, y] for x, y in zip(range(11), range(11))])
