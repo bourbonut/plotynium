@@ -6,8 +6,9 @@ import detroit as d3
 
 from .style import Style
 from ..domain import domain
+from ..label import legend
 from ..scaler import Scaler, determine_scaler
-from ..utils import getter, Constant, Symbol
+from ..utils import getter, Color, Constant, Symbol
 from ..types import Data, T
 
 def center(scale: Callable) -> Callable[[T], float]:
@@ -90,7 +91,6 @@ class Dot(Style[T]):
 
         self._r = r if callable(r) else Constant(r or 3)
         self._symbol = Symbol.try_init(data, symbol)
-        self._labels = self._symbol._labels if isinstance(self._symbol, Symbol) else []
 
         Style.__init__(
             self,
@@ -104,6 +104,14 @@ class Dot(Style[T]):
             stroke_opacity=stroke_opacity,
             stroke_dasharray=stroke_dasharray,
             opacity=opacity,
+        )
+
+        makers = (self._symbol, self._stroke, self._fill)
+        self.legend_labels = legend(
+            [
+                maker.labels for maker in makers
+                if hasattr(maker, "labels")
+            ]
         )
 
     def __call__(
