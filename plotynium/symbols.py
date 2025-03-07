@@ -1,7 +1,11 @@
+from itertools import accumulate
+from functools import reduce
+from operator import iadd
 import detroit as d3
 from detroit.selection.selection import Selection
 from enum import Enum
 from .schemes import Scheme
+from .string_widths import STRING_WIDTHS
 from .interpolations import Interpolation
 
 class SymbolFill(Enum):
@@ -56,11 +60,13 @@ def symbol_legend(
     """
     nb_columns = len(labels)
     symbol_size = 5
-    label_length = max(map(lambda label: len(str(label)), labels)) * 3
-    offset = 2 * (symbol_size + label_length) + 16
+    ratio = font_size / 2
+    lengths = [reduce(iadd, [STRING_WIDTHS.get(char, 1) for char in str(label)], 0) for label in labels]
+    offsets = [0] + [6 * symbol_size + length * ratio for length in lengths[:-1]]
+    offsets = list(accumulate(offsets))
 
     symbol_type = d3.scale_ordinal(labels, d3.SYMBOLS_STROKE)
-    color = d3.scale_sequential([0, len(labels)], scheme)
+    color = d3.scale_sequential([0, len(labels) - 1], scheme)
 
     legend = (
         svg.append("g")
@@ -73,7 +79,7 @@ def symbol_legend(
 
     g = (
         legend.append("g")
-        .attr("transform", lambda _, i: f"translate({i * offset}, 0)")
+        .attr("transform", lambda _, i: f"translate({offsets[i]}, 0)")
     )
 
     (
@@ -85,7 +91,7 @@ def symbol_legend(
 
     (
         g.append("text")
-        .attr("x", symbol_size * 0.5 + label_length + 4)
+        .attr("x", symbol_size * 1.5 + 4)
         .attr("y", font_size // 3)
         .text(lambda d: str(d))
         .style("fill", "currentColor")
