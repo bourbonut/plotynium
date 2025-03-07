@@ -22,7 +22,22 @@ class Color(Maker[T, str]):
     def __init__(self, data: list[T], value: str | Index | Callable[[T], Data]):
         self._value = getter(value)
         data = list(map(self._value, data))
-        self._color = d3.scale_sequential([min(data), max(data)], ColorOptions().scheme)
+        self.labels = sorted(set(data))
+        sample = self.labels[0]
+        if isinstance(sample, str):
+            class Scaler:
+                def __init__(self, labels):
+                    self._band = d3.scale_band(labels, [0, len(labels)])
+                    self._ordinal = d3.scale_sequential([0, len(labels) - 1], ColorOptions().scheme)
+                def __call__(self, d):
+                    return self._ordinal(self._band(d))
+
+                def set_interpolator(self, interpolator):
+                    self._ordinal.set_interpolator(interpolator)
+
+            self._color = Scaler(self.labels)
+        else:
+            self._color = d3.scale_sequential([min(data), max(data)], ColorOptions().scheme)
 
     def __call__(self, d: T) -> str:
         """
