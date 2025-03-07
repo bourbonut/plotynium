@@ -17,8 +17,8 @@ class Symbol(Maker[T, str]):
     """
     def __init__(self, data: list[T], value: str | Index | Callable[[T], Data]):
         self._value = getter(value)
-        self._labels = sorted(set(map(self._value, data)))
-        self._symbol_type = d3.scale_ordinal(self._labels, d3.SYMBOLS_STROKE)
+        self.labels = sorted(set(map(self._value, data)))
+        self._symbol_type = d3.scale_ordinal(self.labels, d3.SYMBOLS_STROKE)
 
     def __call__(self, d: T) -> str:
         """
