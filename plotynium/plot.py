@@ -1,6 +1,7 @@
 from operator import itemgetter
 from collections import namedtuple
 from collections.abc import Callable
+from .colors import color_legend
 from .marks import AxisX, AxisY, GridX, GridY
 from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions, init_options
 from .symbols import symbol_legend
@@ -72,7 +73,7 @@ def plot(
     color_options = init_options(color, ColorOptions)
     style_options = init_options(style, StyleOptions)
     symbol_options = init_options(symbol, SymbolOptions)
-    margin_top = max(margin_top, 40) if symbol_options.legend else margin_top
+    margin_top = max(margin_top, 40) if symbol_options.legend or color_options.legend else margin_top
 
     svg = (
         d3.create("svg")
@@ -147,8 +148,13 @@ def plot(
 
     if symbol_options.legend:
         for mark in marks:
-            if hasattr(mark, "_labels"):
-                symbol_legend(svg, mark._labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
+            if hasattr(mark, "legend_labels"):
+                symbol_legend(svg, mark.legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
+                break
+    elif color_options.legend:
+        for mark in marks:
+            if hasattr(mark, "legend_labels"):
+                color_legend(svg, mark.legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
                 break
     
     return svg
