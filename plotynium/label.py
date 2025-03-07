@@ -19,3 +19,23 @@ def reduce(labels: list[str | None]) -> str | None:
     if len(labels) == 1:
         if label := labels.pop():
             return label
+
+def legend(labels: list[list[str | int] | None]) -> list[str | int]:
+    """
+    Reduces an list of legend labels into an unique one
+
+    Parameters
+    ----------
+    labels : list[tuple[str | int] | None]
+        List of legend labels
+
+    Returns
+    -------
+    tuple[str | int]
+        Selected labels
+    """
+    labels = set(map(tuple, labels))
+    if len(labels) == 1:
+        if selected_labels := labels.pop():
+            return list(selected_labels)
+    return []
