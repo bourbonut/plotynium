@@ -31,10 +31,10 @@ def legend(labels: list[list[str | int] | None]) -> list[str | int]:
 
     Returns
     -------
-    tuple[str | int]
+    tuple[str | int] | None
         Selected labels
     """
-    labels = set(map(tuple, labels))
+    labels = set(map(tuple, filter(None, labels)))
     if len(labels) == 1:
         if selected_labels := labels.pop():
             return list(selected_labels)

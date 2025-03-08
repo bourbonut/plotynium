@@ -132,6 +132,7 @@ def plot(
         y_ticks = y.ticks() if hasattr(y, "ticks") else y.domain
         marks.append(GridY(y_ticks))
 
+    # Apply mark on SVG content
     for mark in marks:
         mark.scheme = color_options.scheme
         mark(
@@ -146,15 +147,12 @@ def plot(
             margin_right=margin_right,
         )
 
+    # Set legend
     if symbol_options.legend:
-        for mark in marks:
-            if hasattr(mark, "legend_labels"):
-                symbol_legend(svg, mark.legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
-                break
+        legend_labels = label.legend([mark.legend_labels for mark in marks])
+        symbol_legend(svg, legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
     elif color_options.legend:
-        for mark in marks:
-            if hasattr(mark, "legend_labels"):
-                color_legend(svg, mark.legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
-                break
+        legend_labels = label.legend([mark.legend_labels for mark in marks])
+        color_legend(svg, legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
     
     return svg

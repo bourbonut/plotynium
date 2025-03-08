@@ -53,6 +53,7 @@ class RuleY(Style[T]):
         self.y_domain = [min(self._values), max(self._values)]
         self.x_scaler_type = None
         self.y_scaler_type = determine_scaler(self._values, Identity())
+        self.legend_labels = None
 
         Style.__init__(
             self,

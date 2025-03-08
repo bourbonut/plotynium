@@ -15,6 +15,7 @@ def test_area_y_default():
     assert area_y.y_domain == [0, 10]
     assert area_y.x_scaler_type == Scaler.CONTINUOUS
     assert area_y.y_scaler_type == Scaler.CONTINUOUS
+    assert area_y.legend_labels == []
 
     assert area_y._fill_opacity == 1.
     assert area_y._stroke_width == 1.

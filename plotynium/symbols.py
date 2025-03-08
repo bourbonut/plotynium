@@ -58,6 +58,8 @@ def symbol_legend(
     font_size : int
         Font size of labels
     """
+    if not labels:
+        return
     nb_columns = len(labels)
     symbol_size = 5
     ratio = font_size / 2

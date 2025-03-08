@@ -78,6 +78,7 @@ class AxisX(Generic[T]):
         self.y_domain = None
         self.x_scaler_type = determine_scaler(self._data, self._x)
         self.y_scaler_type = None
+        self.legend_labels = None
 
     def __call__(
         self,
@@ -233,6 +234,7 @@ class AxisY(Generic[T]):
         self.y_domain = domain(self._data, self._y)
         self.x_scaler_type = None
         self.y_scaler_type = determine_scaler(self._data, self._y)
+        self.legend_labels = None
 
     def __call__(
         self,

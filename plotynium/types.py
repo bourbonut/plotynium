@@ -20,17 +20,19 @@ class Mark(Protocol):
     Attributes
     ----------
     x_label : str | None
-        Label for x axis
+        Label for x axis.
     y_label : str | None
-        Label for y axis
+        Label for y axis.
     x_domain : tuple[Number, Number] | list[str] | None
-        Domain for x axis described as (min, max) values or a list of string values
+        Domain for x axis described as (min, max) values or a list of string values.
     y_domain : tuple[Number, Number] | None
-        Domain for y axis described as (min, max) values or a list of string values
+        Domain for y axis described as (min, max) values or a list of string values.
     x_scaler_type : TScaler | None
-        Scaler type for x axis of the mark
+        Scaler type for x axis of the mark.
     y_scaler_type : TScaler | None
-        Scaler type for x axis of the mark
+        Scaler type for x axis of the mark.
+    legend_labels : list[str | int] | None
+        Labels used for legend of the mark.
     """
     x_label: str | None
     y_label: str | None
@@ -38,6 +40,7 @@ class Mark(Protocol):
     y_domain: tuple[Number, Number] | None
     x_scaler_type: TScaler | None
     y_scaler_type: TScaler | None
+    legend_labels: list[str | int] | None
 
     def __call__(self, svg: Selection, x: Callable, y: Callable, **kwargs):
         """

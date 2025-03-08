@@ -17,6 +17,7 @@ def test_bar_y_default():
     assert bar_y.y_domain == [0, 10]
     assert bar_y.x_scaler_type == Scaler.BAND
     assert bar_y.y_scaler_type == Scaler.CONTINUOUS
+    assert bar_y.legend_labels == []
 
     assert bar_y._fill_opacity == 1.
     assert bar_y._stroke_width == 1.

@@ -6,6 +6,7 @@ import detroit as d3
 from .style import Style
 from ..options import SortOptions, init_options
 from ..utils import getter
+from ..label import legend
 from ..domain import domain
 from ..scaler import Scaler, determine_scaler
 from ..types import Index, T, Data
@@ -82,6 +83,14 @@ class BarY(Style[T]):
             stroke_opacity=stroke_opacity,
             stroke_dasharray=stroke_dasharray,
             opacity=opacity,
+        )
+
+        makers = (self._stroke, self._fill)
+        self.legend_labels = legend(
+            [
+                maker.labels for maker in makers
+                if hasattr(maker, "labels")
+            ]
         )
 
     def __call__(
