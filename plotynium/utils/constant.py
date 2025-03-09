@@ -1,8 +1,8 @@
-from .maker import Maker
+from .transformer import Transformer
 from ..types import T
 from typing import Generic
 
-class Constant(Maker[..., T]):
+class Constant(Transformer[..., T]):
     """
     This class returns the same value constantly
 

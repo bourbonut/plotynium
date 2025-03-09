@@ -5,11 +5,11 @@ from collections.abc import Callable
 from abc import ABC, abstractmethod
 from typing import TypeVar, Generic
 
-TMaker = TypeVar("TMaker", bound="Maker")
+TTransformer = TypeVar("TTransformer", bound="Transformer")
 
-class Maker(Generic[U, V], ABC):
+class Transformer(Generic[U, V], ABC):
     """
-    Abstract class which defines the list of methods needed for a `Maker`.
+    Abstract class which defines the list of methods needed for a `Transformer`.
 
     Parameters
     ----------
@@ -55,23 +55,23 @@ class Maker(Generic[U, V], ABC):
     def try_init(
         data: list[U],
         value: str | Index | Callable[[U], V] | None = None,
-        default: TMaker | None = None,
+        default: TTransformer | None = None,
     ) -> Callable[[U], V] | None:
         """
-        This method intends to make a `Maker` class when it is possible.
+        This method intends to make a `Transformer` class when it is possible.
 
         Parameters
         ----------
         data : list[T]
-            Data used for the `Maker` class.
+            Data used for the `Transformer` class.
         value : str | Index | Callable[[T], str] | None
             Key value or index or accessor function or undefined value
-        default : TMaker[T, str] | None
-            Default `Maker` class (i.e. `Constant` or `Identity`)
+        default : TTransformer[T, str] | None
+            Default `Transformer` class (i.e. `Constant` or `Identity`)
 
         Returns
         -------
         Callable[[T], str] | None
-            It could be directly `value` or a `Maker` class from the given value.
+            It could be directly `value` or a `Transformer` class from the given value.
         """
         return NotImplementedError("This method is not implemented for this class.")

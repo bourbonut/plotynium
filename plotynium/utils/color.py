@@ -3,12 +3,12 @@ from ..schemes import Scheme
 from ..interpolations import Interpolation
 from ..types import Index, T, Data
 from .getter import getter
-from .maker import Maker
+from .transformer import Transformer
 from typing import Any
 from collections.abc import Callable
 import detroit as d3
 
-class Color(Maker[T, str]):
+class Color(Transformer[T, str]):
     """
     This class makes a sequential scaler which generates color values based on data.
 
@@ -71,7 +71,7 @@ class Color(Maker[T, str]):
     def try_init(
         data: list[T],
         value: str | Index | Callable[[T], str] | None = None,
-        default: Maker[T, str] | None = None,
+        default: Transformer[T, str] | None = None,
     ) -> Callable[[T], str] | None:
         """
         If `values` is a callable, it returns it.
@@ -84,7 +84,7 @@ class Color(Maker[T, str]):
         value : str | Index | Callable[[T], str] | None
             Depending of the type, it is used for `Color` or directly returned by the
             function
-        default : Maker[T, str] | None
+        default : Transformer[T, str] | None
             Default value used as second argument of `Color` if `value` is `None`
 
         Returns
