@@ -24,4 +24,3 @@ class Constant(Transformer[..., T]):
             Stored value by the class
         """
         return self._value
-

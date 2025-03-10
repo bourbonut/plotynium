@@ -1,6 +1,7 @@
 from ..types import Index, T, Data
-from .getter import getter
+from ..getter import getter
 from .transformer import Transformer
+from .picker import LegendPicker
 from collections.abc import Callable
 import detroit as d3
 
@@ -12,13 +13,14 @@ class Symbol(Transformer[T, str]):
     ----------
     data : list[T]
         List of data
-    value : str | Index | Callable[[T], Data]
+    value : str | Index
         Index or key value for accessing data
     """
-    def __init__(self, data: list[T], value: str | Index | Callable[[T], Data]):
+    def __init__(self, data: list[T], value: str | Index):
         self._value = getter(value)
-        self.labels = sorted(set(map(self._value, data)))
-        self._symbol_type = d3.scale_ordinal(self.labels, d3.SYMBOLS_STROKE)
+        self._labels = sorted(set(map(self._value, data)))
+        self._symbol_type = d3.scale_ordinal(self._labels, d3.SYMBOLS_STROKE)
+        self._picker = LegendPicker()
 
     def __call__(self, d: T) -> str:
         """

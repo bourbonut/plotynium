@@ -50,28 +50,3 @@ class Transformer(Generic[U, V], ABC):
             Parameter for color scheme
         """
         return NotImplementedError("This method is not implemented for this class.")
-
-    @staticmethod
-    def try_init(
-        data: list[U],
-        value: str | Index | Callable[[U], V] | None = None,
-        default: TTransformer | None = None,
-    ) -> Callable[[U], V] | None:
-        """
-        This method intends to make a `Transformer` class when it is possible.
-
-        Parameters
-        ----------
-        data : list[T]
-            Data used for the `Transformer` class.
-        value : str | Index | Callable[[T], str] | None
-            Key value or index or accessor function or undefined value
-        default : TTransformer[T, str] | None
-            Default `Transformer` class (i.e. `Constant` or `Identity`)
-
-        Returns
-        -------
-        Callable[[T], str] | None
-            It could be directly `value` or a `Transformer` class from the given value.
-        """
-        return NotImplementedError("This method is not implemented for this class.")

@@ -2,11 +2,23 @@ from ..options import ColorOptions
 from ..schemes import Scheme
 from ..interpolations import Interpolation
 from ..types import Index, T, Data
-from .getter import getter
+from ..getter import getter
 from .transformer import Transformer
+from .picker import LegendPicker
 from typing import Any
 from collections.abc import Callable
 import detroit as d3
+
+class QualitativeScaler:
+    def __init__(self, labels):
+        self._band = d3.scale_band(labels, [0, len(labels)])
+        self._ordinal = d3.scale_sequential([0, len(labels) - 1], ColorOptions().scheme)
+
+    def __call__(self, d):
+        return self._ordinal(self._band(d))
+
+    def set_interpolator(self, interpolator):
+        self._ordinal.set_interpolator(interpolator)
 
 class Color(Transformer[T, str]):
     """
@@ -25,19 +37,10 @@ class Color(Transformer[T, str]):
         self.labels = sorted(set(data))
         sample = self.labels[0]
         if isinstance(sample, str):
-            class Scaler:
-                def __init__(self, labels):
-                    self._band = d3.scale_band(labels, [0, len(labels)])
-                    self._ordinal = d3.scale_sequential([0, len(labels) - 1], ColorOptions().scheme)
-                def __call__(self, d):
-                    return self._ordinal(self._band(d))
-
-                def set_interpolator(self, interpolator):
-                    self._ordinal.set_interpolator(interpolator)
-
-            self._color = Scaler(self.labels)
+            self._color = QualitativeScaler(self.labels)
         else:
             self._color = d3.scale_sequential([min(data), max(data)], ColorOptions().scheme)
+        self._picker = LegendPicker()
 
     def __call__(self, d: T) -> str:
         """
@@ -53,8 +56,9 @@ class Color(Transformer[T, str]):
         str
             Color string formatted as RGB or HEX depending on the color scheme
         """
-        d = self._value(d)
-        return self._color(d)
+        value = self._value(d)
+        color = self._color(value)
+        return self._picker(color)
 
     def set_color_scheme(self, scheme: Interpolation | Scheme):
         """
