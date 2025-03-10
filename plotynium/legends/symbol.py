@@ -7,7 +7,8 @@ from .schemes import Scheme
 from .string_widths import STRING_WIDTHS
 from .interpolations import Interpolation
 
-def color_legend(
+
+def symbol_legend(
     svg: Selection,
     labels: list,
     margin_left: int,
@@ -16,7 +17,7 @@ def color_legend(
     font_size: int = 12,
 ):
     """
-    Adds to the SVG input, a legend described by labels associated with rectangles
+    Adds to the SVG input, a legend described by labels associated with symbols
 
     Parameters
     ----------
@@ -33,13 +34,16 @@ def color_legend(
     font_size : int
         Font size of labels
     """
+    if not labels:
+        return
     nb_columns = len(labels)
-    rect_size = 15
+    symbol_size = 5
     ratio = font_size / 2
     lengths = [reduce(iadd, [STRING_WIDTHS.get(char, 1) for char in str(label)], 0) for label in labels]
-    offsets = [0] + [2 * rect_size + length * ratio for length in lengths[:-1]]
+    offsets = [0] + [6 * symbol_size + length * ratio for length in lengths[:-1]]
     offsets = list(accumulate(offsets))
 
+    symbol_type = d3.scale_ordinal(labels, d3.SYMBOLS_STROKE)
     color = d3.scale_sequential([0, len(labels) - 1], scheme)
 
     legend = (
@@ -57,18 +61,15 @@ def color_legend(
     )
 
     (
-        g.append("rect")
-        .attr("x", -rect_size / 2)
-        .attr("y", -rect_size / 2)
-        .attr("width", rect_size)
-        .attr("height", rect_size)
-        .attr("fill", lambda _, i: color(i))
-        .style("stroke", "none")
+        g.append("path")
+        .attr("d", lambda d: d3.symbol(symbol_type(d))())
+        .style("stroke", lambda _, i: color(i))
+        .style("fill", "none")
     )
 
     (
         g.append("text")
-        .attr("x", rect_size * 0.5 + 4)
+        .attr("x", symbol_size * 1.5 + 4)
         .attr("y", font_size // 3)
         .text(lambda d: str(d))
         .style("fill", "currentColor")
