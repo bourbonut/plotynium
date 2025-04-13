@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from detroit.selection.selection import Selection
+from detroit.selection import Selection
 
 import detroit as d3
 

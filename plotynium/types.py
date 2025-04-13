@@ -1,6 +1,6 @@
 from typing import TypeVar, TypeAlias, Protocol
 from collections.abc import Callable
-from detroit.selection.selection import Selection
+from detroit.selection import Selection
 
 T = TypeVar("T")
 U = TypeVar("U")

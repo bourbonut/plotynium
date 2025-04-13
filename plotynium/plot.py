@@ -10,7 +10,7 @@ from .types import Mark
 from . import label, domain
 
 import detroit as d3
-from detroit.selection.selection import Selection
+from detroit.selection import Selection
 
 
 def plot(

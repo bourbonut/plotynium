@@ -1,5 +1,5 @@
 from typing import Literal
-from detroit.selection.selection import Selection
+from detroit.selection import Selection
 from collections.abc import Callable
 from inspect import signature
 from typing import Generic
