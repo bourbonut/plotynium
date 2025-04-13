@@ -6,8 +6,8 @@ authors = [
   { name = "Benjamin BOURBON", email = "ben.bourbon06@gmail.com"},
 ]
 requires-python = ">=3.9"
-dependencies = ["detroit==2.2.0"]
-license = {"text" = "MIT"}
+dependencies = ["detroit>=2.3.0"]
+license = "MIT"
 
 [project.urls]
 Homepage="https://github.com/bourbonut/plotaclysm"
