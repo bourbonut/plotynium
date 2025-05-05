@@ -1,15 +1,13 @@
 from collections.abc import Callable
 from detroit.selection import Selection
 
-import detroit as d3
-
 from .style import Style
 from ..options import SortOptions, init_options
-from ..utils import getter
+from ..getter import getter
 from ..label import legend
 from ..domain import domain
-from ..scaler import Scaler, determine_scaler
-from ..types import Index, T, Data
+from ..scaler import determine_scaler
+from ..types import T, Data
 
 class BarY(Style[T]):
     """

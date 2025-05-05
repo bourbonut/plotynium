@@ -1,4 +1,3 @@
-from .getter import getter
 from .color import Color
 from .identity import Identity
 from .constant import Constant
@@ -10,7 +9,6 @@ from typing import Callable
 from ..types import U, V, Index
 
 __all__ = [
-    "getter",
     "Color",
     "Identity",
     "Constant",

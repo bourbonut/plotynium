@@ -4,10 +4,10 @@ from detroit.selection import Selection
 import detroit as d3
 
 from .style import Style
-from ..domain import domain
 from ..scaler import Scaler, determine_scaler
-from ..utils import Identity, getter
-from ..types import Data, T
+from ..transformers import Identity
+from ..getter import getter
+from ..types import T
 
 class RuleY(Style[T]):
     """

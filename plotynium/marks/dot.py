@@ -1,14 +1,12 @@
 from collections.abc import Callable
 from detroit.selection import Selection
-from detroit.scale.band import ScaleBand
-
-import detroit as d3
 
 from .style import Style
 from ..domain import domain
 from ..label import legend
-from ..scaler import Scaler, determine_scaler
-from ..utils import getter, Color, Constant, Symbol
+from ..scaler import determine_scaler
+from ..getter import getter
+from ..transformers import Constant, Symbol
 from ..types import Data, T
 
 def center(scale: Callable) -> Callable[[T], float]:
@@ -25,7 +23,7 @@ def center(scale: Callable) -> Callable[[T], float]:
     Callable[[T], float]
         Modified scaler.
     """
-    if isinstance(scale, ScaleBand):
+    if hasattr(scale, "bandwidth"):
         offset = max(0, scale.bandwidth) / 2
         def scale_center(d):
             return scale(d) + offset

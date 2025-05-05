@@ -7,8 +7,8 @@ from .style import Style
 from ..domain import domain, reduce
 from ..scaler import determine_scaler, Scaler
 from ..label import legend
-from ..options import SortOptions
-from ..utils import getter, Constant
+from ..getter import getter
+from ..transformers import Constant
 from ..types import Data, Index, T
 
 class AreaY(Style[T]):

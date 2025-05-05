@@ -3,9 +3,9 @@ from functools import reduce
 from operator import iadd
 import detroit as d3
 from detroit.selection import Selection
-from .schemes import Scheme
+from ..schemes import Scheme
 from .string_widths import STRING_WIDTHS
-from .interpolations import Interpolation
+from ..interpolations import Interpolation
 
 
 def symbol_legend(

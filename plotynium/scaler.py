@@ -5,9 +5,7 @@ from collections.abc import Callable
 from .domain import reduce as domain_reduce, unify
 
 import detroit as d3
-from detroit.scale.band import ScaleBand
-from detroit.scale.time import Calendar
-from detroit.scale.linear import ScaleLinear
+from detroit.types import Scaler as D3Scaler
 
 class Scaler(Enum):
     """
@@ -42,7 +40,7 @@ def make_scaler(
     domains: list[list | tuple[float, float]],
     range_vals: list[int | float],
     nice: bool = True,
-) -> Calendar | ScaleLinear | ScaleBand:
+) -> D3Scaler:
     scaler_type = reduce(scaler_types)
 
     if scaler_type == Scaler.CONTINUOUS:

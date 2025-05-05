@@ -7,7 +7,7 @@ from .style import Style
 from ..domain import domain
 from ..label import legend
 from ..scaler import Scaler, determine_scaler
-from ..utils import getter
+from ..getter import getter
 from ..types import Data, T
 
 class Line(Style[T]):

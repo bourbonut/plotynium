@@ -1,15 +1,13 @@
 from typing import Literal
 from detroit.selection import Selection
 from collections.abc import Callable
-from inspect import signature
 from typing import Generic
 
-import detroit as d3
-
-from ..utils import getter, Identity, Constant
+from ..transformers import Identity, Constant
+from ..getter import getter
 from ..domain import domain
 from ..scaler import determine_scaler
-from ..types import Index, Data, T
+from ..types import Data, T
 
 class AxisX(Generic[T]):
     """
