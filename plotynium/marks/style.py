@@ -1,13 +1,11 @@
 from collections.abc import Callable
 from typing import Generic
 
-from ..utils import getter, Constant, Color, Symbol
+from ..transformers import Constant, Color
 from ..schemes import Scheme
 from ..interpolations import Interpolation
 from ..options import ColorOptions
 from ..types import T
-
-import detroit as d3
 
 class Style(Generic[T]):
     """

@@ -1,4 +1,3 @@
-from collections import OrderedDict
 from ..types import T
 from typing import Generic
 
@@ -73,7 +72,7 @@ class LegendPicker(Generic[T]):
             Same value without any modification
         """
         index = self._indices.setdefault(value, len(self._indices))
-        self._groups[index] = result
+        self._groups[index] = value
         return value
 
     def __getitem__(self, index: int) -> tuple[str, T]:

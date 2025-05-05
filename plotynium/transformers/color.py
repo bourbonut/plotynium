@@ -5,20 +5,29 @@ from ..types import Index, T, Data
 from ..getter import getter
 from .transformer import Transformer
 from .picker import LegendPicker
-from typing import Any
 from collections.abc import Callable
 import detroit as d3
 
 class QualitativeScaler:
-    def __init__(self, labels):
+    """
+    Combination of a band scaler and a sequential scaler.
+    The band scaler helps for making a number given a string.
+    The sequential scaler takes a number and returns a color.
+
+    Parameters
+    ----------
+    labels : list[str]
+        List of labels
+    """
+    def __init__(self, labels: list[str]):
         self._band = d3.scale_band(labels, [0, len(labels)])
-        self._ordinal = d3.scale_sequential([0, len(labels) - 1], ColorOptions().scheme)
+        self._sequential = d3.scale_sequential([0, len(labels) - 1], ColorOptions().scheme)
 
     def __call__(self, d):
-        return self._ordinal(self._band(d))
+        return self._sequential(self._band(d))
 
     def set_interpolator(self, interpolator):
-        self._ordinal.set_interpolator(interpolator)
+        self._sequential.set_interpolator(interpolator)
 
 class Color(Transformer[T, str]):
     """

@@ -1,7 +1,7 @@
 from .transformer import Transformer
 from ..types import U, V
 from .picker import LegendPicker
-from collections import OrderedDict
+from typing import Callable
 
 class DefaultTransformer(Transformer[U, V]):
     """

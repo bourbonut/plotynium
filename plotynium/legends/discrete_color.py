@@ -33,7 +33,6 @@ def discrete_color_legend(
     font_size : int
         Font size of labels
     """
-    nb_columns = len(labels)
     rect_size = 15
     ratio = font_size / 2
     lengths = [reduce(iadd, [STRING_WIDTHS.get(char, 1) for char in str(label)], 0) for label in labels]
