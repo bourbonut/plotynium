@@ -99,7 +99,7 @@ class RuleY(Style[T]):
                 else lambda d: y(self._y(d))
             )
         )
-        values = [[[x.domain[0], v], [x.domain[1], v]] for v in self._values]
+        values = [[[x.get_domain()[0], v], [x.get_domain()[1], v]] for v in self._values]
         (
             svg.append("g")
             .attr("class", "rule")

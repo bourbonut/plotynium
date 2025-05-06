@@ -148,7 +148,7 @@ class AxisX(Generic[T]):
         )
 
         if self._label is not None:
-            tx = (x.range[0] + x.range[1]) // 2
+            tx = (x.get_range()[0] + x.get_range()[1]) // 2
             ty = (
                 height - margin_bottom // 4
                 if self._anchor == "bottom" else
@@ -305,7 +305,7 @@ class AxisY(Generic[T]):
         )
 
         if self._label is not None:
-            tx = -(y.range[0] + y.range[1]) // 2
+            tx = -(y.get_range()[0] + y.get_range()[1]) // 2
             ty = (
                 margin_left // 4
                 if self._anchor == "left" else
@@ -316,7 +316,7 @@ class AxisY(Generic[T]):
                 .attr("aria-label", "y-axis label")
                 .attr("text-anchor", "middle")
                 .attr("fill", self._fill)
-                .attr("transform", f"matrix(0 -1 1 0 0.5 0)")
+                .attr("transform", "matrix(0 -1 1 0 0.5 0)")
                 .append("text")
                 .attr("transform", f"translate({tx}, {ty})")
                 .text(self._label)

@@ -147,8 +147,8 @@ def plot(
     if symbol_options.legend:
         legend_labels = label.legend([mark.legend_labels for mark in marks])
         symbol_legend(svg, legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
-    elif color_options.legend:
-        legend_labels = label.legend([mark.legend_labels for mark in marks])
-        color_legend(svg, legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
+    # elif color_options.legend:
+    #     legend_labels = label.legend([mark.legend_labels for mark in marks])
+    #     color_legend(svg, legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
     
     return svg

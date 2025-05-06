@@ -51,6 +51,7 @@ class Line(Style[T]):
         opacity: float = 1.,
     ):
         self._data = data
+
         self.x_label = x if isinstance(x, str) else None
         self.y_label = y if isinstance(y, str) else None
         self._x = getter(x or 0)
@@ -117,9 +118,32 @@ class Line(Style[T]):
         (
             svg.append("g")
             .attr("class", "line")
+            .select_all("path")
+            .data(self.group())
+            .enter()
             .append("path")
-            .attr("fill", self._fill)
-            .attr("stroke", self._stroke)
+            .attr("fill", lambda d: d["fill"])
+            .attr("stroke", lambda d: d["stroke"])
             .attr("stroke-width", self._stroke_width)
-            .attr("d", line(self._data))
+            .attr("d", lambda d: line(d["values"]))
         )
+
+
+    def group(self) -> list[dict]:
+        """
+        Groups data according to their *stroke* and *fill* values.
+
+        Returns
+        -------
+        list[dict]
+            List of groups defined as dictionaries where:
+            * the key `"stroke"` is the stroke value of the group
+            * the key `"fill"` is the fill value of the group
+            * the key `"values"` is a list of grouped data which has the same *stroke* and *fill* values
+        """
+        groups = {}
+        for d in self._data:
+            crits = {"stroke": self._stroke(d), "fill": self._fill(d)}
+            _, values = groups.setdefault(tuple(crits.values()), (crits, []))
+            values.append(d)
+        return [crits | {"values": values} for crits, values in groups.values()]
