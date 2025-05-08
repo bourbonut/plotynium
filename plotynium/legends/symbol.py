@@ -36,7 +36,6 @@ def symbol_legend(
     """
     if not labels:
         return
-    nb_columns = len(labels)
     symbol_size = 5
     ratio = font_size / 2
     lengths = [reduce(iadd, [STRING_WIDTHS.get(char, 1) for char in str(label)], 0) for label in labels]

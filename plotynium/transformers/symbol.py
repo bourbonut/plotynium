@@ -37,7 +37,8 @@ class Symbol(Transformer[T, str]):
             Symbol SVG path value
         """
         d = self._value(d)
-        return d3.symbol(self._symbol_type(d))()
+        symbol = d3.symbol(self._symbol_type(d))()
+        return self._picker(symbol)
 
     @staticmethod
     def try_init(

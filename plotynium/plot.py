@@ -3,6 +3,7 @@ from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptio
 from .legends import symbol_legend, discrete_color_legend
 from .scaler import make_scaler
 from .types import Mark
+from .context import Context
 from . import label
 
 import detroit as d3
@@ -69,22 +70,6 @@ def plot(
     color_options = init_options(color, ColorOptions)
     style_options = init_options(style, StyleOptions)
     symbol_options = init_options(symbol, SymbolOptions)
-    margin_top = max(margin_top, 40) if symbol_options.legend or color_options.legend else margin_top
-
-    svg = (
-        d3.create("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("viewBox", f"0 0 {width} {height}")
-        .style("font-size", f"{style_options.font_size}px")
-        .style("font-family", style_options.font_family)
-    )
-
-    default_style = StyleOptions()
-    if style_options.background != default_style.background:
-        svg.style("background", style_options.background)
-    if style_options.color != default_style.color:
-        svg.style("color", style_options.color)
 
     # Set labels
     x_label = x_options.label
@@ -127,6 +112,39 @@ def plot(
     if not any(map(lambda mark: isinstance(mark, GridY), marks)) and y_options.grid or grid:
         y_ticks = y.ticks() if hasattr(y, "ticks") else y.domain
         marks.append(GridY(y_ticks))
+
+    # Set legend
+    # if not any(map(lambda mark: isinstance(mark, Legend), marks)) and (color.legend or symbol_options.legend):
+    #     marks.append(Legend())
+
+    context = Context(
+        x,
+        y,
+        width,
+        height,
+        margin_top,
+        margin_left,
+        margin_bottom,
+        margin_right,
+    )
+
+    for mark in marks:
+        mark.set_context(context)
+
+    svg = (
+        d3.create("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("viewBox", f"0 0 {width} {height}")
+        .style("font-size", f"{style_options.font_size}px")
+        .style("font-family", style_options.font_family)
+    )
+
+    default_style = StyleOptions()
+    if style_options.background != default_style.background:
+        svg.style("background", style_options.background)
+    if style_options.color != default_style.color:
+        svg.style("color", style_options.color)
 
     # Apply mark on SVG content
     for mark in marks:

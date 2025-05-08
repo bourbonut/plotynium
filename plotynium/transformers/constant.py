@@ -1,6 +1,5 @@
 from .transformer import Transformer
 from ..types import T
-from typing import Generic
 
 class Constant(Transformer[..., T]):
     """
