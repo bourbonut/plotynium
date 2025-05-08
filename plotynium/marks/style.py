@@ -4,7 +4,6 @@ from typing import Generic
 from ..transformers import Constant, Color
 from ..schemes import Scheme
 from ..interpolations import Interpolation
-from ..options import ColorOptions
 from ..types import T
 
 class Style(Generic[T]):
@@ -55,30 +54,16 @@ class Style(Generic[T]):
         self._stroke_dasharray = stroke_dasharray
         self._stroke_opacity = stroke_opacity
         self._opacity = opacity
-        self._scheme = ColorOptions().scheme
 
-    @property
-    def scheme(self) -> Interpolation | Scheme:
-        """
-        Returns the current color scheme.
-
-        Returns
-        -------
-        Interpolation | Scheme
-            Current used color scheme
-        """
-        return self._scheme
-
-    @scheme.setter
-    def scheme(self, scheme: Interpolation | Scheme):
+    def set_colorscheme(self, scheme: Interpolation | Scheme | None = None):
         """
         Sets the color scheme
 
         Parameters
         ----------
-        scheme : Interpolation | Scheme
+        scheme : Interpolation | Scheme | None
             Color scheme to be set
         """
-        self._fill.set_color_scheme(scheme)
-        self._stroke.set_color_scheme(scheme)
-        self._scheme = scheme
+        if scheme is not None:
+            self._fill.set_color_scheme(scheme)
+            self._stroke.set_color_scheme(scheme)

@@ -69,7 +69,7 @@ def plot(
     y_options = init_options(y, YOptions)
     color_options = init_options(color, ColorOptions)
     style_options = init_options(style, StyleOptions)
-    symbol_options = init_options(symbol, SymbolOptions)
+    # symbol_options = init_options(symbol, SymbolOptions)
 
     # Set labels
     x_label = x_options.label
@@ -126,6 +126,7 @@ def plot(
         margin_left,
         margin_bottom,
         margin_right,
+        color_options.scheme,
     )
 
     for mark in marks:
@@ -148,25 +149,14 @@ def plot(
 
     # Apply mark on SVG content
     for mark in marks:
-        mark.scheme = color_options.scheme
-        mark(
-            svg,
-            x,
-            y,
-            width=width,
-            height=height,
-            margin_top=margin_top,
-            margin_bottom=margin_bottom,
-            margin_left=margin_left,
-            margin_right=margin_right,
-        )
+        mark.apply(svg)
 
-    # Set legend
-    if symbol_options.legend:
-        legend_labels = label.legend([mark.legend_labels for mark in marks])
-        symbol_legend(svg, legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
-    elif color_options.legend:
-        legend_labels = label.legend([mark.legend_labels for mark in marks])
-        discrete_color_legend(svg, legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
+    # # Set legend
+    # if symbol_options.legend:
+    #     legend_labels = label.legend([mark.legend_labels for mark in marks])
+    #     symbol_legend(svg, legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
+    # elif color_options.legend:
+    #     legend_labels = label.legend([mark.legend_labels for mark in marks])
+    #     discrete_color_legend(svg, legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
     
     return svg

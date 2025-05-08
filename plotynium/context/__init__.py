@@ -26,6 +26,22 @@ class MarkContext:
         self._height = height
         self._context = context
 
+    def get_dims(self) -> tuple[int, int, int, int]:
+        return (
+            self._x,
+            self._y,
+            self._width,
+            self._height,
+        )
+
+    def get_margin(self) -> tuple[int, int, int, int]:
+        return (
+            self._context._margin_top,
+            self._context._margin_left,
+            self._context._margin_bottom,
+            self._context._margin_right,
+        )
+
     def half_width(self):
         return self._width // 2
 
@@ -130,20 +146,22 @@ class Context:
         self._scheme = None
         self._groups = []
 
+    def get_color_scheme(self):
+        return self._scheme
+
     def get_lu_corner(self) -> tuple[int, int]:
-        return (self._margin_left, self._margin_top)
+        return (0, 0)
 
     def get_dims(self) -> tuple[int, int]:
         return (self._width, self._height)
 
-    def get_group_context(self, index: int | None = None):
+    def get_mark_context(self, index: int | None = None):
         if index is not None and 0 <= index < len(self._groups):
             return self._groups[index]
         else:
             x, y = self.get_lu_corner()
             w, h = self.get_dims()
-            dx, dy = self.get_lu_corner()
-            group_context = MarkContext(len(self._groups), x, y, w - dx, h - dy, self)
+            group_context = MarkContext(len(self._groups), x, y, w, h, self)
             self._groups.append(group_context)
             return group_context
 

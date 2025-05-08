@@ -2,11 +2,13 @@ from typing import Literal
 from detroit.selection import Selection
 from collections.abc import Callable
 from typing import Generic
+import detroit as d3
 
 from ..transformers import Identity, Constant
 from ..getter import getter
 from ..domain import domain
 from ..scaler import determine_scaler
+from ..context import Context, MarkContext
 from ..types import Data, T
 
 class AxisX(Generic[T]):
@@ -76,18 +78,12 @@ class AxisX(Generic[T]):
         self.y_domain = None
         self.x_scaler_type = determine_scaler(self._data, self._x)
         self.y_scaler_type = None
-        self.legend_labels = None
+        self.context: MarkContext | None = None
 
-    def __call__(
-        self,
-        svg: Selection,
-        x: Callable,
-        y: Callable,
-        height: int,
-        margin_top: int,
-        margin_bottom: int,
-        **kwargs,
-    ):
+    def set_context(self, context: Context):
+        self.context = context.get_mark_context(0)
+
+    def apply(self, svg: Selection):
         """
         Add X axis to SVG content
 
@@ -95,25 +91,18 @@ class AxisX(Generic[T]):
         ----------
         svg : Selection
             SVG Content
-        x : Callable
-            X scaler from `plot` function
-        y : Callable
-            Y scaler from `plot` function
-        height : int
-            Height value
-        margin_top : int
-            Margin top value
-        margin_bottom : int
-            Margin bottom value
-        **kwargs
-            Additional keyword arguments not used
         """
+        x = self.context.x
+        y = self.context.y
+        _, _, width, height = self.context.get_dims()
+        margin_top, margin_left, margin_bottom, margin_right = self.context.get_margin()
+
         dy = height - margin_bottom if self._anchor == "bottom" else margin_top
         y = self._y or Constant(dy)
         dir = -1 if self._anchor == "top" else 1
 
         if hasattr(x, "bandwidth"):
-            offset = x.bandwidth / 2
+            offset = x.get_bandwidth() / 2
         else:
             offset = 0
 
@@ -159,7 +148,7 @@ class AxisX(Generic[T]):
                 .attr("aria-label", "x-axis label")
                 .attr("text-anchor", "middle")
                 .attr("fill", self._fill)
-                .attr("transform", f"translate(0.5, 0)")
+                .attr("transform", "translate(0.5, 0)")
                 .append("text")
                 .attr("transform", f"translate({tx}, {ty})")
                 .text(self._label)
@@ -232,18 +221,12 @@ class AxisY(Generic[T]):
         self.y_domain = domain(self._data, self._y)
         self.x_scaler_type = None
         self.y_scaler_type = determine_scaler(self._data, self._y)
-        self.legend_labels = None
+        self.context: MarkContext | None = None
 
-    def __call__(
-        self,
-        svg: Selection,
-        x: Callable,
-        y: Callable,
-        width: int,
-        margin_left: int,
-        margin_right: int,
-        **kwargs,
-    ):
+    def set_context(self, context: Context):
+        self.context = context.get_mark_context(0)
+
+    def apply(self, svg: Selection):
         """
         Add Y axis to SVG content
 
@@ -251,25 +234,18 @@ class AxisY(Generic[T]):
         ----------
         svg : Selection
             SVG Content
-        x : Callable
-            X scaler from `plot` function
-        y : Callable
-            Y scaler from `plot` function
-        width : int
-            Width value
-        margin_left : int
-            Margin left value
-        margin_right : int
-            Margin right value
-        **kwargs
-            Additional keyword arguments not used
         """
+        x = self.context.x
+        y = self.context.y
+        _, _, width, height = self.context.get_dims()
+        margin_top, margin_left, margin_bottom, margin_right = self.context.get_margin()
+
         dx = margin_left if self._anchor == "left" else width - margin_right
         x = self._x or Constant(dx)
         dir = -1 if self._anchor == "left" else 1
 
         if hasattr(y, "bandwidth"):
-            offset = y.bandwidth / 2
+            offset = y.get_bandwidth() / 2
         else:
             offset = 0
 

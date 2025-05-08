@@ -8,6 +8,12 @@ from .picker import LegendPicker
 from collections.abc import Callable
 import detroit as d3
 
+def default_colorscheme(nb_labels: int) -> Interpolation | Scheme:
+    if nb_labels > 10:
+        return Interpolation.RAINBOW
+    else:
+        return Scheme.OBSERVABLE_10
+
 class QualitativeScaler:
     """
     Combination of a band scaler and a sequential scaler.
@@ -20,8 +26,9 @@ class QualitativeScaler:
         List of labels
     """
     def __init__(self, labels: list[str]):
-        self._band = d3.scale_band(labels, [0, len(labels)])
-        self._sequential = d3.scale_sequential([0, len(labels) - 1], ColorOptions().scheme)
+        nb_labels = len(labels)
+        self._band = d3.scale_band(labels, [0, nb_labels])
+        self._sequential = d3.scale_sequential([0, nb_labels - 1], default_colorscheme(nb_labels))
 
     def __call__(self, d):
         return self._sequential(self._band(d))
@@ -48,7 +55,9 @@ class Color(Transformer[T, str]):
         if isinstance(sample, str):
             self._color = QualitativeScaler(self.labels)
         else:
-            self._color = d3.scale_sequential([min(data), max(data)], ColorOptions().scheme)
+            self._color = d3.scale_sequential(
+                [min(data), max(data)], default_colorscheme(len(self.labels))
+            )
         self._picker = LegendPicker()
 
     def __call__(self, d: T) -> str:

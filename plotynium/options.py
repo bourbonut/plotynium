@@ -22,7 +22,7 @@ class ColorOptions:
     scheme : Interpolation | Scheme
         Scheme
     """
-    scheme: Interpolation | Scheme = field(default=Interpolation.TURBO)
+    scheme: Interpolation | Scheme | None = field(default=None)
     legend: bool = field(default=False)
 
     @staticmethod

@@ -5,10 +5,10 @@ import detroit as d3
 
 from .style import Style
 from ..domain import domain
-from ..label import legend
 from ..scaler import Scaler, determine_scaler
 from ..getter import getter
 from ..types import Data, T
+from ..context import Context, MarkContext
 
 class Line(Style[T]):
     """
@@ -76,21 +76,21 @@ class Line(Style[T]):
             opacity=opacity,
         )
 
-        makers = (self._stroke, self._fill)
-        self.legend_labels = legend(
-            [
-                maker.labels for maker in makers
-                if hasattr(maker, "labels")
-            ]
-        )
+        self.context: MarkContext | None = None
 
-    def __call__(
-        self,
-        svg: Selection,
-        x: Callable,
-        y: Callable,
-        **kwargs,
-    ):
+    def set_context(self, context: Context):
+        """
+        Sets the mark context from the shared context
+
+        Parameters
+        ----------
+        context : Context
+            Shared context
+        """
+        self.set_colorscheme(context.get_color_scheme())
+        self.context = context.get_mark_context(0)
+
+    def apply(self, svg: Selection):
         """
         Add lines from stored points on SVG content.
 
@@ -98,13 +98,9 @@ class Line(Style[T]):
         ----------
         svg : Selection
             SVG Content
-        x : Callable
-            X scaler from `plot` function
-        y : Callable
-            Y scaler from `plot` function
-        **kwargs
-            Additional keyword arguments not used
         """
+        x = self.context.x
+        y = self.context.y
         line = (
             d3.line()
             .x(
@@ -127,7 +123,6 @@ class Line(Style[T]):
             .attr("stroke-width", self._stroke_width)
             .attr("d", lambda d: line(d["values"]))
         )
-
 
     def group(self) -> list[dict]:
         """
