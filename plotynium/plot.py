@@ -126,6 +126,7 @@ def plot(
         margin_left,
         margin_bottom,
         margin_right,
+        style_options.font_size,
         color_options.scheme,
     )
 

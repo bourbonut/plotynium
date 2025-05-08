@@ -107,6 +107,7 @@ class Context:
         margin_left: int,
         margin_bottom: int,
         margin_right: int,
+        font_size: int,
         color_scheme: Interpolation | Scheme | None = None,
     ):
         """
@@ -142,12 +143,16 @@ class Context:
         self._margin_left = margin_left 
         self._margin_bottom = margin_bottom 
         self._margin_right = margin_right
+        self._font_size = font_size
         self._channel = Channel()
         self._scheme = None
         self._groups = []
 
     def get_color_scheme(self):
         return self._scheme
+
+    def get_font_size(self):
+        return self._font_size
 
     def get_lu_corner(self) -> tuple[int, int]:
         return (0, 0)
