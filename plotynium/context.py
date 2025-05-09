@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from .types import ColorScheme
 from typing import TypeVar
 from detroit.types import Scaler
@@ -23,6 +24,16 @@ class MarkContext:
         self._width = width
         self._height = height
         self._context = context
+
+    def set_mapping(
+        self,
+        labels_mapping: OrderedDict[str, str] | None = None,
+        symbols_mapping: OrderedDict[str, str] | None = None,
+    ):
+        if labels_mapping is not None:
+            self._context.set_labels_mapping(labels_mapping)
+        if symbols_mapping is not None:
+            self._context.set_symbols_mapping(symbols_mapping)
 
     def get_dims(self) -> tuple[int, int, int, int]:
         return (
@@ -107,6 +118,7 @@ class Context:
         margin_right: int,
         font_size: int,
         color_scheme: ColorScheme | None = None,
+        labels: list[str] | None = None,
     ):
         """
 
@@ -132,6 +144,8 @@ class Context:
             
         color_scheme : ColorScheme | None
             
+        labels : list[str] | None
+            
         """
         self._x = x
         self._y = y
@@ -144,6 +158,9 @@ class Context:
         self._font_size = font_size
         self._scheme = None
         self._groups = []
+        self._labels = labels or []
+        self._labels_mapping = OrderedDict()
+        self._symbols_mapping = OrderedDict()
 
     def get_color_scheme(self):
         return self._scheme
@@ -171,3 +188,9 @@ class Context:
         group_context = MarkContext(len(self._groups), x, y, width, height, self)
         self._groups.append(group_context)
         return group_context
+
+    def set_labels_mapping(self, labels_mapping: OrderedDict[str, str]):
+        self._labels_mapping = labels_mapping
+
+    def set_symbols_mapping(self, symbols_mapping: OrderedDict[str, str]):
+        self._symbols_mapping = symbols_mapping

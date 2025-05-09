@@ -1,6 +1,6 @@
-from ..interpolations import Interpolation
-from ..schemes import Scheme
-from ..types import ColorScheme
+from ...interpolations import Interpolation
+from ...schemes import Scheme
+from ...types import ColorScheme
 
 def default_colorscheme(nb_labels: int) -> ColorScheme:
     """

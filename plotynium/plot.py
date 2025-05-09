@@ -1,4 +1,4 @@
-from .marks import AxisX, AxisY, GridX, GridY, Mark
+from .marks import AxisX, AxisY, GridX, GridY, Legend, Mark
 from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions, init_options
 from .scaler import make_scaler
 from .context import Context
@@ -67,7 +67,7 @@ def plot(
     y_options = init_options(y, YOptions)
     color_options = init_options(color, ColorOptions)
     style_options = init_options(style, StyleOptions)
-    # symbol_options = init_options(symbol, SymbolOptions)
+    symbol_options = init_options(symbol, SymbolOptions)
 
     # Set labels
     x_label = x_options.label
@@ -112,8 +112,8 @@ def plot(
         marks.append(GridY(y_ticks))
 
     # Set legend
-    # if not any(map(lambda mark: isinstance(mark, Legend), marks)) and (color.legend or symbol_options.legend):
-    #     marks.append(Legend())
+    if not any(map(lambda mark: isinstance(mark, Legend), marks)) and (color_options.legend or symbol_options.legend):
+        marks.append(Legend())
 
     context = Context(
         x,

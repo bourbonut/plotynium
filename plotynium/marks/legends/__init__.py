@@ -1,15 +1,16 @@
 import detroit as d3
 from detroit.selection import Selection
-from ..types import ColorScheme
-from ..context import Context, MarkContext
+from ...types import ColorScheme
+from ...context import Context, MarkContext
 from .discrete_color import DiscreteLegend
 from .continuous_color import ContinuousLegend
 from .symbol import SymbolLegend
 from .default_scheme import default_colorscheme
+from ..mark import Mark
 
 __all__ = ["Legend"]
 
-class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend):
+class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
 
     def __init__(
         self,
@@ -30,7 +31,7 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend):
         self._symbols = symbols_mapping or []
         self._scheme = scheme or default_colorscheme(len(self._labels))
         self._square_size = square_size
-        self._symbol_size = self._symbol_size
+        self._symbol_size = symbol_size
         self._rows = rows
         self._fill = fill
         self._fill_opacity = fill_opacity
@@ -49,3 +50,6 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend):
 
     def apply(self, svg: Selection):
         self.discrete_color_legend(svg)
+
+    def update_channel(self):
+        return
