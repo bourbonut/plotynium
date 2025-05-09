@@ -1,8 +1,6 @@
-from .marks import AxisX, AxisY, GridX, GridY
+from .marks import AxisX, AxisY, GridX, GridY, Mark
 from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions, init_options
-from .legends import symbol_legend, discrete_color_legend
 from .scaler import make_scaler
-from .types import Mark
 from .context import Context
 from . import label
 

@@ -4,6 +4,7 @@ from collections.abc import Callable
 from typing import Generic
 import detroit as d3
 
+from .mark import Mark
 from ..transformers import Identity, Constant
 from ..getter import getter
 from ..domain import domain
@@ -11,7 +12,7 @@ from ..scaler import determine_scaler
 from ..context import Context, MarkContext
 from ..types import Data, T
 
-class AxisX(Generic[T]):
+class AxisX(Generic[T], Mark):
     """
     Marker for making an X axis.
 
@@ -59,6 +60,7 @@ class AxisX(Generic[T]):
         stroke_opacity: float = 1.,
         stroke_width: float = 1,
     ):
+        Mark.__init__(self)
         self._data = data or d3.ticks(0, 1, 10)
         self._x = x or Identity()
         self._y = None if y is None else getter(y)
@@ -73,15 +75,11 @@ class AxisX(Generic[T]):
         self._stroke_width = stroke_width
 
         self.x_label = self._label
-        self.y_label = None
         self.x_domain = domain(self._data, self._x)
-        self.y_domain = None
         self.x_scaler_type = determine_scaler(self._data, self._x)
-        self.y_scaler_type = None
-        self.context: MarkContext | None = None
 
     def set_context(self, context: Context):
-        self.context = context.get_mark_context(0)
+        self._context = context.get_mark_context(0)
 
     def apply(self, svg: Selection):
         """
@@ -92,10 +90,10 @@ class AxisX(Generic[T]):
         svg : Selection
             SVG Content
         """
-        x = self.context.x
-        y = self.context.y
-        _, _, width, height = self.context.get_dims()
-        margin_top, margin_left, margin_bottom, margin_right = self.context.get_margin()
+        x = self._context.x
+        y = self._context.y
+        _, _, width, height = self._context.get_dims()
+        margin_top, margin_left, margin_bottom, margin_right = self._context.get_margin()
 
         dy = height - margin_bottom if self._anchor == "bottom" else margin_top
         y = self._y or Constant(dy)
@@ -154,7 +152,7 @@ class AxisX(Generic[T]):
                 .text(self._label)
             )
 
-class AxisY(Generic[T]):
+class AxisY(Generic[T], Mark):
     """
     Marker for making an Y axis.
 
@@ -202,6 +200,7 @@ class AxisY(Generic[T]):
         stroke_opacity: float = 1.,
         stroke_width: float = 1,
     ):
+        Mark.__init__(self)
         self._data = data or d3.ticks(0, 1, 10)
         self._x = None if x is None else getter(x)
         self._y = y or Identity()
@@ -215,16 +214,13 @@ class AxisY(Generic[T]):
         self._stroke_opacity = stroke_opacity
         self._stroke_width = stroke_width
 
-        self.x_label = None
         self.y_label = self._label
-        self.x_domain = None
         self.y_domain = domain(self._data, self._y)
-        self.x_scaler_type = None
         self.y_scaler_type = determine_scaler(self._data, self._y)
-        self.context: MarkContext | None = None
+        self._context: MarkContext | None = None
 
     def set_context(self, context: Context):
-        self.context = context.get_mark_context(0)
+        self._context = context.get_mark_context(0)
 
     def apply(self, svg: Selection):
         """
@@ -235,10 +231,10 @@ class AxisY(Generic[T]):
         svg : Selection
             SVG Content
         """
-        x = self.context.x
-        y = self.context.y
-        _, _, width, height = self.context.get_dims()
-        margin_top, margin_left, margin_bottom, margin_right = self.context.get_margin()
+        x = self._context.x
+        y = self._context.y
+        _, _, width, height = self._context.get_dims()
+        margin_top, margin_left, margin_bottom, margin_right = self._context.get_margin()
 
         dx = margin_left if self._anchor == "left" else width - margin_right
         x = self._x or Constant(dx)

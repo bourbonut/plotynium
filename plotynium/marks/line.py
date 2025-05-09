@@ -3,6 +3,7 @@ from detroit.selection import Selection
 
 import detroit as d3
 
+from .mark import Mark
 from .style import Style
 from ..domain import domain
 from ..scaler import Scaler, determine_scaler
@@ -10,7 +11,7 @@ from ..getter import getter
 from ..types import Data, T
 from ..context import Context, MarkContext
 
-class Line(Style[T]):
+class Line(Style[T], Mark):
     """
     Marker for drawing lines between point coordinates.
 
@@ -50,6 +51,7 @@ class Line(Style[T]):
         stroke_dasharray: str | None = None,
         opacity: float = 1.,
     ):
+        Mark.__init__(self)
         self._data = data
 
         self.x_label = x if isinstance(x, str) else None
@@ -76,8 +78,6 @@ class Line(Style[T]):
             opacity=opacity,
         )
 
-        self.context: MarkContext | None = None
-
     def set_context(self, context: Context):
         """
         Sets the mark context from the shared context
@@ -88,7 +88,7 @@ class Line(Style[T]):
             Shared context
         """
         self.set_colorscheme(context.get_color_scheme())
-        self.context = context.get_mark_context(0)
+        self._context = context.get_mark_context(0)
 
     def apply(self, svg: Selection):
         """
@@ -99,8 +99,8 @@ class Line(Style[T]):
         svg : Selection
             SVG Content
         """
-        x = self.context.x
-        y = self.context.y
+        x = self._context.x
+        y = self._context.y
         line = (
             d3.line()
             .x(
