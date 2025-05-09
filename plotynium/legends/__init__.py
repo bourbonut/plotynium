@@ -1,22 +1,21 @@
 import detroit as d3
 from detroit.selection import Selection
-from ..interpolations import Interpolation
-from ..schemes import Scheme
-from itertools import accumulate
-from functools import reduce
-from operator import iadd
-from .string_widths import STRING_WIDTHS
+from ..types import ColorScheme
 from ..context import Context, MarkContext
+from .discrete_color import DiscreteLegend
+from .continuous_color import ContinuousLegend
+from .symbol import SymbolLegend
+from .default_scheme import default_colorscheme
 
 __all__ = ["Legend"]
 
-class Legend:
+class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend):
 
     def __init__(
         self,
         labels_mapping: list[tuple[str, str]] | None = None,
         symbols_mapping: list[tuple[str, str]] | None = None,
-        scheme: Interpolation | Scheme | None = None,
+        scheme: ColorScheme | None = None,
         square_size: int = 15,
         symbol_size: int = 5,
         rows: int = 1,
@@ -27,9 +26,9 @@ class Legend:
         stroke_width: float = 1.5,
         font_size: int = 12,
     ):
-        self._labels_mapping = labels_mapping or d3.ticks(0, 1, 10)
-        self._symbols_mapping = symbols_mapping or []
-        self._scheme = scheme or Interpolation.RAINBOW
+        self._labels = labels_mapping or d3.ticks(0, 1, 10)
+        self._symbols = symbols_mapping or []
+        self._scheme = scheme or default_colorscheme(len(self._labels))
         self._square_size = square_size
         self._symbol_size = self._symbol_size
         self._rows = rows
@@ -48,105 +47,5 @@ class Legend:
         self.context = context.get_mark_context(0)
         self.context.horizontal_split(40)
 
-    def apply(self, context: Context):
-        pass
-
-    def discrete_color_legend(svg: Selection):
-        """
-        Adds to the SVG input, a legend described by labels associated with rectangles
-
-        Parameters
-        ----------
-        svg : Selection
-            SVG on which the legend will be added
-        """
-        pass
-        # rect_size = 15
-        # ratio = font_size / 2
-        # lengths = [reduce(iadd, [STRING_WIDTHS.get(char, 1) for char in str(label)], 0) for label in labels]
-        # offsets = [0] + [2 * rect_size + length * ratio for length in lengths[:-1]]
-        # offsets = list(accumulate(offsets))
-        #
-        # color = d3.scale_sequential([0, len(labels) - 1], scheme)
-        #
-        # legend = (
-        #     svg.append("g")
-        #     .attr("class", "legend")
-        #     .attr("transform", f"translate({margin_left // 2}, {margin_top // 2})")
-        #     .select_all("legend")
-        #     .data(labels)
-        #     .enter()
-        # )
-        #
-        # g = (
-        #     legend.append("g")
-        #     .attr("transform", lambda _, i: f"translate({offsets[i]}, 0)")
-        # )
-        #
-        # (
-        #     g.append("rect")
-        #     .attr("x", -rect_size / 2)
-        #     .attr("y", -rect_size / 2)
-        #     .attr("width", rect_size)
-        #     .attr("height", rect_size)
-        #     .attr("fill", lambda _, i: color(i))
-        #     .style("stroke", "none")
-        # )
-        #
-        # (
-        #     g.append("text")
-        #     .attr("x", rect_size * 0.5 + 4)
-        #     .attr("y", font_size // 3)
-        #     .text(lambda d: str(d))
-        #     .style("fill", "currentColor")
-        #     .style("font-size", font_size)
-        # )
-    
-    def symbol_legend(self, svg: Selection):
-        """
-        Adds to the SVG input, a legend described by labels associated with symbols
-
-        Parameters
-        ----------
-        svg : Selection
-            SVG on which the legend will be added
-        """
-        if not self._labels_mapping:
-            return
-        # ratio = self._font_size / 2
-        # lengths = [reduce(iadd, [STRING_WIDTHS.get(char, 1) for char in str(label)], 0) for label in labels]
-        # offsets = [0] + [6 * self._symbol_size + length * ratio for length in lengths[:-1]]
-        # offsets = list(accumulate(offsets))
-        #
-        # symbol_type = d3.scale_ordinal(labels, d3.SYMBOLS_STROKE)
-        # color = d3.scale_sequential([0, len(labels) - 1], scheme)
-        #
-        # legend = (
-        #     svg.append("g")
-        #     .attr("class", "legend")
-        #     .attr("transform", f"translate({margin_left // 2}, {margin_top // 2})")
-        #     .select_all("legend")
-        #     .data(labels)
-        #     .enter()
-        # )
-        #
-        # g = (
-        #     legend.append("g")
-        #     .attr("transform", lambda _, i: f"translate({offsets[i]}, 0)")
-        # )
-        #
-        # (
-        #     g.append("path")
-        #     .attr("d", lambda d: d3.symbol(symbol_type(d))())
-        #     .style("stroke", lambda _, i: color(i))
-        #     .style("fill", "none")
-        # )
-        #
-        # (
-        #     g.append("text")
-        #     .attr("x", self._symbol_size * 1.5 + 4)
-        #     .attr("y", font_size // 3)
-        #     .text(lambda d: str(d))
-        #     .style("fill", "currentColor")
-        #     .style("font-size", font_size)
-        # )
+    def apply(self, svg: Selection):
+        self.discrete_color_legend(svg)
