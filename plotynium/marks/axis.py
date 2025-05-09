@@ -152,6 +152,9 @@ class AxisX(Generic[T], Mark):
                 .text(self._label)
             )
 
+    def update_channel(self):
+        pass
+
 class AxisY(Generic[T], Mark):
     """
     Marker for making an Y axis.
@@ -293,3 +296,6 @@ class AxisY(Generic[T], Mark):
                 .attr("transform", f"translate({tx}, {ty})")
                 .text(self._label)
             )
+
+    def update_channel(self):
+        pass

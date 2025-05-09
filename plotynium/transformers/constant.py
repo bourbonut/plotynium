@@ -1,5 +1,7 @@
 from .transformer import Transformer
+from .picker import LegendPicker
 from ..types import T
+from collections import OrderedDict
 
 class Constant(Transformer[..., T]):
     """
@@ -12,6 +14,7 @@ class Constant(Transformer[..., T]):
     """
     def __init__(self, value: T):
         self._value = value
+        self._picker = LegendPicker()
 
     def __call__(self, *args) -> T:
         """
@@ -22,4 +25,16 @@ class Constant(Transformer[..., T]):
         T
             Stored value by the class
         """
-        return self._value
+        return self._picker(self._value)
+
+    def get_mapping(self) -> OrderedDict[str, T]:
+        """
+        Returns the mapping of the picker.
+
+        Returns
+        -------
+        OrderedDict[str, T]
+            Ordered dictionary where keys are labels and values are generally
+            colors.
+        """
+        return self._picker.get_mapping()

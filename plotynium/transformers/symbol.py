@@ -1,8 +1,10 @@
-from ..types import Index, T, Data
+from ..types import Index, T
 from ..getter import getter
 from .transformer import Transformer
 from .picker import LegendPicker
+from .default import DefaultTransformer
 from collections.abc import Callable
+from collections import OrderedDict
 import detroit as d3
 
 class Symbol(Transformer[T, str]):
@@ -40,12 +42,23 @@ class Symbol(Transformer[T, str]):
         symbol = d3.symbol(self._symbol_type(d))()
         return self._picker(symbol)
 
+    def get_mapping(self) -> OrderedDict[str, str]:
+        """
+        Returns the mapping of the picker.
+
+        Returns
+        -------
+        OrderedDict[str, str]
+            Ordered dictionary where keys are labels and values are colors.
+        """
+        return self._picker.get_mapping()
+
     @staticmethod
     def try_init(
         data: list[T],
         value: str | Index | Callable[[T], str] | None = None,
         default: Transformer[T, str] | None = None,
-    ) -> Callable[[T], str] | None:
+    ) -> Transformer[T, str] | None:
         """
         If `values` is a callable, it returns it.
         Else it creates a `Symbol` depending on `value` type.
@@ -62,13 +75,13 @@ class Symbol(Transformer[T, str]):
 
         Returns
         -------
-        Callable[[T], str] | None
+        Transformer[T, str] | None
            `Symbol` if `value` is an index or a key value else it could be directly
            `value` when it is callable. If all arguments are `None` (except `data`),
            the function returns `None`.
         """
         if callable(value):
-            return value
+            return DefaultTransformer(data, value)
         elif len(data) > 0 and (
             (
                 isinstance(value, str) and value in data[0]

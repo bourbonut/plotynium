@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from ..types import T
 from typing import Generic
 
@@ -101,3 +102,14 @@ class LegendPicker(Generic[T]):
             List of labels
         """
         return [self._labels.get(index, str(index)) for index in self._groups]
+
+    def get_mapping(self) -> OrderedDict[str, T]:
+        """
+        Returns a ordered dictionary of (label, value)
+
+        Returns
+        -------
+        OrderedDict[str, T]
+            Ordered dictionary where key are labels and values are colors
+        """
+        return OrderedDict([self[index] for index in self._groups])

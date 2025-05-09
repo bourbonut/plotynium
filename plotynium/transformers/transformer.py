@@ -2,6 +2,7 @@ from ..schemes import Scheme
 from ..interpolations import Interpolation
 from ..types import Index, U, V
 from collections.abc import Callable
+from collections import OrderedDict
 from abc import ABC, abstractmethod
 from typing import TypeVar, Generic
 
@@ -50,3 +51,16 @@ class Transformer(Generic[U, V], ABC):
             Parameter for color scheme
         """
         return NotImplementedError("This method is not implemented for this class.")
+
+
+    def get_mapping(self) -> OrderedDict[str, V]:
+        """
+        Returns the mapping (label, value) of the transformation.
+
+        Returns
+        -------
+        OrderedDict[str, V]
+            Ordered dictionary where keys are labels and values are generally
+            colors.
+        """
+        return OrderedDict()

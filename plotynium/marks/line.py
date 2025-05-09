@@ -9,7 +9,7 @@ from ..domain import domain
 from ..scaler import Scaler, determine_scaler
 from ..getter import getter
 from ..types import Data, T
-from ..context import Context, MarkContext
+from ..context import Context
 
 class Line(Style[T], Mark):
     """
@@ -123,6 +123,12 @@ class Line(Style[T], Mark):
             .attr("stroke-width", self._stroke_width)
             .attr("d", lambda d: line(d["values"]))
         )
+
+    def update_channel(self):
+        stroke_mapping = self._stroke.get_mapping()
+        fill_mapping = self._fill.get_mapping()
+        # print(stroke_mapping)
+        # print(fill_mapping)
 
     def group(self) -> list[dict]:
         """

@@ -1,6 +1,4 @@
-from .channel import Channel
-from ..schemes import Scheme
-from ..interpolations import Interpolation
+from .types import ColorScheme
 from typing import TypeVar
 from detroit.types import Scaler
 
@@ -108,7 +106,7 @@ class Context:
         margin_bottom: int,
         margin_right: int,
         font_size: int,
-        color_scheme: Interpolation | Scheme | None = None,
+        color_scheme: ColorScheme | None = None,
     ):
         """
 
@@ -132,7 +130,7 @@ class Context:
             
         margin_right : int
             
-        color_scheme : Interpolation | Scheme | None
+        color_scheme : ColorScheme | None
             
         """
         self._x = x
@@ -144,7 +142,6 @@ class Context:
         self._margin_bottom = margin_bottom 
         self._margin_right = margin_right
         self._font_size = font_size
-        self._channel = Channel()
         self._scheme = None
         self._groups = []
 
@@ -174,6 +171,3 @@ class Context:
         group_context = MarkContext(len(self._groups), x, y, width, height, self)
         self._groups.append(group_context)
         return group_context
-
-    def set_channel(self, channels: list[Channel]):
-        pass

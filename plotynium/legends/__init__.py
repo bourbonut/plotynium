@@ -39,13 +39,13 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend):
         self._stroke_width = stroke_width
         self._font_size = font_size
 
-        self.context: MarkContext | None = None
+        self._context: MarkContext | None = None
 
     def set_context(self, context: Context):
         self._font_size = context.get_font_size()
         self._scheme = context.get_color_scheme()
-        self.context = context.get_mark_context(0)
-        self.context.horizontal_split(40)
+        self._context = context.get_mark_context(0)
+        self._context.horizontal_split(40)
 
     def apply(self, svg: Selection):
         self.discrete_color_legend(svg)

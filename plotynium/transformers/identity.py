@@ -1,6 +1,7 @@
 from .transformer import Transformer
 from ..types import T
-from typing import Generic
+from .picker import LegendPicker
+from collections import OrderedDict
 
 class Identity(Transformer[T, T]):
     """
@@ -8,7 +9,7 @@ class Identity(Transformer[T, T]):
     This method returns the same value as the input.
     """
     def __init__(self):
-        pass
+        self._picker = LegendPicker()
 
     def __call__(self, value: T) -> T:
         """
@@ -25,3 +26,15 @@ class Identity(Transformer[T, T]):
             Same value as input
         """
         return value
+
+    def get_mapping(self) -> OrderedDict[str, T]:
+        """
+        Returns the mapping of the picker.
+
+        Returns
+        -------
+        OrderedDict[str, T]
+            Ordered dictionary where keys are labels and values are generally
+            colors.
+        """
+        return self._picker.get_mapping()

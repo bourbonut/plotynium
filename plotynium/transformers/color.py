@@ -1,11 +1,12 @@
-from ..options import ColorOptions
 from ..schemes import Scheme
 from ..interpolations import Interpolation
 from ..types import Index, T, Data
 from ..getter import getter
 from .transformer import Transformer
+from .default import DefaultTransformer
 from .picker import LegendPicker
 from collections.abc import Callable
+from collections import OrderedDict
 import detroit as d3
 
 def default_colorscheme(nb_labels: int) -> Interpolation | Scheme:
@@ -89,12 +90,23 @@ class Color(Transformer[T, str]):
         """
         self._color.set_interpolator(scheme)
 
+    def get_mapping(self) -> OrderedDict[str, str]:
+        """
+        Returns the mapping of the picker.
+
+        Returns
+        -------
+        OrderedDict[str, str]
+            Ordered dictionary where keys are labels and values are colors.
+        """
+        return self._picker.get_mapping()
+
     @staticmethod
     def try_init(
         data: list[T],
         value: str | Index | Callable[[T], str] | None = None,
         default: Transformer[T, str] | None = None,
-    ) -> Callable[[T], str] | None:
+    ) -> Transformer[T, str] | None:
         """
         If `values` is a callable, it returns it.
         Else it creates a `Color` depending on `value` type.
@@ -111,13 +123,13 @@ class Color(Transformer[T, str]):
 
         Returns
         -------
-        Callable[[T], str] | None
+        Transformer[T, str] | None
            `Color` if `value` is an index or a key value else it could be directly
            `value` when it is callable. If all arguments are `None` (except `data`),
            the function returns `None`.
         """
         if callable(value):
-            return value
+            return DefaultTransformer(data, value)
         elif len(data) > 0 and (
             (
                 isinstance(value, str) and value in data[0]

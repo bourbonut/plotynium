@@ -62,3 +62,10 @@ class Mark(ABC):
             SVG content defined by a `Selection` class from `detroit`
         """
         ...
+
+    @abstractmethod
+    def update_channel(self):
+        """
+        Method for sharing color channel through the context.
+        """
+        ...

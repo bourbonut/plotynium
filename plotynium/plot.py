@@ -149,6 +149,7 @@ def plot(
     # Apply mark on SVG content
     for mark in marks:
         mark.apply(svg)
+        mark.update_channel()
 
     # # Set legend
     # if symbol_options.legend:
