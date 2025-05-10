@@ -27,9 +27,10 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         stroke_width: float = 1.5,
         font_size: int = 12,
     ):
-        self._labels = labels_mapping or d3.ticks(0, 1, 10)
-        self._symbols = symbols_mapping or []
-        self._scheme = scheme or default_colorscheme(len(self._labels))
+        Mark.__init__(self)
+        self._labels_mapping = labels_mapping or [(str(x), str(x)) for x in d3.ticks(0, 1, 10)]
+        self._symbols_mapping = symbols_mapping or []
+        self._scheme = scheme
         self._square_size = square_size
         self._symbol_size = symbol_size
         self._rows = rows
@@ -40,7 +41,19 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         self._stroke_width = stroke_width
         self._font_size = font_size
 
+    def update(self, context: Context):
+        self._font_size = context.font_size
+        self._scheme = (
+            self._scheme or
+            context.color_scheme or
+            default_colorscheme(len(self._labels_mapping))
+        )
+
     def apply(self, svg: Selection, context: Context):
-        self._font_size = context.get_font_size()
-        self._scheme = context.get_color_scheme()
-        self.discrete_color_legend(svg)
+        self.update(context)
+        if len(self._symbols_mapping) > 0:
+            self.symbol_legend(svg)
+        elif len(self._labels_mapping) > 10:
+            self.continuous_color_legend(svg)
+        else:
+            self.discrete_color_legend(svg)

@@ -20,7 +20,7 @@ def default_colorscheme(nb_labels: int) -> ColorScheme:
         Color scheme
     """
     return (
-        Interpolation.RAINBOW
+        Interpolation.TURBO
         if nb_labels > 10
         else Scheme.OBSERVABLE_10
     )

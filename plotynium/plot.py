@@ -89,31 +89,38 @@ def plot(
     x = make_scaler(x_scaler_types, x_domains, x_ranges, nice=x_options.nice)
     y = make_scaler(y_scaler_types, y_domains, y_ranges, nice=y_options.nice)
 
-    # Set x axis
-    if not any(map(lambda mark: isinstance(mark, AxisX), marks)):
-        x_ticks = x.ticks() if hasattr(x, "ticks") else x.domain
-        x_tick_format = x.tick_format() if hasattr(x, "tick_format") else x.domain
-        marks.append(AxisX(x_ticks, tick_format=x_tick_format, label=x_label, fill=style_options.color))
+    # # Set x axis
+    # if not any(map(lambda mark: isinstance(mark, AxisX), marks)):
+    #     x_ticks = x.ticks() if hasattr(x, "ticks") else x.domain
+    #     x_tick_format = x.tick_format() if hasattr(x, "tick_format") else x.domain
+    #     marks.append(AxisX(x_ticks, tick_format=x_tick_format, label=x_label, fill=style_options.color))
+    #
+    # # Set y axis
+    # if not any(map(lambda mark: isinstance(mark, AxisY), marks)):
+    #     y_ticks = y.ticks() if hasattr(y, "ticks") else y.domain
+    #     y_tick_format = y.tick_format() if hasattr(y, "tick_format") else y.domain
+    #     marks.append(AxisY(y_ticks, tick_format=y_tick_format, label=y_label, fill=style_options.color))
+    #
+    # # Set x grid
+    # if not any(map(lambda mark: isinstance(mark, GridX), marks)) and x_options.grid or grid:
+    #     x_ticks = x.ticks() if hasattr(x, "ticks") else x.domain
+    #     marks.append(GridX(x_ticks))
+    #
+    # # Set y grid
+    # if not any(map(lambda mark: isinstance(mark, GridY), marks)) and y_options.grid or grid:
+    #     y_ticks = y.ticks() if hasattr(y, "ticks") else y.domain
+    #     marks.append(GridY(y_ticks))
 
-    # Set y axis
-    if not any(map(lambda mark: isinstance(mark, AxisY), marks)):
-        y_ticks = y.ticks() if hasattr(y, "ticks") else y.domain
-        y_tick_format = y.tick_format() if hasattr(y, "tick_format") else y.domain
-        marks.append(AxisY(y_ticks, tick_format=y_tick_format, label=y_label, fill=style_options.color))
-
-    # Set x grid
-    if not any(map(lambda mark: isinstance(mark, GridX), marks)) and x_options.grid or grid:
-        x_ticks = x.ticks() if hasattr(x, "ticks") else x.domain
-        marks.append(GridX(x_ticks))
-
-    # Set y grid
-    if not any(map(lambda mark: isinstance(mark, GridY), marks)) and y_options.grid or grid:
-        y_ticks = y.ticks() if hasattr(y, "ticks") else y.domain
-        marks.append(GridY(y_ticks))
-
-    # # Set legend
-    # if not any(map(lambda mark: isinstance(mark, Legend), marks)) and (color_options.legend or symbol_options.legend):
-    #     marks.append(Legend())
+    # Set legend
+    # legend = None
+    # found = False
+    # for mark in marks:
+    #     if isinstance(mark, Legend):
+    #         legend = mark
+    #         found = True
+    #         continue
+    # if not found and (color_options.legend or symbol_options.legend):
+    #     legend = Legend()
 
     context = Context(
         x,
@@ -147,12 +154,7 @@ def plot(
     for mark in marks:
         mark.apply(svg, context)
 
-    # # Set legend
-    # if symbol_options.legend:
-    #     legend_labels = label.legend([mark.legend_labels for mark in marks])
-    #     symbol_legend(svg, legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
-    # elif color_options.legend:
-    #     legend_labels = label.legend([mark.legend_labels for mark in marks])
-    #     discrete_color_legend(svg, legend_labels, margin_left, margin_top, color_options.scheme, style_options.font_size)
-    
+    # if legend is not None:
+    #     legend.apply(svg, context)
+
     return svg
