@@ -2,6 +2,7 @@ import detroit as d3
 from detroit.selection import Selection
 from ...types import ColorScheme
 from ...context import Context
+from ...transformers import Constant
 from .discrete_color import DiscreteLegend
 from .continuous_color import ContinuousLegend
 from .symbol import SymbolLegend
@@ -28,15 +29,15 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         font_size: int = 12,
     ):
         Mark.__init__(self)
-        self._labels_mapping = labels_mapping or [(str(x), str(x)) for x in d3.ticks(0, 1, 10)]
+        self._labels_mapping = labels_mapping or [(str(x), "none") for x in d3.ticks(0, 1, 10)]
         self._symbols_mapping = symbols_mapping or []
         self._scheme = scheme
         self._square_size = square_size
         self._symbol_size = symbol_size
         self._rows = rows
-        self._fill = fill
+        self._fill = Constant(fill or "black")
         self._fill_opacity = fill_opacity
-        self._stroke = stroke
+        self._stroke = Constant(stroke or "black")
         self._stroke_opactity = stroke_opacity
         self._stroke_width = stroke_width
         self._font_size = font_size
