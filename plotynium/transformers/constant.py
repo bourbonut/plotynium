@@ -25,7 +25,7 @@ class Constant(Transformer[..., T]):
         T
             Stored value by the class
         """
-        return self._picker(self._value)
+        return self._picker(self._value, self._value)
 
     def get_mapping(self) -> OrderedDict[str, T]:
         """

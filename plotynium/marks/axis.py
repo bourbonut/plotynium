@@ -9,7 +9,7 @@ from ..transformers import Identity, Constant
 from ..getter import getter
 from ..domain import domain
 from ..scaler import determine_scaler
-from ..context import Context, MarkContext
+from ..context import Context
 from ..types import Data, T
 
 class AxisX(Generic[T], Mark):
@@ -78,10 +78,7 @@ class AxisX(Generic[T], Mark):
         self.x_domain = domain(self._data, self._x)
         self.x_scaler_type = determine_scaler(self._data, self._x)
 
-    def set_context(self, context: Context):
-        self._context = context.get_mark_context(0)
-
-    def apply(self, svg: Selection):
+    def apply(self, svg: Selection, context: Context):
         """
         Add X axis to SVG content
 
@@ -90,10 +87,10 @@ class AxisX(Generic[T], Mark):
         svg : Selection
             SVG Content
         """
-        x = self._context.x
-        y = self._context.y
-        _, _, width, height = self._context.get_dims()
-        margin_top, margin_left, margin_bottom, margin_right = self._context.get_margin()
+        x = context.x
+        y = context.y
+        width, height = context.get_dims()
+        margin_top, margin_left, margin_bottom, margin_right = context.get_margin()
 
         dy = height - margin_bottom if self._anchor == "bottom" else margin_top
         y = self._y or Constant(dy)
@@ -152,8 +149,6 @@ class AxisX(Generic[T], Mark):
                 .text(self._label)
             )
 
-    def update_channel(self):
-        pass
 
 class AxisY(Generic[T], Mark):
     """
@@ -220,12 +215,8 @@ class AxisY(Generic[T], Mark):
         self.y_label = self._label
         self.y_domain = domain(self._data, self._y)
         self.y_scaler_type = determine_scaler(self._data, self._y)
-        self._context: MarkContext | None = None
 
-    def set_context(self, context: Context):
-        self._context = context.get_mark_context(0)
-
-    def apply(self, svg: Selection):
+    def apply(self, svg: Selection, context: Context):
         """
         Add Y axis to SVG content
 
@@ -234,10 +225,10 @@ class AxisY(Generic[T], Mark):
         svg : Selection
             SVG Content
         """
-        x = self._context.x
-        y = self._context.y
-        _, _, width, height = self._context.get_dims()
-        margin_top, margin_left, margin_bottom, margin_right = self._context.get_margin()
+        x = context.x
+        y = context.y
+        width, height = context.get_dims()
+        margin_top, margin_left, margin_bottom, margin_right = context.get_margin()
 
         dx = margin_left if self._anchor == "left" else width - margin_right
         x = self._x or Constant(dx)
@@ -296,6 +287,3 @@ class AxisY(Generic[T], Mark):
                 .attr("transform", f"translate({tx}, {ty})")
                 .text(self._label)
             )
-
-    def update_channel(self):
-        pass

@@ -77,7 +77,7 @@ class Color(Transformer[T, str]):
         """
         value = self._value(d)
         color = self._color(value)
-        return self._picker(color)
+        return self._picker(value, color)
 
     def set_color_scheme(self, scheme: Interpolation | Scheme):
         """

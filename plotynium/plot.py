@@ -67,7 +67,7 @@ def plot(
     y_options = init_options(y, YOptions)
     color_options = init_options(color, ColorOptions)
     style_options = init_options(style, StyleOptions)
-    symbol_options = init_options(symbol, SymbolOptions)
+    # symbol_options = init_options(symbol, SymbolOptions)
 
     # Set labels
     x_label = x_options.label
@@ -111,9 +111,9 @@ def plot(
         y_ticks = y.ticks() if hasattr(y, "ticks") else y.domain
         marks.append(GridY(y_ticks))
 
-    # Set legend
-    if not any(map(lambda mark: isinstance(mark, Legend), marks)) and (color_options.legend or symbol_options.legend):
-        marks.append(Legend())
+    # # Set legend
+    # if not any(map(lambda mark: isinstance(mark, Legend), marks)) and (color_options.legend or symbol_options.legend):
+    #     marks.append(Legend())
 
     context = Context(
         x,
@@ -127,9 +127,6 @@ def plot(
         style_options.font_size,
         color_options.scheme,
     )
-
-    for mark in marks:
-        mark.set_context(context)
 
     svg = (
         d3.create("svg")
@@ -148,8 +145,7 @@ def plot(
 
     # Apply mark on SVG content
     for mark in marks:
-        mark.apply(svg)
-        mark.update_channel()
+        mark.apply(svg, context)
 
     # # Set legend
     # if symbol_options.legend:

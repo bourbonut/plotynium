@@ -1,8 +1,8 @@
 from collections import OrderedDict
-from ..types import T
+from ..types import U, V
 from typing import Generic
 
-class LegendPicker(Generic[T]):
+class LegendPicker(Generic[U, V]):
     """
     Class which tracks labels established by `fill`, `stroke` or `symbol` arguments in
     `Mark`. It also helps to keep in memory the assocation `(label, value)`.
@@ -53,10 +53,10 @@ class LegendPicker(Generic[T]):
     """
     def __init__(self, labels: dict[int, str] | None = None):
         self._labels: dict[int, str] = labels or {}
-        self._indices: dict[T, int] = {}
-        self._groups: dict[int, T] = {}
+        self._indices: dict[U, int] = {}
+        self._groups: dict[int, V] = {}
 
-    def __call__(self, value: T) -> T:
+    def __call__(self, value: U, result: V) -> U:
         """
         It keeps in memory the value as label. If the value is not found in memory, 
         it makes a new label for this value, based on the current length of already
@@ -65,18 +65,20 @@ class LegendPicker(Generic[T]):
         Parameters
         ----------
         value : T
+            Value extracted of a list of data
+        result : V
             Result from a `Transformer`
 
         Returns
         -------
-        T
-            Same value without any modification
+        U
+            Same `result` without any modification
         """
         index = self._indices.setdefault(value, len(self._indices))
-        self._groups[index] = value
-        return value
+        self._groups[index] = result
+        return result
 
-    def __getitem__(self, index: int) -> tuple[str, T]:
+    def __getitem__(self, index: int) -> tuple[str, V]:
         """
         Returns the tuple `(label, value)`
 
@@ -87,7 +89,7 @@ class LegendPicker(Generic[T]):
 
         Returns
         -------
-        tuple[str, T]
+        tuple[str, V]
             `(label, value)`
         """
         return self._labels.get(index, str(index)), self._groups.get(index)
@@ -103,13 +105,13 @@ class LegendPicker(Generic[T]):
         """
         return [self._labels.get(index, str(index)) for index in self._groups]
 
-    def get_mapping(self) -> OrderedDict[str, T]:
+    def get_mapping(self) -> OrderedDict[str, V]:
         """
         Returns a ordered dictionary of (label, value)
 
         Returns
         -------
-        OrderedDict[str, T]
+        OrderedDict[str, V]
             Ordered dictionary where key are labels and values are colors
         """
         return OrderedDict([self[index] for index in self._groups])

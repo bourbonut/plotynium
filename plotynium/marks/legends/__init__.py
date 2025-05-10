@@ -1,7 +1,7 @@
 import detroit as d3
 from detroit.selection import Selection
 from ...types import ColorScheme
-from ...context import Context, MarkContext
+from ...context import Context
 from .discrete_color import DiscreteLegend
 from .continuous_color import ContinuousLegend
 from .symbol import SymbolLegend
@@ -40,16 +40,7 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         self._stroke_width = stroke_width
         self._font_size = font_size
 
-        self._context: MarkContext | None = None
-
-    def set_context(self, context: Context):
+    def apply(self, svg: Selection, context: Context):
         self._font_size = context.get_font_size()
         self._scheme = context.get_color_scheme()
-        self._context = context.get_mark_context(0)
-        self._context.horizontal_split(40)
-
-    def apply(self, svg: Selection):
         self.discrete_color_legend(svg)
-
-    def update_channel(self):
-        return

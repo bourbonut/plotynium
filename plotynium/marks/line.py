@@ -78,19 +78,7 @@ class Line(Style[T], Mark):
             opacity=opacity,
         )
 
-    def set_context(self, context: Context):
-        """
-        Sets the mark context from the shared context
-
-        Parameters
-        ----------
-        context : Context
-            Shared context
-        """
-        self.set_colorscheme(context.get_color_scheme())
-        self._context = context.get_mark_context(0)
-
-    def apply(self, svg: Selection):
+    def apply(self, svg: Selection, context: Context):
         """
         Add lines from stored points on SVG content.
 
@@ -99,8 +87,9 @@ class Line(Style[T], Mark):
         svg : Selection
             SVG Content
         """
-        x = self._context.x
-        y = self._context.y
+        self.set_colorscheme(context.color_scheme)
+        x = context.x
+        y = context.y
         line = (
             d3.line()
             .x(
@@ -123,12 +112,6 @@ class Line(Style[T], Mark):
             .attr("stroke-width", self._stroke_width)
             .attr("d", lambda d: line(d["values"]))
         )
-
-    def update_channel(self):
-        stroke_mapping = self._stroke.get_mapping()
-        fill_mapping = self._fill.get_mapping()
-        mapping = max(stroke_mapping, fill_mapping, key=lambda m: len(m))
-        self._context.set_mapping(labels_mapping=mapping)
 
     def group(self) -> list[dict]:
         """

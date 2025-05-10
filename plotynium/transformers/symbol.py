@@ -38,8 +38,8 @@ class Symbol(Transformer[T, str]):
         str
             Symbol SVG path value
         """
-        d = self._value(d)
-        symbol = d3.symbol(self._symbol_type(d))()
+        value = self._value(d)
+        symbol = d3.symbol(self._symbol_type(value))()
         return self._picker(symbol)
 
     def get_mapping(self) -> OrderedDict[str, str]:

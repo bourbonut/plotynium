@@ -25,7 +25,7 @@ class Identity(Transformer[T, T]):
         T
             Same value as input
         """
-        return value
+        return self._picker(value, value)
 
     def get_mapping(self) -> OrderedDict[str, T]:
         """
