@@ -15,7 +15,6 @@ class ContinuousLegend:
         rect_width = 2
         height = 10
         data = list(range(0, width, rect_width))
-        svg = svg.append("g").attr("transform", "translate(20, 20)")
         (
             svg.append("g")
             .attr("aria-label", "legend gradient")

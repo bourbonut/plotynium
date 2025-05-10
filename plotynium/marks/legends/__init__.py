@@ -25,7 +25,7 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         fill_opacity: float = 1.,
         stroke: str | None = None,
         stroke_opacity: float = 1.,
-        stroke_width: float = 1.5,
+        stroke_width: float = 1.,
         font_size: int = 12,
     ):
         Mark.__init__(self)
