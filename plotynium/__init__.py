@@ -9,7 +9,7 @@ from .marks import (
     AxisY as axis_y,
     GridX as grid_x,
     GridY as grid_y,
-    Legend as legend,
 )
+from .legends import Legend as legend
 from .schemes import Scheme
 from .interpolations import Interpolation

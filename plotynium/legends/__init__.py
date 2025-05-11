@@ -1,13 +1,13 @@
 import detroit as d3
 from detroit.selection import Selection
-from ...types import ColorScheme
-from ...context import Context
-from ...transformers import Constant
+from ..types import ColorScheme
+from ..context import Context
+from ..transformers import Constant
 from .discrete_color import DiscreteLegend
 from .continuous_color import ContinuousLegend
 from .symbol import SymbolLegend
 from .default_scheme import default_colorscheme
-from ..mark import Mark
+from ..marks import Mark
 
 __all__ = ["Legend"]
 
@@ -17,6 +17,8 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         self,
         labels_mapping: list[tuple[str, str]] | None = None,
         symbols_mapping: list[tuple[str, str]] | None = None,
+        width: int | None = None,
+        height: int | None = None,
         scheme: ColorScheme | None = None,
         square_size: int = 15,
         symbol_size: int = 5,
@@ -29,6 +31,8 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         font_size: int = 12,
     ):
         Mark.__init__(self)
+        self._width = width or 240
+        self._height = height or 50
         self._labels_mapping = labels_mapping or [(str(x), "none") for x in d3.ticks(0, 1, 10)]
         self._symbols_mapping = symbols_mapping or []
         self._scheme = scheme

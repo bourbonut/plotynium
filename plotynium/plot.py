@@ -1,21 +1,43 @@
-from .marks import AxisX, AxisY, GridX, GridY, Legend, Mark
+from .marks import AxisX, AxisY, GridX, GridY, Mark
 from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions, init_options
 from .scaler import make_scaler
 from .context import Context
+from .legends import Legend
 from . import label
+from math import sqrt
+from functools import partial
 
 import detroit as d3
 from detroit.selection import Selection
 
+def auto_width(legend_width: bool, only_legend: bool, has_legend: bool):
+    if only_legend and has_legend:
+        return legend_width
+    else:
+        return 640
+
+def auto_height(
+    width: int,
+    legend_height: int,
+    only_axis: bool,
+    axis_is_x: bool,
+    has_legend: bool,
+    only_legend: bool,
+):
+    if (only_legend and has_legend) or (only_axis and axis_is_x):
+        return legend_height
+    elif has_legend:
+        return legend_height + int(width / sqrt(2))
+    return int(width / sqrt(2))
 
 def plot(
     marks: list[Mark],
-    width: int = 640,
-    height: int = 438,
     margin_top: int = 10,
     margin_left: int = 45,
     margin_bottom: int = 45,
     margin_right: int = 10,
+    width: int | None = None,
+    height: int | None = None,
     grid: bool = False,
     x: XOptions | dict | None = None,
     y: YOptions | dict | None = None,
@@ -60,14 +82,39 @@ def plot(
     Selection
         Generated SVG plot
     """
+    # Prepare options
     marks = list(marks)
-    width = width or 640
-    height = height or 438
+    if len(marks) == 0:
+        raise ValueError("Empty list of marks")
     x_options = init_options(x, XOptions)
     y_options = init_options(y, YOptions)
     color_options = init_options(color, ColorOptions)
     style_options = init_options(style, StyleOptions)
-    # symbol_options = init_options(symbol, SymbolOptions)
+    symbol_options = init_options(symbol, SymbolOptions)
+
+    # Mark types
+    def check_types(*types):
+        return lambda mark: isinstance(mark, tuple(types))
+
+    axis_marks = list(filter(check_types(AxisX, AxisY), marks))
+    only_axis = len(axis_marks) == 1
+    axis_is_x = isinstance(axis_marks[0], AxisX) if only_axis else False
+    legend_marks = list(filter(check_types(Legend), marks))
+    has_legend = len(legend_marks) >= 1 or color_options.legend or symbol_options.legend
+    only_legend = len(legend_marks) == 1
+    legend_width = 240
+    legend_height = 50
+    if len(legend_marks) > 1:
+        raise ValueError("There can be only one legend.")
+    elif len(legend_marks) == 1:
+        legend_width = legend_marks[0]._width
+        legend_height = legend_marks[0]._height
+
+    # Set dimensions
+    width = width or auto_width(legend_width, only_legend, has_legend)
+    height = height or auto_height(
+        width, legend_height, only_axis, axis_is_x, has_legend, only_legend
+    )
 
     # Set labels
     x_label = x_options.label
