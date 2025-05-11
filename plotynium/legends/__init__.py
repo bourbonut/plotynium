@@ -9,7 +9,10 @@ from .symbol import SymbolLegend
 from .default_scheme import default_colorscheme
 from ..marks import Mark
 
-__all__ = ["Legend"]
+__all__ = ["Legend", "DEFAULT_LEGEND_WIDTH", "DEFAULT_LEGEND_HEIGHT"]
+
+DEFAULT_LEGEND_WIDTH = 240
+DEFAULT_LEGEND_HEIGHT = 50
 
 class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
 
@@ -31,8 +34,8 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         font_size: int = 12,
     ):
         Mark.__init__(self)
-        self._width = width or 240
-        self._height = height or 50
+        self._width = width or DEFAULT_LEGEND_WIDTH
+        self._height = height or DEFAULT_LEGEND_HEIGHT
         self._labels_mapping = labels_mapping or [(str(x), "none") for x in d3.ticks(0, 1, 10)]
         self._symbols_mapping = symbols_mapping or []
         self._scheme = scheme

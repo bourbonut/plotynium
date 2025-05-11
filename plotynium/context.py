@@ -1,60 +1,76 @@
-from dataclasses import dataclass, field
-from collections import OrderedDict
-from .types import ColorScheme
+from dataclasses import dataclass
+from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions
 from detroit.types import Scaler
 
 __all__ = ["Context"]
 
 @dataclass
+class Margin:
+    top: int
+    left: int
+    bottom: int
+    right: int
+
 class Context:
-    """
+    def __init__(
+        self,
+        width: int,
+        height: int,
+        margin: Margin,
+        x_options: XOptions,
+        y_options: YOptions,
+        color_options: ColorOptions,
+        style_options: StyleOptions,
+        symbol_options: SymbolOptions,
+        x_scale: Scaler,
+        y_scale: Scaler,
+        x_label: str | None = None,
+        y_label: str | None = None,
+    ):
+        self._width = width
+        self._height = height
+        self._margin = margin
 
-    Parameters
-    ----------
-    x : Scaler
-        This argument is a scaler for x axis which behaves like a function. By
-        passing a data, it returns the x position on the plot.
-    y : Scaler
-        This argument is a scaler for y axis which behaves like a function. By
-        passing a data, it returns the y position on the plot.
-    width : int
+        self._x_options = x_options
+        self._y_options = y_options
+        self._color_options = color_options
+        self._style_options = style_options
+        self._symbol_options = symbol_options
 
-    height : int
+        self._color_labels = []
+        self._symbol_options = []
 
-    margin_top : int
-        
-    margin_left : int
-        
-    margin_bottom : int
-        
-    margin_right : int
-        
-    color_scheme : ColorScheme | None
-        
-    labels : list[str] | None
-        
-    """
-    x: Scaler
-    y: Scaler
-    width: int
-    height: int
-    margin_top: int
-    margin_left: int
-    margin_bottom: int
-    margin_right: int
-    font_size: int
-    color_scheme: ColorScheme | None = None
-    labels: list[str] | None = None
-    labels_mapping: OrderedDict[str, str] = field(default_factory=OrderedDict)
-    symbols_mapping: OrderedDict[str, str] = field(default_factory=OrderedDict)
+        self._x = x_scale
+        self._y = y_scale
 
-    def get_dims(self) -> tuple[int, int]:
-        return (self.width, self.height)
+    @property
+    def x_label(self):
+        return self._x_label
 
-    def get_margin(self) -> tuple[int, int, int, int]:
-        return (
-            self.margin_top,
-            self.margin_left,
-            self.margin_bottom,
-            self.margin_right,
-        )
+    @property
+    def y_label(self):
+        return self._y_label
+
+    @property
+    def width(self):
+        return self._width
+
+    @property
+    def height(self):
+        return self._height
+
+    @property
+    def color(self):
+        return self._style_options.color
+
+    @property
+    def font_size(self):
+        return self._style_options.font_size
+
+    @property
+    def font_family(self):
+        return self._style_options.font_family
+
+    @property
+    def background(self):
+        return self._style_options.background

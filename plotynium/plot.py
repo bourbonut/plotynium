@@ -1,34 +1,12 @@
-from .marks import AxisX, AxisY, GridX, GridY, Mark
+from .marks import AxisX, AxisY, GridX, GridY, Mark, check_types
 from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions, init_options
-from .scaler import make_scaler
-from .context import Context
-from .legends import Legend
-from . import label
-from math import sqrt
-from functools import partial
+from .context import Context, Margin
+from .dimensions import dimensions
+from .scaler import determine_label, make_scaler
+# from .legends import Legend
 
 import detroit as d3
 from detroit.selection import Selection
-
-def auto_width(legend_width: bool, only_legend: bool, has_legend: bool):
-    if only_legend and has_legend:
-        return legend_width
-    else:
-        return 640
-
-def auto_height(
-    width: int,
-    legend_height: int,
-    only_axis: bool,
-    axis_is_x: bool,
-    has_legend: bool,
-    only_legend: bool,
-):
-    if (only_legend and has_legend) or (only_axis and axis_is_x):
-        return legend_height
-    elif has_legend:
-        return legend_height + int(width / sqrt(2))
-    return int(width / sqrt(2))
 
 def plot(
     marks: list[Mark],
@@ -92,36 +70,52 @@ def plot(
     style_options = init_options(style, StyleOptions)
     symbol_options = init_options(symbol, SymbolOptions)
 
-    # Mark types
-    def check_types(*types):
-        return lambda mark: isinstance(mark, tuple(types))
+    # Set x axis
+    if not any(map(check_types(AxisX), marks)):
+        x_ticks = x.ticks() if hasattr(x, "ticks") else x.get_domain()
+        x_tick_format = x.tick_format() if hasattr(x, "tick_format") else x.get_domain()
+        marks.append(
+            AxisX(
+                x_ticks,
+                tick_format=x_tick_format,
+                label=x_options.label,
+                fill=style_options.color,
+            )
+        )
 
-    axis_marks = list(filter(check_types(AxisX, AxisY), marks))
-    only_axis = len(axis_marks) == 1
-    axis_is_x = isinstance(axis_marks[0], AxisX) if only_axis else False
-    legend_marks = list(filter(check_types(Legend), marks))
-    has_legend = len(legend_marks) >= 1 or color_options.legend or symbol_options.legend
-    only_legend = len(legend_marks) == 1
-    legend_width = 240
-    legend_height = 50
-    if len(legend_marks) > 1:
-        raise ValueError("There can be only one legend.")
-    elif len(legend_marks) == 1:
-        legend_width = legend_marks[0]._width
-        legend_height = legend_marks[0]._height
+    # Set y axis
+    if not any(map(check_types(AxisY), marks)):
+        y_ticks = y.ticks() if hasattr(y, "ticks") else y.get_domain()
+        y_tick_format = y.tick_format() if hasattr(y, "tick_format") else y.get_domain()
+        marks.append(
+            AxisY(
+                y_ticks,
+                tick_format=y_tick_format,
+                label=y_options.label,
+                fill=style_options.color,
+            )
+        )
 
-    # Set dimensions
-    width = width or auto_width(legend_width, only_legend, has_legend)
-    height = height or auto_height(
-        width, legend_height, only_axis, axis_is_x, has_legend, only_legend
-    )
+    # Set x grid
+    if not any(map(check_types(GridX), marks)) and x_options.grid or grid:
+        x_ticks = x.ticks() if hasattr(x, "ticks") else x.get_domain()
+        marks.append(GridX(x_ticks))
+
+    # Set y grid
+    if not any(map(check_types(GridY), marks)) and y_options.grid or grid:
+        y_ticks = y.ticks() if hasattr(y, "ticks") else y.get_domain()
+        marks.append(GridY(y_ticks))
+
+    user_legend_option = color_options.legend or symbol_options.legend
+    width, height = dimensions(marks, user_legend_option, width, height)
+    margin = Margin(margin_top, margin_left, margin_bottom, margin_right)
 
     # Set labels
     x_label = x_options.label
     y_label = y_options.label
     if x_label is None and y_label is None:
-        x_label = label.reduce([mark.x_label for mark in marks])
-        y_label = label.reduce([mark.y_label for mark in marks])
+        x_label = determine_label([mark.x_label for mark in marks])
+        y_label = determine_label([mark.y_label for mark in marks])
 
     # Set scalers
     x_scaler_types = [mark.x_scaler_type for mark in marks]
@@ -130,33 +124,26 @@ def plot(
     x_domains = [mark.x_domain for mark in marks]
     y_domains = [mark.y_domain for mark in marks]
 
-    x_ranges = [margin_left, width - margin_right]
-    y_ranges = [height - margin_bottom, margin_top]
+    x_ranges = [margin.left, width - margin.right]
+    y_ranges = [height - margin.bottom, margin.top]
 
-    x = make_scaler(x_scaler_types, x_domains, x_ranges, nice=x_options.nice)
-    y = make_scaler(y_scaler_types, y_domains, y_ranges, nice=y_options.nice)
+    x_scale = make_scaler(x_scaler_types, x_domains, x_ranges, nice=x_options.nice)
+    y_scale = make_scaler(y_scaler_types, y_domains, y_ranges, nice=y_options.nice)
 
-    # # Set x axis
-    # if not any(map(lambda mark: isinstance(mark, AxisX), marks)):
-    #     x_ticks = x.ticks() if hasattr(x, "ticks") else x.domain
-    #     x_tick_format = x.tick_format() if hasattr(x, "tick_format") else x.domain
-    #     marks.append(AxisX(x_ticks, tick_format=x_tick_format, label=x_label, fill=style_options.color))
-    #
-    # # Set y axis
-    # if not any(map(lambda mark: isinstance(mark, AxisY), marks)):
-    #     y_ticks = y.ticks() if hasattr(y, "ticks") else y.domain
-    #     y_tick_format = y.tick_format() if hasattr(y, "tick_format") else y.domain
-    #     marks.append(AxisY(y_ticks, tick_format=y_tick_format, label=y_label, fill=style_options.color))
-    #
-    # # Set x grid
-    # if not any(map(lambda mark: isinstance(mark, GridX), marks)) and x_options.grid or grid:
-    #     x_ticks = x.ticks() if hasattr(x, "ticks") else x.domain
-    #     marks.append(GridX(x_ticks))
-    #
-    # # Set y grid
-    # if not any(map(lambda mark: isinstance(mark, GridY), marks)) and y_options.grid or grid:
-    #     y_ticks = y.ticks() if hasattr(y, "ticks") else y.domain
-    #     marks.append(GridY(y_ticks))
+    ctx = Context(
+        width,
+        height,
+        margin,
+        x_options,
+        y_options,
+        color_options,
+        style_options,
+        symbol_options,
+        x_scale,
+        y_scale,
+        x_label,
+        y_label,
+    )
 
     # Set legend
     # legend = None
@@ -169,37 +156,24 @@ def plot(
     # if not found and (color_options.legend or symbol_options.legend):
     #     legend = Legend()
 
-    context = Context(
-        x,
-        y,
-        width,
-        height,
-        margin_top,
-        margin_left,
-        margin_bottom,
-        margin_right,
-        style_options.font_size,
-        color_options.scheme,
-    )
-
     svg = (
         d3.create("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("viewBox", f"0 0 {width} {height}")
-        .style("font-size", f"{style_options.font_size}px")
-        .style("font-family", style_options.font_family)
+        .attr("width", ctx.width)
+        .attr("height", ctx.height)
+        .attr("viewBox", f"0 0 {ctx.width} {ctx.height}")
+        .style("font-size", f"{ctx.font_size}px")
+        .style("font-family", ctx.font_family)
     )
 
     default_style = StyleOptions()
-    if style_options.background != default_style.background:
-        svg.style("background", style_options.background)
-    if style_options.color != default_style.color:
-        svg.style("color", style_options.color)
+    if ctx.background != default_style.background:
+        svg.style("background", ctx.background)
+    if ctx.color != default_style.color:
+        svg.style("color", ctx.color)
 
     # Apply mark on SVG content
     for mark in marks:
-        mark.apply(svg, context)
+        mark.apply(svg, ctx)
 
     # if legend is not None:
     #     legend.apply(svg, context)
