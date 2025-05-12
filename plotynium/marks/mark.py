@@ -36,7 +36,7 @@ class Mark(ABC):
         self.y_scaler_type: Scaler | None = None
 
     @abstractmethod
-    def apply(self, svg: Selection, context: Context):
+    def apply(self, svg: Selection, ctx: Context):
         """
         Method which is called by `plot` and which should change `svg` content.
 
@@ -44,7 +44,7 @@ class Mark(ABC):
         ----------
         svg : Selection
             SVG content defined by a `Selection` class from `detroit`
-        context : Context
+        ctx : Context
             SVG context containing shared data between marks
         """
         ...

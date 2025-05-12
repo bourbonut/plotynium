@@ -78,7 +78,7 @@ class Line(Style[T], Mark):
             opacity=opacity,
         )
 
-    def apply(self, svg: Selection, context: Context):
+    def apply(self, svg: Selection, ctx: Context):
         """
         Add lines from stored points on SVG content.
 
@@ -87,9 +87,9 @@ class Line(Style[T], Mark):
         svg : Selection
             SVG Content
         """
-        self.set_colorscheme(context.color_scheme)
-        x = context.x
-        y = context.y
+        self.set_colorscheme(ctx.color_scheme)
+        x = ctx.x
+        y = ctx.y
         line = (
             d3.line()
             .x(

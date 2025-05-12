@@ -145,18 +145,6 @@ def plot(
         y_ticks = y.ticks() if hasattr(y, "ticks") else y.get_domain()
         marks.append(GridY(y_ticks))
 
-
-    # Set legend
-    # legend = None
-    # found = False
-    # for mark in marks:
-    #     if isinstance(mark, Legend):
-    #         legend = mark
-    #         found = True
-    #         continue
-    # if not found and (color_options.legend or symbol_options.legend):
-    #     legend = Legend()
-
     svg = (
         d3.create("svg")
         .attr("width", ctx.width)

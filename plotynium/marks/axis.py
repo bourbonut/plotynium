@@ -78,7 +78,7 @@ class AxisX(Generic[T], Mark):
         self.x_domain = domain(self._data, self._x)
         self.x_scaler_type = determine_scaler(self._data, self._x)
 
-    def apply(self, svg: Selection, context: Context):
+    def apply(self, svg: Selection, ctx: Context):
         """
         Add X axis to SVG content
 
@@ -87,12 +87,10 @@ class AxisX(Generic[T], Mark):
         svg : Selection
             SVG Content
         """
-        x = context.x
-        y = context.y
-        height = context.height
-        margin = context.margin
+        x = ctx.x
+        y = ctx.y
 
-        dy = height - margin.bottom if self._anchor == "bottom" else margin.top
+        dy = ctx.height - ctx.margin.bottom if self._anchor == "bottom" else ctx.margin.top
         y = self._y or Constant(dy)
         dir = -1 if self._anchor == "top" else 1
 
@@ -134,9 +132,9 @@ class AxisX(Generic[T], Mark):
         if self._label is not None:
             tx = (x.get_range()[0] + x.get_range()[1]) // 2
             ty = (
-                height - margin.bottom // 4
+                ctx.height - ctx.margin.bottom // 4
                 if self._anchor == "bottom" else
-                margin.top // 4
+                ctx.margin.top // 4
             )
             (
                 svg.append("g")
@@ -216,7 +214,7 @@ class AxisY(Generic[T], Mark):
         self.y_domain = domain(self._data, self._y)
         self.y_scaler_type = determine_scaler(self._data, self._y)
 
-    def apply(self, svg: Selection, context: Context):
+    def apply(self, svg: Selection, ctx: Context):
         """
         Add Y axis to SVG content
 
@@ -225,12 +223,10 @@ class AxisY(Generic[T], Mark):
         svg : Selection
             SVG Content
         """
-        x = context.x
-        y = context.y
-        width = context.width
-        margin = context.margin
+        x = ctx.x
+        y = ctx.y
 
-        dx = margin.left if self._anchor == "left" else width - margin.right
+        dx = ctx.margin.left if self._anchor == "left" else ctx.width - ctx.margin.right
         x = self._x or Constant(dx)
         dir = -1 if self._anchor == "left" else 1
 
@@ -273,9 +269,9 @@ class AxisY(Generic[T], Mark):
         if self._label is not None:
             tx = -(y.get_range()[0] + y.get_range()[1]) // 2
             ty = (
-                margin.left // 4
+                ctx.margin.left // 4
                 if self._anchor == "left" else
-                width - margin.right //  4
+                ctx.width - ctx.margin.right //  4
             )
             (
                 svg.append("g")
