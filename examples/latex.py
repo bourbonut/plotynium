@@ -13,6 +13,7 @@ data = [
 plot = ply.plot(
     marks=[ply.line(data, x="x", y="y", stroke="label")],
     color={"legend": True, "scheme": ply.Scheme.OBSERVABLE_10},
+    y={"specifier": "~s"}
 )
 
 with open("figure.svg", "w") as file:

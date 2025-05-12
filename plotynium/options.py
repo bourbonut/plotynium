@@ -131,6 +131,8 @@ class XOptions:
     nice: bool = field(default=False)
     grid: bool = field(default=False)
     label: str | None = field(default=None)
+    count: int | None = field(default=None)
+    specifier: str | None = field(default=None)
 
     @staticmethod
     def new(values: dict | None = None) -> TXOptions:
@@ -141,6 +143,8 @@ class XOptions:
             nice=values.get("nice", default_values.nice),
             grid=values.get("grid", default_values.grid),
             label=values.get("label", default_values.label),
+            count=values.get("count", default_values.count),
+            specifier=values.get("specifier", default_values.specifier),
         )
 
 @dataclass
@@ -160,6 +164,8 @@ class YOptions:
     nice: bool = field(default=True)
     grid: bool = field(default=False)
     label: str | None = field(default=None)
+    count: int | None = field(default=None)
+    specifier: str | None = field(default=None)
 
     @staticmethod
     def new(values: dict | None = None) -> TYOptions:
@@ -170,6 +176,8 @@ class YOptions:
             nice=values.get("nice", default_values.nice),
             grid=values.get("grid", default_values.grid),
             label=values.get("label", default_values.label),
+            count=values.get("count", default_values.count),
+            specifier=values.get("specifier", default_values.specifier),
         )
 
 def init_options(values: T | dict | None, option_class: type[T]) -> T:

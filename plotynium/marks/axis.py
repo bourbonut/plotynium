@@ -89,10 +89,10 @@ class AxisX(Generic[T], Mark):
         """
         x = context.x
         y = context.y
-        width, height = context.get_dims()
-        margin_top, margin_left, margin_bottom, margin_right = context.get_margin()
+        height = context.height
+        margin = context.margin
 
-        dy = height - margin_bottom if self._anchor == "bottom" else margin_top
+        dy = height - margin.bottom if self._anchor == "bottom" else margin.top
         y = self._y or Constant(dy)
         dir = -1 if self._anchor == "top" else 1
 
@@ -134,9 +134,9 @@ class AxisX(Generic[T], Mark):
         if self._label is not None:
             tx = (x.get_range()[0] + x.get_range()[1]) // 2
             ty = (
-                height - margin_bottom // 4
+                height - margin.bottom // 4
                 if self._anchor == "bottom" else
-                margin_top // 4
+                margin.top // 4
             )
             (
                 svg.append("g")
@@ -227,10 +227,10 @@ class AxisY(Generic[T], Mark):
         """
         x = context.x
         y = context.y
-        width, height = context.get_dims()
-        margin_top, margin_left, margin_bottom, margin_right = context.get_margin()
+        width = context.width
+        margin = context.margin
 
-        dx = margin_left if self._anchor == "left" else width - margin_right
+        dx = margin.left if self._anchor == "left" else width - margin.right
         x = self._x or Constant(dx)
         dir = -1 if self._anchor == "left" else 1
 
@@ -273,9 +273,9 @@ class AxisY(Generic[T], Mark):
         if self._label is not None:
             tx = -(y.get_range()[0] + y.get_range()[1]) // 2
             ty = (
-                margin_left // 4
+                margin.left // 4
                 if self._anchor == "left" else
-                width - margin_right //  4
+                width - margin.right //  4
             )
             (
                 svg.append("g")

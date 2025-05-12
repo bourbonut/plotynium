@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions
 from detroit.types import Scaler
+from .types import ColorScheme
+from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions
 
 __all__ = ["Context"]
 
@@ -44,33 +45,49 @@ class Context:
         self._y = y_scale
 
     @property
-    def x_label(self):
+    def x(self) -> Scaler:
+        return self._x
+
+    @property
+    def y(self) -> Scaler:
+        return self._y
+
+    @property
+    def x_label(self) -> str | None:
         return self._x_label
 
     @property
-    def y_label(self):
+    def y_label(self) -> str | None:
         return self._y_label
 
     @property
-    def width(self):
+    def width(self) -> str:
         return self._width
 
     @property
-    def height(self):
+    def height(self) -> str:
         return self._height
 
     @property
-    def color(self):
+    def margin(self) -> Margin:
+        return self._margin
+
+    @property
+    def color(self) -> str:
         return self._style_options.color
 
     @property
-    def font_size(self):
+    def font_size(self) -> int:
         return self._style_options.font_size
 
     @property
-    def font_family(self):
+    def font_family(self) -> str:
         return self._style_options.font_family
 
     @property
-    def background(self):
+    def background(self) -> str:
         return self._style_options.background
+
+    @property
+    def color_scheme(self) -> ColorScheme:
+        return self._color_options.scheme
