@@ -1,14 +1,13 @@
 from math import sqrt
 from .marks import AxisX, AxisY, Mark, check_types
-from .legends import Legend, DEFAULT_LEGEND_WIDTH, DEFAULT_LEGEND_HEIGHT
-
-DEFAULT_WIDTH = 640 # without legend
+from .legends import Legend
+from .properties import DEFAULT_LEGEND_WIDTH, DEFAULT_LEGEND_HEIGHT, DEFAULT_CANVAS_WIDTH
 
 def auto_width(legend_width: bool, only_legend: bool, has_legend: bool) -> int:
     if only_legend and has_legend:
         return legend_width
     else:
-        return DEFAULT_WIDTH
+        return DEFAULT_CANVAS_WIDTH
 
 def auto_height(
     width: int,

@@ -8,11 +8,10 @@ from .continuous_color import ContinuousLegend
 from .symbol import SymbolLegend
 from .default_scheme import default_colorscheme
 from ..marks import Mark
+from ..properties import DEFAULT_LEGEND_WIDTH, DEFAULT_LEGEND_HEIGHT
 
-__all__ = ["Legend", "DEFAULT_LEGEND_WIDTH", "DEFAULT_LEGEND_HEIGHT"]
+__all__ = ["Legend"]
 
-DEFAULT_LEGEND_WIDTH = 240
-DEFAULT_LEGEND_HEIGHT = 50
 
 class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
 

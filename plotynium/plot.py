@@ -1,6 +1,7 @@
 from .marks import AxisX, AxisY, GridX, GridY, Mark, check_types
 from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions, init_options
-from .context import Context, Margin
+from .context import Context
+from .properties import Margin 
 from .dimensions import dimensions
 from .scaler import determine_label, make_scaler
 # from .legends import Legend

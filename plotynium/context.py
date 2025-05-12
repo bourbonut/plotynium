@@ -1,16 +1,9 @@
-from dataclasses import dataclass
 from detroit.types import Scaler
 from .types import ColorScheme
 from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions
+from .properties import Margin
 
 __all__ = ["Context"]
-
-@dataclass
-class Margin:
-    top: int
-    left: int
-    bottom: int
-    right: int
 
 class Context:
     def __init__(
