@@ -1,16 +1,15 @@
 from detroit.types import Scaler
 from .types import ColorScheme
 from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions
-from .properties import Margin
+from .properties import Margin, CanvasProperties, LegendProperties
 
 __all__ = ["Context"]
 
 class Context:
     def __init__(
         self,
-        width: int,
-        height: int,
-        margin: Margin,
+        canvas_properties: CanvasProperties,
+        legend_properties: LegendProperties,
         x_options: XOptions,
         y_options: YOptions,
         color_options: ColorOptions,
@@ -21,9 +20,8 @@ class Context:
         x_label: str | None = None,
         y_label: str | None = None,
     ):
-        self._width = width
-        self._height = height
-        self._margin = margin
+        self._canvas_properties = canvas_properties
+        self._legend_properties = legend_properties
 
         self._x_options = x_options
         self._y_options = y_options
@@ -55,15 +53,19 @@ class Context:
 
     @property
     def width(self) -> str:
-        return self._width
+        return self._canvas_properties.width
 
     @property
     def height(self) -> str:
-        return self._height
+        return self._canvas_properties.height
 
     @property
     def margin(self) -> Margin:
-        return self._margin
+        return self._canvas_properties.margin
+
+    @property
+    def canvas_translate(self) -> str | None:
+        return self._canvas_properties.translate
 
     @property
     def color(self) -> str:

@@ -8,7 +8,7 @@ from .continuous_color import ContinuousLegend
 from .symbol import SymbolLegend
 from .default_scheme import default_colorscheme
 from ..marks import Mark
-from ..properties import DEFAULT_LEGEND_WIDTH, DEFAULT_LEGEND_HEIGHT
+from ..properties import LegendProperties
 
 __all__ = ["Legend"]
 
@@ -19,8 +19,6 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         self,
         color_mapping: list[tuple[str, str]] | None = None,
         symbol_mapping: list[tuple[str, str]] | None = None,
-        width: int | None = None,
-        height: int | None = None,
         scheme: ColorScheme | None = None,
         square_size: int = 15,
         symbol_size: int = 5,
@@ -31,10 +29,14 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         stroke_opacity: float = 1.,
         stroke_width: float = 1.,
         font_size: int = 12,
+        width: int | None = None,
+        height: int | None = None,
+        margin_top: int = 0,
+        margin_left: int = 0,
+        margin_bottom: int = 0,
+        margin_right: int = 0,
     ):
         Mark.__init__(self)
-        self._width = width or DEFAULT_LEGEND_WIDTH
-        self._height = height or DEFAULT_LEGEND_HEIGHT
         self._labels_mapping = labels_mapping or [(str(x), "none") for x in d3.ticks(0, 1, 10)]
         self._symbols_mapping = symbols_mapping or []
         self._scheme = scheme
@@ -47,6 +49,14 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         self._stroke_opactity = stroke_opacity
         self._stroke_width = stroke_width
         self._font_size = font_size
+        self._properties = LegendProperties.new(
+            width,
+            height,
+            margin_top,
+            margin_left,
+            margin_bottom,
+            margin_right,
+        )
 
     def update(self, context: Context):
         self._font_size = context.font_size
@@ -64,3 +74,10 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
             self.continuous_color_legend(svg)
         else:
             self.discrete_color_legend(svg)
+
+    @property
+    def properties(self):
+        return self._properties
+
+    def update_properties(self, properties: LegendProperties):
+        self._properties = properties

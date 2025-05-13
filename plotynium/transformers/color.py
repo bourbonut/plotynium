@@ -63,7 +63,7 @@ class Color(Transformer[T, str]):
 
     def __call__(self, d: T) -> str:
         """
-        Transforms a data into a color
+        Transforms a data into a color.
 
         Parameters
         ----------
@@ -81,7 +81,7 @@ class Color(Transformer[T, str]):
 
     def set_color_scheme(self, scheme: ColorScheme):
         """
-        Sets the color scheme
+        Sets the color scheme.
 
         Parameters
         ----------

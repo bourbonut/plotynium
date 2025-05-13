@@ -72,8 +72,10 @@ def plot(
     symbol_options = init_options(symbol, SymbolOptions)
 
     user_legend_option = color_options.legend or symbol_options.legend
-    width, height = dimensions(marks, user_legend_option, width, height)
     margin = Margin(margin_top, margin_left, margin_bottom, margin_right)
+    width, height, canvas_properties, legend_properties = dimensions(
+        marks, user_legend_option, width, height, margin,
+    )
 
     # Set labels
     x_label = x_options.label
@@ -89,16 +91,15 @@ def plot(
     x_domains = [mark.x_domain for mark in marks]
     y_domains = [mark.y_domain for mark in marks]
 
-    x_ranges = [margin.left, width - margin.right]
-    y_ranges = [height - margin.bottom, margin.top]
+    x_ranges = [margin.left, canvas_properties.width - margin.right]
+    y_ranges = [canvas_properties.height - margin.bottom, margin.top]
 
     x = x_scale = make_scaler(x_scaler_types, x_domains, x_ranges, nice=x_options.nice)
     y = y_scale = make_scaler(y_scaler_types, y_domains, y_ranges, nice=y_options.nice)
 
     ctx = Context(
-        width,
-        height,
-        margin,
+        canvas_properties,
+        legend_properties,
         x_options,
         y_options,
         color_options,
@@ -148,9 +149,9 @@ def plot(
 
     svg = (
         d3.create("svg")
-        .attr("width", ctx.width)
-        .attr("height", ctx.height)
-        .attr("viewBox", f"0 0 {ctx.width} {ctx.height}")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("viewBox", f"0 0 {width} {height}")
         .style("font-size", f"{ctx.font_size}px")
         .style("font-family", ctx.font_family)
     )
@@ -161,9 +162,21 @@ def plot(
     if ctx.color != default_style.color:
         svg.style("color", ctx.color)
 
+    legend_group = (
+        svg.append("g")
+        .attr("aria-label", "legend")
+    )
+
+    canvas_group = (
+        svg.append("g")
+        .attr("aria-label", "canvas")
+    )
+    if translate := ctx.canvas_translate:
+        canvas_group.attr("transform", translate)
+
     # Apply mark on SVG content
     for mark in marks:
-        mark.apply(svg, ctx)
+        mark.apply(canvas_group, ctx)
 
     # if legend is not None:
     #     legend.apply(svg, context)
