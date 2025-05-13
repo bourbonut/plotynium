@@ -1,7 +1,7 @@
 from math import sqrt
 from .marks import AxisX, AxisY, Mark, check_types
 from .legends import Legend
-from .properties import DEFAULT_CANVAS_WIDTH, CanvasProperties, LegendProperties, Margin
+from .properties import CanvasProperties, LegendProperties, Margin
 
 def auto_width(
     canvas_properties: CanvasProperties,

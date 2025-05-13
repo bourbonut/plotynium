@@ -11,9 +11,9 @@ class ContinuousLegend:
         svg : Selection
             SVG on which the legend will be added
         """
-        width = 240
+        width = self._properties.width
+        height = self._properties.height
         rect_width = 2
-        height = 10
         data = list(range(0, width, rect_width))
         (
             svg.append("g")

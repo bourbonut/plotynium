@@ -91,10 +91,22 @@ class Context:
     def labels(self) -> dict[int, str]:
         return self._color_options.labels
 
-    def update_color_mapping(self, *color_mappings: tuple[list[tuple[int, str]]]):
+    @property
+    def legend_properties(self) -> LegendProperties:
+        return self._legend_properties
+
+    @property
+    def color_mapping(self) -> list[tuple[str, str]]:
+        return self._color_mapping
+
+    @property
+    def symbol_mapping(self) -> list[tuple[str, str]]:
+        return self._symbol_mapping
+
+    def update_color_mapping(self, *color_mappings: tuple[list[tuple[str, str]]]):
         color_mappings = [self._color_mapping] + list(color_mappings)
         self._color_mapping = max(color_mappings, key=len)
 
-    def update_symbol_mapping(self, *symbol_mappings: tuple[list[tuple[int, str]]]):
+    def update_symbol_mapping(self, *symbol_mappings: tuple[list[tuple[str, str]]]):
         symbol_mappings = [self._symbol_mapping] + list(symbol_mappings)
         self._symbol_mapping = max(symbol_mappings, key=len)

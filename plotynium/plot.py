@@ -4,7 +4,7 @@ from .context import Context
 from .properties import Margin 
 from .dimensions import dimensions
 from .scaler import determine_label, make_scaler
-# from .legends import Legend
+from .legends import Legend
 
 import detroit as d3
 from detroit.selection import Selection
@@ -177,6 +177,17 @@ def plot(
     # Apply mark on SVG content
     for mark in marks:
         mark.apply(canvas_group, ctx)
+
+    # Gets legend or creates new one
+    legend_marks = list(filter(check_types(Legend), marks))
+    legend = Legend(
+        ctx.color_mapping,
+        ctx.symbol_mapping,
+        ctx.color_scheme,
+    )
+    if len(legend_marks) > 0:
+        legend = legend_marks[0]
+    legend.apply(legend_group, ctx)
 
     # if legend is not None:
     #     legend.apply(svg, context)

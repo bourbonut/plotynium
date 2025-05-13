@@ -7,6 +7,8 @@ __all__ = [
     "DEFAULT_LEGEND_HEIGHT",
     "DEFAULT_LEGEND_WIDTH",
     "DEFAULT_CANVAS_WIDTH",
+    "DEFAULT_SQUARE_SIZE",
+    "DEFAULT_SYMBOL_SIZE",
     "LegendProperties",
     "Margin",
 ]
@@ -16,6 +18,8 @@ TLegendProperties = TypeVar("LegendProperties", bound="LegendProperties")
 DEFAULT_CANVAS_WIDTH = 640 # without legend
 DEFAULT_LEGEND_WIDTH = 240
 DEFAULT_LEGEND_HEIGHT = 50
+DEFAULT_SQUARE_SIZE = 15
+DEFAULT_SYMBOL_SIZE = 5
 
 @dataclass
 class Margin:
@@ -81,7 +85,12 @@ class LegendProperties(Properties):
         super().__init__(
             DEFAULT_LEGEND_WIDTH,
             DEFAULT_LEGEND_HEIGHT,
-            Margin(0, 0, 0, 0),
+            Margin(
+                DEFAULT_LEGEND_HEIGHT // 2,
+                DEFAULT_SQUARE_SIZE,
+                0,
+                0
+            ),
         )
 
     @classmethod
