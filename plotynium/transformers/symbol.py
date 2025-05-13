@@ -42,14 +42,26 @@ class Symbol(Transformer[T, str]):
         symbol = d3.symbol(self._symbol_type(value))()
         return self._picker(symbol)
 
-    def get_mapping(self) -> OrderedDict[str, str]:
+    def set_labels(self, labels: dict[int, str]):
+        """
+        Sets labels to the legend picker
+
+        Parameters
+        ----------
+        labels : dict[int, str]
+            Dictionary of labels where keys is the index of the label and
+            values are each label
+        """
+        self._picker = LegendPicker(labels)
+
+    def get_mapping(self) -> list[tuple[str, str]]:
         """
         Returns the mapping of the picker.
 
         Returns
         -------
-        OrderedDict[str, str]
-            Ordered dictionary where keys are labels and values are colors.
+        list[tuple[str, str]]
+            List of pairs (labels, colors).
         """
         return self._picker.get_mapping()
 

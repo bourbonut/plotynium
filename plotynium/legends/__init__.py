@@ -17,8 +17,8 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
 
     def __init__(
         self,
-        labels_mapping: list[tuple[str, str]] | None = None,
-        symbols_mapping: list[tuple[str, str]] | None = None,
+        color_mapping: list[tuple[str, str]] | None = None,
+        symbol_mapping: list[tuple[str, str]] | None = None,
         width: int | None = None,
         height: int | None = None,
         scheme: ColorScheme | None = None,

@@ -1,6 +1,6 @@
 from ..schemes import Scheme
 from ..interpolations import Interpolation
-from ..types import Index, T, Data
+from ..types import Index, T, Data, ColorScheme
 from ..getter import getter
 from .transformer import Transformer
 from .default import DefaultTransformer
@@ -79,7 +79,7 @@ class Color(Transformer[T, str]):
         color = self._color(value)
         return self._picker(value, color)
 
-    def set_color_scheme(self, scheme: Interpolation | Scheme):
+    def set_color_scheme(self, scheme: ColorScheme):
         """
         Sets the color scheme
 
@@ -90,14 +90,26 @@ class Color(Transformer[T, str]):
         """
         self._color.set_interpolator(scheme)
 
-    def get_mapping(self) -> OrderedDict[str, str]:
+    def set_labels(self, labels: dict[int, str]):
+        """
+        Sets labels to the legend picker
+
+        Parameters
+        ----------
+        labels : dict[int, str]
+            Dictionary of labels where keys is the index of the label and
+            values are each label
+        """
+        self._picker = LegendPicker(labels)
+
+    def get_mapping(self) -> list[tuple[str, str]]:
         """
         Returns the mapping of the picker.
 
         Returns
         -------
-        OrderedDict[str, str]
-            Ordered dictionary where keys are labels and values are colors.
+        list[tuple[str, str]]
+            List of pairs (labels, colors).
         """
         return self._picker.get_mapping()
 

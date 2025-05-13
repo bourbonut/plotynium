@@ -1,4 +1,3 @@
-from collections import OrderedDict
 from ..types import U, V
 from typing import Generic
 
@@ -75,6 +74,7 @@ class LegendPicker(Generic[U, V]):
             Same `result` without any modification
         """
         index = self._indices.setdefault(value, len(self._indices))
+        self._labels.setdefault(index, value)
         self._groups[index] = result
         return result
 
@@ -92,7 +92,10 @@ class LegendPicker(Generic[U, V]):
         tuple[str, V]
             `(label, value)`
         """
-        return self._labels.get(index, str(index)), self._groups.get(index)
+        return (
+            self._labels.get(index, str(index)),
+            self._groups.get(index)
+        )
 
     def labels(self) -> list[str]:
         """
@@ -105,13 +108,15 @@ class LegendPicker(Generic[U, V]):
         """
         return [self._labels.get(index, str(index)) for index in self._groups]
 
-    def get_mapping(self) -> OrderedDict[str, V]:
+    def get_mapping(self) -> list[tuple[str, V]]:
         """
         Returns a ordered dictionary of (label, value)
 
         Returns
         -------
-        OrderedDict[str, V]
-            Ordered dictionary where key are labels and values are colors
+        list[tuple[str, V]]
+            List of pairs (labels, colors)
         """
-        return OrderedDict([self[index] for index in self._groups])
+        if self._groups == {0: 'none'}:
+            return []
+        return [self[index] for index in self._groups]

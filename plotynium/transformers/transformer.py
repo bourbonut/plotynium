@@ -1,6 +1,6 @@
 from ..schemes import Scheme
 from ..interpolations import Interpolation
-from ..types import Index, U, V
+from ..types import Index, U, V, ColorScheme
 from collections.abc import Callable
 from collections import OrderedDict
 from abc import ABC, abstractmethod
@@ -41,7 +41,7 @@ class Transformer(Generic[U, V], ABC):
         """
         ...
 
-    def set_color_scheme(self, scheme: Interpolation | Scheme):
+    def set_color_scheme(self, scheme: ColorScheme):
         """
         Sets the color scheme if needed.
 
@@ -50,17 +50,27 @@ class Transformer(Generic[U, V], ABC):
         scheme : Interpolation | Scheme
             Parameter for color scheme
         """
-        return NotImplementedError("This method is not implemented for this class.")
+        return
 
+    def set_labels(self, labels: dict[int, str]):
+        """
+        Sets labels to the legend picker
 
-    def get_mapping(self) -> OrderedDict[str, V]:
+        Parameters
+        ----------
+        labels : dict[int, str]
+            Dictionary of labels where keys is the index of the label and
+            values are each label
+        """
+        return
+
+    def get_mapping(self) -> list[tuple[str, V]]:
         """
         Returns the mapping (label, value) of the transformation.
 
         Returns
         -------
-        OrderedDict[str, V]
-            Ordered dictionary where keys are labels and values are generally
-            colors.
+        list[tuple[str, V]]
+            List of pairs (labels, values) where values are generally colors.
         """
-        return OrderedDict()
+        return []

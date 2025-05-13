@@ -88,16 +88,15 @@ class Line(Style[T], Mark):
             SVG Content
         """
         self.set_colorscheme(ctx.color_scheme)
-        x = ctx.x
-        y = ctx.y
+        self.set_labels(ctx.labels)
         line = (
             d3.line()
             .x(
-                (lambda d: x(self._x(d)))
+                (lambda d: ctx.x(self._x(d)))
                 if self.x_scaler_type == Scaler.CONTINUOUS
-                else (lambda d: x(self._x(d).timestamp()))
+                else (lambda d: ctx.x(self._x(d).timestamp()))
             )
-            .y(lambda d: y(self._y(d)))
+            .y(lambda d: ctx.y(self._y(d)))
         )
 
         (
@@ -111,6 +110,10 @@ class Line(Style[T], Mark):
             .attr("stroke", lambda d: d["stroke"])
             .attr("stroke-width", self._stroke_width)
             .attr("d", lambda d: line(d["values"]))
+        )
+        ctx.update_color_mapping(
+            self._stroke.get_mapping(),
+            self._fill.get_mapping(),
         )
 
     def group(self) -> list[dict]:

@@ -24,6 +24,7 @@ class ColorOptions:
     """
     scheme: Interpolation | Scheme | None = field(default=None)
     legend: bool = field(default=False)
+    labels: dict[int, str] | None = field(default=None)
 
     @staticmethod
     def new(values: dict | None = None) -> TColorOptions:
@@ -33,6 +34,7 @@ class ColorOptions:
         return ColorOptions(
             scheme=values.get("scheme", default_values.scheme),
             legend=values.get("legend", default_values.legend),
+            labels=values.get("labels", default_values.labels),
         )
 
 @dataclass

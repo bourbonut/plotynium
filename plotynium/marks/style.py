@@ -4,7 +4,7 @@ from typing import Generic
 from ..transformers import Constant, Color
 from ..schemes import Scheme
 from ..interpolations import Interpolation
-from ..types import T
+from ..types import T, ColorScheme
 
 class Style(Generic[T]):
     """
@@ -55,15 +55,28 @@ class Style(Generic[T]):
         self._stroke_opacity = stroke_opacity
         self._opacity = opacity
 
-    def set_colorscheme(self, scheme: Interpolation | Scheme | None = None):
+    def set_colorscheme(self, scheme: ColorScheme | None = None):
         """
         Sets the color scheme
 
         Parameters
         ----------
-        scheme : Interpolation | Scheme | None
+        scheme : ColorScheme | None
             Color scheme to be set
         """
         if scheme is not None:
             self._fill.set_color_scheme(scheme)
             self._stroke.set_color_scheme(scheme)
+
+    def set_labels(self, labels: dict[int, str]):
+        """
+        Sets labels for *stroke* and *fill* attributes.
+
+        Parameters
+        ----------
+        labels : dict[int, str]
+            Dictionary of labels where keys is the index of the label and
+            values are each label
+        """
+        self._stroke.set_labels(labels)
+        self._fill.set_labels(labels)

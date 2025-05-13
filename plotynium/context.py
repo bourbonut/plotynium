@@ -31,8 +31,8 @@ class Context:
         self._style_options = style_options
         self._symbol_options = symbol_options
 
-        self._color_labels = []
-        self._symbol_options = []
+        self._color_mapping = []
+        self._symbol_mapping = []
 
         self._x = x_scale
         self._y = y_scale
@@ -84,3 +84,15 @@ class Context:
     @property
     def color_scheme(self) -> ColorScheme:
         return self._color_options.scheme
+
+    @property
+    def labels(self) -> dict[int, str]:
+        return self._color_options.labels
+
+    def update_color_mapping(self, *color_mappings: tuple[list[tuple[int, str]]]):
+        color_mappings = [self._color_mapping] + list(color_mappings)
+        self._color_mapping = max(color_mappings, key=len)
+
+    def update_symbol_mapping(self, *symbol_mappings: tuple[list[tuple[int, str]]]):
+        symbol_mappings = [self._symbol_mapping] + list(symbol_mappings)
+        self._symbol_mapping = max(symbol_mappings, key=len)
