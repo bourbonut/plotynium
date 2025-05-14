@@ -14,11 +14,13 @@ class ContinuousLegend:
         margin_top = self._properties.margin.top
         margin_bottom = self._properties.margin.bottom
         margin_left = self._properties.margin.left
+        margin_right = self._properties.margin.right
         width = self._properties.width
         height = self._properties.height
         thickness = height - margin_top - margin_bottom
+        length = width - margin_right - margin_left
         rect_width = 2
-        data = list(range(0, width, rect_width))
+        data = list(range(0, length, rect_width))
 
         legend = (
             svg.append("g")
@@ -40,7 +42,7 @@ class ContinuousLegend:
         )
 
         domain = d3.extent(self._color_mapping, accessor=lambda d: d[0])
-        x = d3.scale_linear(domain, [0, width]).nice()
+        x = d3.scale_linear(domain, [0, length]).nice()
         x_domain = x.get_domain()
         text_ticks = d3.ticks(x_domain[0], x_domain[1], 5)
         tick_format = x.tick_format()

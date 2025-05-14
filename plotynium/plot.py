@@ -11,12 +11,12 @@ from detroit.selection import Selection
 
 def plot(
     marks: list[Mark],
+    width: int | None = None,
+    height: int | None = None,
     margin_top: int = 10,
     margin_left: int = 45,
     margin_bottom: int = 45,
     margin_right: int = 10,
-    width: int | None = None,
-    height: int | None = None,
     grid: bool = False,
     x: XOptions | dict | None = None,
     y: YOptions | dict | None = None,
@@ -97,6 +97,7 @@ def plot(
     x = x_scale = make_scaler(x_scaler_types, x_domains, x_ranges, nice=x_options.nice)
     y = y_scale = make_scaler(y_scaler_types, y_domains, y_ranges, nice=y_options.nice)
 
+    # Creates a context shared between marks and legend
     ctx = Context(
         canvas_properties,
         legend_properties,
@@ -111,41 +112,52 @@ def plot(
         y_label,
     )
 
-    # Set x axis
-    if not any(map(check_types(AxisX), marks)):
-        x_ticks = x.ticks() if hasattr(x, "ticks") else x.get_domain()
-        x_tick_format = x.tick_format(x_options.count, x_options.specifier) if hasattr(x, "tick_format") else x.get_domain()
-        marks.append(
-            AxisX(
-                x_ticks,
-                tick_format=x_tick_format,
-                label=x_label,
-                fill=style_options.color,
+    # Conditions to check if the mark is unique
+    only_legend = len(marks) == 1 and check_types(Legend)(marks[0])
+    only_axis_x = len(marks) == 1 and check_types(AxisX)(marks[0])
+    only_axis_y = len(marks) == 1 and check_types(AxisY)(marks[0])
+    is_not_unique = not(only_legend or only_axis_x or only_axis_y)
+
+    # Checks if legend is True or if it exists
+    legend_marks = list(filter(check_types(Legend), marks))
+    add_legend = len(legend_marks) > 0 or user_legend_option
+
+    if is_not_unique:
+        # Set x axis
+        if not any(map(check_types(AxisX), marks)):
+            x_ticks = x.ticks() if hasattr(x, "ticks") else x.get_domain()
+            x_tick_format = x.tick_format(x_options.count, x_options.specifier) if hasattr(x, "tick_format") else x.get_domain()
+            marks.append(
+                AxisX(
+                    x_ticks,
+                    tick_format=x_tick_format,
+                    label=x_label,
+                    fill=style_options.color,
+                )
             )
-        )
 
-    # Set y axis
-    if not any(map(check_types(AxisY), marks)):
-        y_ticks = y.ticks() if hasattr(y, "ticks") else y.get_domain()
-        y_tick_format = y.tick_format(y_options.count, y_options.specifier) if hasattr(y, "tick_format") else y.get_domain()
-        marks.append(
-            AxisY(
-                y_ticks,
-                tick_format=y_tick_format,
-                label=y_label,
-                fill=style_options.color,
+        # Set y axis
+        if not any(map(check_types(AxisY), marks)):
+            y_ticks = y.ticks() if hasattr(y, "ticks") else y.get_domain()
+            y_tick_format = y.tick_format(y_options.count, y_options.specifier) if hasattr(y, "tick_format") else y.get_domain()
+            marks.append(
+                AxisY(
+                    y_ticks,
+                    tick_format=y_tick_format,
+                    label=y_label,
+                    fill=style_options.color,
+                )
             )
-        )
 
-    # Set x grid
-    if not any(map(check_types(GridX), marks)) and x_options.grid or grid:
-        x_ticks = x.ticks() if hasattr(x, "ticks") else x.get_domain()
-        marks.append(GridX(x_ticks))
+        # Set x grid
+        if not any(map(check_types(GridX), marks)) and x_options.grid or grid:
+            x_ticks = x.ticks() if hasattr(x, "ticks") else x.get_domain()
+            marks.append(GridX(x_ticks))
 
-    # Set y grid
-    if not any(map(check_types(GridY), marks)) and y_options.grid or grid:
-        y_ticks = y.ticks() if hasattr(y, "ticks") else y.get_domain()
-        marks.append(GridY(y_ticks))
+        # Set y grid
+        if not any(map(check_types(GridY), marks)) and y_options.grid or grid:
+            y_ticks = y.ticks() if hasattr(y, "ticks") else y.get_domain()
+            marks.append(GridY(y_ticks))
 
     svg = (
         d3.create("svg")
@@ -162,34 +174,34 @@ def plot(
     if ctx.color != default_style.color:
         svg.style("color", ctx.color)
 
-    legend_group = (
-        svg.append("g")
-        .attr("aria-label", "legend")
-    )
+    if add_legend:
+        legend_group = (
+            svg.append("g")
+            .attr("aria-label", "legend")
+        )
 
-    canvas_group = (
-        svg.append("g")
-        .attr("aria-label", "canvas")
-    )
-    if translate := ctx.canvas_translate:
-        canvas_group.attr("transform", translate)
+    if not only_legend:
+        canvas_group = (
+            svg.append("g")
+            .attr("aria-label", "canvas")
+        )
+        if translate := ctx.canvas_translate:
+            canvas_group.attr("transform", translate)
+    
+    if not only_legend:
+        # Apply mark on SVG content
+        for mark in marks:
+            mark.apply(canvas_group, ctx)
 
-    # Apply mark on SVG content
-    for mark in marks:
-        mark.apply(canvas_group, ctx)
-
-    # Gets legend or creates new one
-    legend_marks = list(filter(check_types(Legend), marks))
-    legend = Legend(
-        ctx.color_mapping,
-        ctx.symbol_mapping,
-        ctx.color_scheme,
-    )
-    if len(legend_marks) > 0:
-        legend = legend_marks[0]
-    legend.apply(legend_group, ctx)
-
-    # if legend is not None:
-    #     legend.apply(svg, context)
+    if add_legend:
+        # Gets legend or creates new one
+        legend = Legend(
+            ctx.color_mapping,
+            ctx.symbol_mapping,
+            ctx.color_scheme,
+        )
+        if len(legend_marks) > 0:
+            legend = legend_marks[0]
+        legend.apply(legend_group, ctx)
 
     return svg

@@ -31,10 +31,10 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         font_size: int = 12,
         width: int | None = None,
         height: int | None = None,
-        margin_top: int = 0,
-        margin_left: int = 0,
-        margin_bottom: int = 0,
-        margin_right: int = 0,
+        margin_top: int = 21,
+        margin_left: int = 15,
+        margin_bottom: int = 21,
+        margin_right: int = 15,
     ):
         Mark.__init__(self)
         self._color_mapping = color_mapping or [(str(x), "none") for x in d3.ticks(0, 1, 10)]
