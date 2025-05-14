@@ -86,10 +86,10 @@ class LegendProperties(Properties):
             DEFAULT_LEGEND_WIDTH,
             DEFAULT_LEGEND_HEIGHT,
             Margin(
-                DEFAULT_LEGEND_HEIGHT // 2,
+                (DEFAULT_LEGEND_HEIGHT - DEFAULT_SQUARE_SIZE // 2) // 2,
                 DEFAULT_SQUARE_SIZE,
-                0,
-                0
+                (DEFAULT_LEGEND_HEIGHT - DEFAULT_SQUARE_SIZE // 2) // 2,
+                DEFAULT_SQUARE_SIZE
             ),
         )
 

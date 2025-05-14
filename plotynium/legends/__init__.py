@@ -58,7 +58,12 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
             margin_right,
         )
 
-    def update(self, ctx: Context):
+    @property
+    def properties(self):
+        return self._properties
+
+    def apply(self, svg: Selection, ctx: Context):
+        # Update attributes from context
         self._properties = ctx.legend_properties
         self._font_size = ctx.font_size
         self._scheme = (
@@ -67,15 +72,9 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
             default_colorscheme(len(self._color_mapping))
         )
 
-    def apply(self, svg: Selection, ctx: Context):
-        self.update(ctx)
         if len(self._symbol_mapping) > 0:
             self.symbol_legend(svg)
         elif len(self._color_mapping) > 10:
             self.continuous_color_legend(svg)
         else:
             self.discrete_color_legend(svg)
-
-    @property
-    def properties(self):
-        return self._properties

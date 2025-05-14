@@ -3,6 +3,7 @@ from detroit.selection import Selection
 
 import detroit as d3
 
+from ..context import Context
 from .style import Style
 from ..scaler import Scaler, determine_scaler
 from ..transformers import Identity
@@ -69,13 +70,7 @@ class RuleY(Style[T]):
             opacity=opacity,
         )
 
-    def __call__(
-        self,
-        svg: Selection,
-        x: Callable,
-        y: Callable,
-        **kwargs,
-    ):
+    def apply(self, svg: Selection, ctx: Context):
         """
         Add horizontal lines on SVG content.
 
@@ -83,23 +78,19 @@ class RuleY(Style[T]):
         ----------
         svg : Selection
             SVG Content
-        x : Callable
-            X scaler from `plot` function
-        y : Callable
-            Y scaler from `plot` function
-        **kwargs
-            Additional keyword arguments not used
+        cxt: Context
+            Context
         """
         line = (
             d3.line()
-            .x(lambda d: x(self._x(d)))
+            .x(lambda d: ctx.x(self._x(d)))
             .y(
-                (lambda d: y(self._y(d).timestamp()))
+                (lambda d: ctx.y(self._y(d).timestamp()))
                 if self.y_scaler_type == Scaler.TIME
-                else lambda d: y(self._y(d))
+                else lambda d: ctx.y(self._y(d))
             )
         )
-        values = [[[x.get_domain()[0], v], [x.get_domain()[1], v]] for v in self._values]
+        values = [[[ctx.x.get_domain()[0], v], [ctx.x.get_domain()[1], v]] for v in self._values]
         (
             svg.append("g")
             .attr("class", "rule")

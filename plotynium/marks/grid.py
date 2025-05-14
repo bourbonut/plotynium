@@ -4,6 +4,7 @@ from typing import Generic
 
 import detroit as d3
 
+from ..context import Context
 from ..transformers import Identity, Constant
 from ..domain import domain
 from ..scaler import determine_scaler
@@ -60,16 +61,7 @@ class GridX(Generic[T]):
         self.y_scaler_type = None
         self.legend_labels = None
 
-    def __call__(
-        self,
-        svg: Selection,
-        x: Callable,
-        y: Callable,
-        height: int,
-        margin_top: int,
-        margin_bottom: int,
-        **kwargs,
-    ):
+    def apply(self, svg: Selection, ctx: Context):
         """
         Add vertical lines from x ticks.
 
@@ -77,19 +69,12 @@ class GridX(Generic[T]):
         ----------
         svg : Selection
             SVG Content
-        x : Callable
-            X scaler from `plot` function
-        y : Callable
-            Y scaler from `plot` function
-        height : int
-            Height value
-        margin_top : int
-            Margin top value
-        margin_bottom : int
-            Margin bottom value
-        **kwargs
-            Additional keyword arguments not used
+        ctx: Context
+            Context
         """
+        height = ctx.height
+        margin_top = ctx.margin.top
+        margin_bottom = ctx.margin.bottom
         y1 = self._y1 or Constant(margin_top)
         y2 = self._y2 or Constant(height - margin_bottom)
         g = (
@@ -108,8 +93,8 @@ class GridX(Generic[T]):
             g.select_all("line")
             .data(self._data)
             .join("line")
-            .attr("x1", lambda d: x(d))
-            .attr("x2", lambda d: x(d))
+            .attr("x1", lambda d: ctx.x(d))
+            .attr("x2", lambda d: ctx.x(d))
             .attr("y1", y1)
             .attr("y2", y2)
         )
@@ -165,16 +150,7 @@ class GridY(Generic[T]):
         self.y_scaler_type = determine_scaler(self._data, self._y)
         self.legend_labels = None
 
-    def __call__(
-        self,
-        svg: Selection,
-        x: Callable,
-        y: Callable,
-        width: int,
-        margin_left: int,
-        margin_right: int,
-        **kwargs,
-    ):
+    def apply(self, svg: Selection, ctx: Context):
         """
         Add horizontal lines from y ticks.
 
@@ -182,19 +158,12 @@ class GridY(Generic[T]):
         ----------
         svg : Selection
             SVG Content
-        x : Callable
-            X scaler from `plot` function
-        y : Callable
-            Y scaler from `plot` function
-        width : int
-            Width value
-        margin_left : int
-            Margin left value
-        margin_right : int
-            Margin right value
-        **kwargs
-            Additional keyword arguments not used
+        ctx : Context
+            Context
         """
+        width = ctx.width
+        margin_right = ctx.margin.right
+        margin_left = ctx.margin.left
         x1 = self._x1 or Constant(margin_left)
         x2 = self._x2 or Constant(width - margin_right)
         g = (
@@ -209,12 +178,12 @@ class GridY(Generic[T]):
         if self._stroke_opacity:
             g.attr("stroke-opacity", self._stroke_opacity)
 
-        g1 = (
+        (
             g.select_all("line")
             .data(self._data)
             .join("line")
             .attr("x1", x1)
             .attr("x2", x2)
-            .attr("y1", lambda d: y(d))
-            .attr("y2", lambda d: y(d))
+            .attr("y1", lambda d: ctx.y(d))
+            .attr("y2", lambda d: ctx.y(d))
         )

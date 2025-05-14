@@ -147,7 +147,7 @@ class Dot(Style[T]):
                 .attr("fill", self._fill)
                 .attr("stroke-width", self._stroke_width)
             )
-        ctx.update_symbol_mapping(self._symbol.get_mapping())
+            ctx.update_symbol_mapping(self._symbol.get_mapping())
         ctx.update_color_mapping(
             self._stroke.get_mapping(),
             self._fill.get_mapping(),
