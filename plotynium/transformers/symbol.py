@@ -4,7 +4,6 @@ from .transformer import Transformer
 from .picker import LegendPicker
 from .default import DefaultTransformer
 from collections.abc import Callable
-from collections import OrderedDict
 import detroit as d3
 
 class Symbol(Transformer[T, str]):
@@ -40,7 +39,7 @@ class Symbol(Transformer[T, str]):
         """
         value = self._value(d)
         symbol = d3.symbol(self._symbol_type(value))()
-        return self._picker(symbol)
+        return self._picker(value, symbol)
 
     def set_labels(self, labels: dict[int, str]):
         """

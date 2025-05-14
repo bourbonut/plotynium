@@ -86,6 +86,8 @@ class Line(Style[T], Mark):
         ----------
         svg : Selection
             SVG Content
+        ctx : Context
+            Context
         """
         self.set_colorscheme(ctx.color_scheme)
         self.set_labels(ctx.labels)

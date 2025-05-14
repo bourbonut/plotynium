@@ -2,8 +2,8 @@ from collections.abc import Callable
 from detroit.selection import Selection
 
 from .style import Style
+from ..context import Context
 from ..domain import domain
-from ..label import legend
 from ..scaler import determine_scaler
 from ..getter import getter
 from ..transformers import Constant, Symbol
@@ -104,21 +104,7 @@ class Dot(Style[T]):
             opacity=opacity,
         )
 
-        makers = (self._symbol, self._stroke, self._fill)
-        self.legend_labels = legend(
-            [
-                maker.labels for maker in makers
-                if hasattr(maker, "labels")
-            ]
-        )
-
-    def __call__(
-        self,
-        svg: Selection,
-        x: Callable,
-        y: Callable,
-        **kwargs,
-    ):
+    def apply(self, svg: Selection, ctx: Context):
         """
         Add circles or symbols on the SVG content.
 
@@ -126,15 +112,13 @@ class Dot(Style[T]):
         ----------
         svg : Selection
             SVG content
-        x : Callable
-            X scaler from `plot` function
-        y : Callable
-            Y scaler from `plot` function
-        **kwargs
-            Additional keyword arguments not used
+        ctx : Context
+            Context
         """
-        x = center(x)
-        y = center(y)
+        self.set_colorscheme(ctx.color_scheme)
+        self.set_labels(ctx.labels)
+        x = center(ctx.x)
+        y = center(ctx.y)
         if self._symbol is None:
             (
                 svg.append("g")
@@ -163,3 +147,8 @@ class Dot(Style[T]):
                 .attr("fill", self._fill)
                 .attr("stroke-width", self._stroke_width)
             )
+        ctx.update_symbol_mapping(self._symbol.get_mapping())
+        ctx.update_color_mapping(
+            self._stroke.get_mapping(),
+            self._fill.get_mapping(),
+        )
