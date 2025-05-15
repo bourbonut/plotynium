@@ -10,6 +10,27 @@ def auto_width(
     has_legend: bool,
     width: int | None = None,
 ) -> int:
+    """
+    Returns a width value based current information of the plot.
+
+    Parameters
+    ----------
+    canvas_properties : CanvasProperties
+        Current canvas properties
+    legend_properties : LegendProperties
+        Current legend properties
+    only_legend : bool
+        `True` if the legend is the only mark
+    has_legend : bool
+        `True` if user wants a legend or there is a legend mark
+    width : int | None
+        User width
+
+    Returns
+    -------
+    int
+        Width value
+    """
     if only_legend and has_legend: # only legend
         return legend_properties.width
     elif width is None: # no user width
@@ -27,6 +48,31 @@ def auto_height(
     only_legend: bool,
     height: int | None = None,
 ) -> int:
+    """
+    Returns a height value based on current information of the plot.
+
+    Parameters
+    ----------
+    canvas_properties : CanvasProperties
+        Current canvas properties
+    legend_properties : LegendProperties
+        Current legend properties   
+    only_axis : bool
+        `True` if axis is the only mark
+    axis_is_x : bool
+        `True` if the axis mark is `AxisX`
+    has_legend : bool
+        `True` if user wants a legend or there is a legend mark
+    only_legend : bool
+        `True` if the legend is the only mark
+    height : int | None
+        User height
+
+    Returns
+    -------
+    int
+        Height value
+    """
     legend_height = legend_properties.height
     if (only_legend and has_legend) or (only_axis and axis_is_x): # only legend
         return legend_height
@@ -51,6 +97,28 @@ def dimensions(
     height: int | None = None,
     margin: Margin | None = None,
 ) -> tuple[int, int, CanvasProperties, LegendProperties]:
+    """
+    Computes width and height of the SVG as well as canvas properties and
+    legend properties given to a `Context` object.
+
+    Parameters
+    ----------
+    marks : list[Mark]
+        List of marks
+    user_legend_option : bool
+        `True` if the user wants a legend
+    width : int | None
+        User width value
+    height : int | None
+        User height value
+    margin : Margin | None
+        User margin value
+
+    Returns
+    -------
+    tuple[int, int, CanvasProperties, LegendProperties]
+        (width, height, canvas properties, legend properties)
+    """
     # Analyze axis marks
     axis_marks = list(filter(check_types(AxisX, AxisY), marks))
     only_axis = len(axis_marks) == 1

@@ -80,7 +80,7 @@ class Line(Style[T], Mark):
 
     def apply(self, svg: Selection, ctx: Context):
         """
-        Add lines from stored points on SVG content.
+        Adds lines from stored points on SVG content.
 
         Parameters
         ----------

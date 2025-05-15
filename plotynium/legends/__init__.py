@@ -14,6 +14,50 @@ __all__ = ["Legend"]
 
 
 class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
+    """
+    Special mark which has its own definition for making a legend. Legend is
+    located on top of the main canvas where all other marks are applied. Given
+    the value of `color_mapping` and `symbol_mapping` arguments, this class
+    takes decision to know if the legend should be _continuous_, _discrete with
+    squares_ or _discrete with symbols_.
+
+    Parameters
+    ----------
+    color_mapping : list[tuple[str, str]] | None
+        List of pairs (label, color)
+    symbol_mapping : list[tuple[str, str]] | None
+        List of pairs (label, symbol path)
+    scheme : ColorScheme | None
+        Color scheme
+    square_size : int
+        Square_size (only for discrete legend)
+    symbol_size : int
+        Symbol size (only for symbol legend)
+    fill : str | None
+        Fill color for text
+    fill_opacity : float
+        Fill opacity
+    stroke : str | None
+        Stroke color for text
+    stroke_opacity : float
+        Stroke opacity
+    stroke_width : float
+        Stroke width (only for continuous legend)
+    font_size : int
+        Font size for text
+    width : int
+        Width size
+    height : int
+        Height size
+    margin_top : int
+        Margin top value
+    margin_left : int
+        Margin left value
+    margin_bottom : int
+        Margin bottom value
+    margin_right : int
+        Margin right value
+    """
 
     def __init__(
         self,
@@ -22,15 +66,14 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         scheme: ColorScheme | None = None,
         square_size: int = DEFAULT_SQUARE_SIZE,
         symbol_size: int = DEFAULT_SYMBOL_SIZE,
-        rows: int = 1,
         fill: str | None = None,
         fill_opacity: float = 1.,
         stroke: str | None = None,
         stroke_opacity: float = 1.,
         stroke_width: float = 1.,
         font_size: int = 12,
-        width: int | None = None,
-        height: int | None = None,
+        width: int = 240,
+        height: int = 50,
         margin_top: int = 21,
         margin_left: int = 15,
         margin_bottom: int = 21,
@@ -42,7 +85,6 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         self._scheme = scheme
         self._square_size = square_size
         self._symbol_size = symbol_size
-        self._rows = rows
         self._fill = Constant(fill or "black")
         self._fill_opacity = fill_opacity
         self._stroke = Constant(stroke or "black")
@@ -59,11 +101,29 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         )
 
     @property
-    def properties(self):
+    def properties(self) -> LegendProperties:
+        """
+        Returns its properties
+
+        Returns
+        -------
+        LegendProperties
+            Own properties
+        """
         return self._properties
 
     def apply(self, svg: Selection, ctx: Context):
-        # Update attributes from context
+        """
+        Adds a legend on SVG content.
+
+        Parameters
+        ----------
+        svg : Selection
+            SVG Content
+        ctx : Context
+            Context
+        """
+        # Updates attributes from context
         self._properties = ctx.legend_properties
         self._font_size = ctx.font_size
         self._scheme = (
@@ -72,6 +132,7 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
             default_colorscheme(len(self._color_mapping))
         )
 
+        # Adds the legend on the SVG given arguments
         if len(self._symbol_mapping) > 0:
             self.symbol_legend(svg)
         elif len(self._color_mapping) > 10:

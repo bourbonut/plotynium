@@ -7,7 +7,8 @@ from .string_widths import STRING_WIDTHS
 class DiscreteLegend:
     def discrete_color_legend(self, svg: Selection):
         """
-        Adds to the SVG input, a legend described by labels associated with rectangles
+        Adds to the SVG input, a legend described by labels associated with
+        rectangles
 
         Parameters
         ----------
