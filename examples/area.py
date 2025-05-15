@@ -13,7 +13,7 @@ plot = plot.plot(
     width=928,
     height=500,
     x={"grid": True, "nice": False},
-    style={"color": "#e6edf3"},
+    # style={"color": "#e6edf3"},
 )
 
 with open("area.svg", "w") as file:

@@ -13,10 +13,10 @@ plot = ply.plot(
     height=500,
     marks=[
         ply.line(data=aapl.to_dicts(), x="date", y="close", stroke="steelblue", stroke_width=1.5),
-        ply.rule_y([0], stroke="#e6edf3")
+        ply.rule_y([0]) # , stroke="#e6edf3"
     ],
     x={"grid": True},
-    style={"color": "#e6edf3"},
+    # style={"color": "#e6edf3"},
 )
 
 with open("line.svg", "w") as file:
