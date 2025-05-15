@@ -9,6 +9,7 @@ from ..scaler import determine_scaler, Scaler
 from ..label import legend
 from ..transformers import Constant, getter
 from ..types import Data, Index, T
+from ..context import Context
 
 class AreaY(Style[T]):
     """
@@ -110,21 +111,7 @@ class AreaY(Style[T]):
             opacity=opacity,
         )
 
-        makers = (self._stroke, self._fill)
-        self.legend_labels = legend(
-            [
-                maker.labels for maker in makers
-                if hasattr(maker, "labels")
-            ]
-        )
-
-    def __call__(
-        self,
-        svg: Selection,
-        x: Callable,
-        y: Callable,
-        **kwargs,
-    ):
+    def apply(self, svg: Selection, ctx: Context):
         """
         Add an area defined by y values on SVG content.
 
@@ -132,22 +119,18 @@ class AreaY(Style[T]):
         ----------
         svg : Selection
             SVG Content
-        x : Callable
-            X scaler from `plot` function
-        y : Callable
-            Y scaler from `plot` function
-        **kwargs
-            Additional keyword arguments not used
+        ctx : Context
+            Context
         """
         area = (
             d3.area()
             .x(
-                (lambda d: x(self._x(d)))
+                (lambda d: ctx.x(self._x(d)))
                 if self.x_scaler_type == Scaler.CONTINUOUS
-                else (lambda d: x(self._x(d).timestamp()))
+                else (lambda d: ctx.x(self._x(d).timestamp()))
             )
-            .y0(lambda d: y(self._y0(d)))
-            .y1(lambda d: y(self._y1(d)))
+            .y0(lambda d: ctx.y(self._y0(d)))
+            .y1(lambda d: ctx.y(self._y1(d)))
         )
 
         (

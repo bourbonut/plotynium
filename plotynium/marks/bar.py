@@ -8,6 +8,7 @@ from ..label import legend
 from ..domain import domain
 from ..scaler import determine_scaler
 from ..types import T, Data
+from ..context import Context
 
 class BarY(Style[T]):
     """
@@ -83,21 +84,7 @@ class BarY(Style[T]):
             opacity=opacity,
         )
 
-        makers = (self._stroke, self._fill)
-        self.legend_labels = legend(
-            [
-                maker.labels for maker in makers
-                if hasattr(maker, "labels")
-            ]
-        )
-
-    def __call__(
-        self,
-        svg: Selection,
-        x: Callable,
-        y: Callable,
-        **kwargs,
-    ):
+    def apply(self, svg: Selection, ctx: Context):
         """
         Add vertical bars on SVG content.
 
@@ -105,12 +92,8 @@ class BarY(Style[T]):
         ----------
         svg : Selection
             SVG Content
-        x : Callable
-            X scaler from `plot` function
-        y : Callable
-            Y scaler from `plot` function
-        **kwargs
-            Additional keyword arguments not used
+        ctx : Context
+            Context
         """
         (
             svg.append("g")
@@ -118,10 +101,10 @@ class BarY(Style[T]):
             .select_all()
             .data(self._data)
             .join("rect")
-            .attr("x", lambda d: x(self._x(d)))
-            .attr("y", lambda d: y(self._y(d)))
-            .attr("height", lambda d: y(0) - y(self._y(d)))
-            .attr("width", x.bandwidth)
+            .attr("x", lambda d: ctx.x(self._x(d)))
+            .attr("y", lambda d: ctx.y(self._y(d)))
+            .attr("height", lambda d: ctx.y(0) - ctx.y(self._y(d)))
+            .attr("width", ctx.x.get_bandwidth())
             .attr("fill", self._fill)
             .attr("stroke", self._stroke)
             .attr("stroke-width", self._stroke_width)

@@ -93,7 +93,7 @@ class AxisX(Generic[T], Mark):
         y = self._y or Constant(dy)
         dir = -1 if self._anchor == "top" else 1
 
-        if hasattr(x, "bandwidth"):
+        if hasattr(x, "get_bandwidth"):
             offset = x.get_bandwidth() / 2
         else:
             offset = 0
