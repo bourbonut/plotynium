@@ -6,8 +6,7 @@ import detroit as d3
 from ..context import Context
 from .style import Style
 from ..scaler import Scaler, determine_scaler
-from ..transformers import Identity
-from ..getter import getter
+from ..transformers import Identity, getter
 from ..types import T
 
 class RuleY(Style[T]):

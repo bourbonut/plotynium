@@ -2,8 +2,6 @@ from collections.abc import Callable
 from typing import Generic
 
 from ..transformers import Constant, Color
-from ..schemes import Scheme
-from ..interpolations import Interpolation
 from ..types import T, ColorScheme
 
 class Style(Generic[T]):

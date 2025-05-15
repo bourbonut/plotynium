@@ -5,6 +5,7 @@ from .default import DefaultTransformer
 from .transformer import Transformer
 from .symbol import Symbol
 from .picker import LegendPicker
+from .getter import getter
 
 from typing import Callable
 from ..types import U, V, Index
@@ -18,6 +19,7 @@ __all__ = [
     "Symbol",
     "LegendPicker",
     "init_transformer",
+    "getter",
 ]
 
 def init_transformer(

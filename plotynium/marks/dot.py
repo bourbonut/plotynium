@@ -5,8 +5,7 @@ from .style import Style
 from ..context import Context
 from ..domain import domain
 from ..scaler import determine_scaler
-from ..getter import getter
-from ..transformers import Constant, Symbol
+from ..transformers import Constant, Symbol, getter
 from ..types import Data, T
 
 def center(scale: Callable) -> Callable[[T], float]:

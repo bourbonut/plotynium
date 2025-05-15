@@ -1,12 +1,11 @@
 from ..schemes import Scheme
 from ..interpolations import Interpolation
 from ..types import Index, T, Data, ColorScheme
-from ..getter import getter
+from .getter import getter
 from .transformer import Transformer
 from .default import DefaultTransformer
 from .picker import LegendPicker
 from collections.abc import Callable
-from collections import OrderedDict
 import detroit as d3
 
 def default_colorscheme(nb_labels: int) -> Interpolation | Scheme:

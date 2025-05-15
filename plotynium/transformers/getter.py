@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from operator import itemgetter
-from .types import Data, Index, T
+from ..types import Data, Index, T
 
 
 def getter(

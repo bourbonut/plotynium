@@ -1,5 +1,5 @@
 from ..types import Index, T
-from ..getter import getter
+from .getter import getter
 from .transformer import Transformer
 from .picker import LegendPicker
 from .default import DefaultTransformer

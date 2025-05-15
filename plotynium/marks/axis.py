@@ -5,8 +5,7 @@ from typing import Generic
 import detroit as d3
 
 from .mark import Mark
-from ..transformers import Identity, Constant
-from ..getter import getter
+from ..transformers import Identity, Constant, getter
 from ..domain import domain
 from ..scaler import determine_scaler
 from ..context import Context

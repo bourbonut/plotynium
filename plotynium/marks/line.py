@@ -7,7 +7,7 @@ from .mark import Mark
 from .style import Style
 from ..domain import domain
 from ..scaler import Scaler, determine_scaler
-from ..getter import getter
+from ..transformers import getter
 from ..types import Data, T
 from ..context import Context
 
