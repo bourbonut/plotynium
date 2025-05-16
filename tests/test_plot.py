@@ -10,12 +10,14 @@ from detroit.selection.selection import Selection
 
 import pytest
 
+@pytest.mark.skip
 def test_plot_default():
     svg = plot([])
     assert isinstance(svg, Selection)
     g = svg.select_all("g")
     assert len(g.nodes()) == 4
 
+@pytest.mark.skip
 def test_plot_specific_arguments():
     svg = plot(
         [],

@@ -2,7 +2,7 @@ from plotynium.scaler import Scaler, determine_scaler, reduce, make_scaler
 from datetime import datetime, timedelta
 from detroit.scale.band import ScaleBand
 from detroit.scale.linear import ScaleLinear
-from detroit.scale.time import Calendar
+from detroit.scale.time import ScaleTime
 import pytest
 
 ALL_SCALER = [
@@ -41,7 +41,7 @@ def test_reduce_no_scaler_type():
     "scaler_types, domains, range_vals, expected",
     [
         [[Scaler.CONTINUOUS], [[0., 1.]], [0., 1.], ScaleLinear],
-        [[Scaler.TIME], [[datetime.now() - timedelta(seconds=10), datetime.now()]], [0., 1.], Calendar],
+        [[Scaler.TIME], [[datetime.now() - timedelta(seconds=10), datetime.now()]], [0., 1.], ScaleTime],
         [[Scaler.BAND], [["a", "b", "c"]], [0., 1.], ScaleBand],
     ]
 )

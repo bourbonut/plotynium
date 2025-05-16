@@ -6,7 +6,6 @@ import detroit as d3
 from .style import Style
 from ..domain import domain, reduce
 from ..scaler import determine_scaler, Scaler
-from ..label import legend
 from ..transformers import Constant, getter
 from ..types import Data, Index, T
 from ..context import Context

@@ -1,6 +1,7 @@
 from ..schemes import Scheme
 from ..interpolations import Interpolation
 from ..types import Index, T, Data, ColorScheme
+from .identity import Identity
 from .getter import getter
 from .transformer import Transformer
 from .default import DefaultTransformer
@@ -150,4 +151,4 @@ class Color(Transformer[T, str]):
         ):
             return Color(data, value)
         else:
-            return default
+            return Identity() if default is None else default

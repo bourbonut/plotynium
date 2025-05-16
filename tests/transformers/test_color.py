@@ -1,4 +1,4 @@
-from plotynium.utils.color import Color
+from plotynium.transformers import Color, Identity, DefaultTransformer
 from detroit.scale.sequential import SequentialLinear
 
 def test_color_init():
@@ -7,9 +7,12 @@ def test_color_init():
     assert isinstance(color._color, SequentialLinear)
 
 def test_color_try_init():
-    assert Color.try_init([], None) is None
-    value = lambda d: d
-    assert Color.try_init([], value) == value
+    assert isinstance(Color.try_init([], None), Identity)
+    def value(d):
+        return d
+    transformer = Color.try_init([], value)
+    assert isinstance(transformer, DefaultTransformer)
+    assert transformer._transform == value
     color = Color.try_init([{"foo": x} for x in range(3)], "foo")
     assert isinstance(color, Color)
 

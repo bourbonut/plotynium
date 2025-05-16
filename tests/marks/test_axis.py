@@ -1,11 +1,10 @@
 from plotynium.marks.axis import AxisX, AxisY
-from plotynium.utils.constant import Constant
-from plotynium.utils.identity import Identity
+from plotynium.transformers import Identity
 from plotynium.scaler import Scaler
+from plotynium.properties import CanvasProperties, Margin
+from tests.default_context import default_context
 import detroit as d3
 import pytest
-
-from datetime import datetime
 
 def test_axis_x_default():
     axis_x = AxisX()
@@ -37,13 +36,13 @@ def test_axis_x_default():
 )
 def test_axis_x_call(axis_x, ngroups):
     svg = d3.create("svg")
-    axis_x(
+    margin = Margin(10, 0, 20, 0)
+    canvas_properties = CanvasProperties()
+    canvas_properties.set_height(400)
+    canvas_properties.set_margin(margin)
+    axis_x.apply(
         svg,
-        d3.scale_linear(),
-        d3.scale_linear(),
-        height=400,
-        margin_top=10,
-        margin_bottom=20,
+        default_context(d3.scale_linear(), d3.scale_linear(), canvas_properties),
     )
     g = svg.select_all("g")
     assert len(g.nodes()) == ngroups
@@ -78,13 +77,13 @@ def test_axis_y_default():
 )
 def test_axis_y_call(axis_y, ngroups):
     svg = d3.create("svg")
-    axis_y(
+    margin = Margin(0, 10, 0, 20)
+    canvas_properties = CanvasProperties()
+    canvas_properties.set_width(400)
+    canvas_properties.set_margin(margin)
+    axis_y.apply(
         svg,
-        d3.scale_linear(),
-        d3.scale_linear(),
-        width=400,
-        margin_left=10,
-        margin_right=20,
+        default_context(d3.scale_linear(), d3.scale_linear(), canvas_properties)
     )
     g = svg.select_all("g")
     assert len(g.nodes()) == ngroups

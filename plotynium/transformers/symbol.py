@@ -1,5 +1,6 @@
 from ..types import Index, T
 from .getter import getter
+from .identity import Identity
 from .transformer import Transformer
 from .picker import LegendPicker
 from .default import DefaultTransformer
@@ -102,4 +103,4 @@ class Symbol(Transformer[T, str]):
         ):
             return Symbol(data, value)
         else:
-            return default
+            return Identity() if default is None else default

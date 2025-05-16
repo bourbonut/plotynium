@@ -1,5 +1,7 @@
 from plotynium.marks.grid import GridX, GridY
 from plotynium.scaler import Scaler
+from plotynium.properties import CanvasProperties, Margin
+from tests.default_context import default_context
 import detroit as d3
 
 def test_grid_x_default():
@@ -21,13 +23,13 @@ def test_grid_x_default():
 def test_grid_x_call():
     grid_x = GridX()
     svg = d3.create("svg")
-    grid_x(
+    margin = Margin(20, 0, 10, 0)
+    canvas_properties = CanvasProperties()
+    canvas_properties.set_height(400)
+    canvas_properties.set_margin(margin)
+    grid_x.apply(
         svg,
-        d3.scale_linear(),
-        d3.scale_linear(),
-        height=400,
-        margin_top=20,
-        margin_bottom=10,
+        default_context(d3.scale_linear(), d3.scale_linear(), canvas_properties)
     )
     g = svg.select("g")
 
@@ -54,13 +56,13 @@ def test_grid_y_default():
 def test_grid_y_call():
     grid_y = GridY()
     svg = d3.create("svg")
-    grid_y(
+    margin = Margin(0, 20, 0, 10)
+    canvas_properties = CanvasProperties()
+    canvas_properties.set_width(400)
+    canvas_properties.set_margin(margin)
+    grid_y.apply(
         svg,
-        d3.scale_linear(),
-        d3.scale_linear(),
-        width=400,
-        margin_left=20,
-        margin_right=10,
+        default_context(d3.scale_linear(), d3.scale_linear(), canvas_properties)
     )
     g = svg.select("g")
 

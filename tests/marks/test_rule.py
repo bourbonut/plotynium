@@ -1,6 +1,7 @@
 from plotynium.marks.rule import RuleY
-from plotynium.utils.constant import Constant
+from plotynium.transformers import Constant
 from plotynium.scaler import Scaler
+from tests.default_context import default_context
 import detroit as d3
 import pytest
 
@@ -29,7 +30,7 @@ def test_rule_y_default():
 def test_rule_y_call(values):
     rule_y = RuleY(values)
     svg = d3.create("svg")
-    rule_y(svg, d3.scale_linear(), d3.scale_linear())
+    rule_y.apply(svg, default_context(d3.scale_linear(), d3.scale_linear()))
     g = svg.select("g.rule")
     assert len(g.nodes()) == 1
     path = g.select("path")

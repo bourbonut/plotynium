@@ -1,6 +1,7 @@
 from plotynium.marks.line import Line
-from plotynium.utils.constant import Constant
+from plotynium.transformers import Constant
 from plotynium.scaler import Scaler
+from tests.default_context import default_context
 import pytest
 import detroit as d3
 
@@ -15,7 +16,6 @@ def test_line_default():
     assert line.y_domain == [0, 10]
     assert line.x_scaler_type == Scaler.CONTINUOUS
     assert line.y_scaler_type == Scaler.CONTINUOUS
-    assert line.legend_labels == []
 
     assert line._fill_opacity == 1.
     assert line._stroke_width == 1.
@@ -36,7 +36,7 @@ def test_line_default():
 )
 def test_line_call(line):
     svg = d3.create("svg")
-    line(svg, d3.scale_linear(), d3.scale_linear())
+    line.apply(svg, default_context(d3.scale_linear(), d3.scale_linear()))
     g = svg.select("g.line")
     assert len(g.nodes()) == 1
     path = svg.select("path")

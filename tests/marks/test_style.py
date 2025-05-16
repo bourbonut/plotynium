@@ -1,8 +1,6 @@
 from plotynium.marks.style import Style
-from plotynium.utils.color import Color
-from plotynium.utils.constant import Constant
+from plotynium.transformers import Color, Constant
 from plotynium.interpolations import Interpolation
-from plotynium.schemes import Scheme
 import pytest
 
 @pytest.fixture
@@ -62,7 +60,5 @@ def test_style_scheme(data, default_fill, default_stroke, monkeypatch):
     )
     style = Style(data, default_stroke, default_fill, stroke="foo", fill="bar")
 
-    assert style.scheme == Interpolation.TURBO
-    style.scheme = Interpolation.SINEBOW
-    assert style.scheme == Interpolation.SINEBOW
+    style.set_colorscheme(Interpolation.SINEBOW)
     assert counter[0] == 2

@@ -1,4 +1,3 @@
-import detroit
 from plotynium.domain import domain, reduce, unify
 import pytest
 

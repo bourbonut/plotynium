@@ -5,7 +5,7 @@ from .style import Style
 from ..context import Context
 from ..domain import domain
 from ..scaler import determine_scaler
-from ..transformers import Constant, Symbol, getter
+from ..transformers import Constant, Symbol, getter, Identity
 from ..types import Data, T
 
 def center(scale: Callable) -> Callable[[T], float]:
@@ -22,8 +22,8 @@ def center(scale: Callable) -> Callable[[T], float]:
     Callable[[T], float]
         Modified scaler.
     """
-    if hasattr(scale, "bandwidth"):
-        offset = max(0, scale.bandwidth) / 2
+    if hasattr(scale, "get_bandwidth"):
+        offset = max(0, scale.get_bandwidth()) / 2
         def scale_center(d):
             return scale(d) + offset
         return scale_center
@@ -118,7 +118,7 @@ class Dot(Style[T]):
         self.set_labels(ctx.labels)
         x = center(ctx.x)
         y = center(ctx.y)
-        if self._symbol is None:
+        if isinstance(self._symbol, Identity):
             (
                 svg.append("g")
                 .attr("class", "dots")

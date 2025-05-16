@@ -4,7 +4,6 @@ from detroit.selection import Selection
 from .style import Style
 from ..options import SortOptions, init_options
 from ..transformers import getter
-from ..label import legend
 from ..domain import domain
 from ..scaler import determine_scaler
 from ..types import T, Data

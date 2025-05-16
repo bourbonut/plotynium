@@ -1,8 +1,8 @@
-from plotynium.utils.getter import getter
-from operator import itemgetter
+from plotynium.transformers import getter
 
 def test_getter_callable():
-    value = lambda d: d
+    def value(d):
+        return d
     assert getter(value) == value
 
 def test_getter_string():
