@@ -11,8 +11,6 @@ from .marks import (
 )
 from .marks import (
     BarX as bar_x,
-)
-from .marks import (
     BarY as bar_y,
 )
 from .marks import (
@@ -28,6 +26,7 @@ from .marks import (
     Line as line,
 )
 from .marks import (
+    RuleX as rule_x,
     RuleY as rule_y,
 )
 from .plot import plot
@@ -45,6 +44,7 @@ __all__ = [
     "grid_x",
     "grid_y",
     "line",
+    "rule_x",
     "rule_y",
     "plot",
     "Scheme",

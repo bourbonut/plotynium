@@ -7,7 +7,7 @@ from .dot import Dot
 from .grid import GridX, GridY
 from .line import Line
 from .mark import Mark
-from .rule import RuleY
+from .rule import RuleX, RuleY
 
 __all__ = [
     "Dot",
@@ -15,6 +15,7 @@ __all__ = [
     "Line",
     "BarX",
     "BarY",
+    "RuleX",
     "RuleY",
     "AxisX",
     "AxisY",

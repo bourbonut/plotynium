@@ -9,6 +9,101 @@ from ..transformers import Identity, getter
 from ..types import T
 from .style import Style
 
+class RuleX(Style[T]):
+    """
+    Marker for adding vertical line given a list of x positions
+
+    Parameters
+    ----------
+    x : list[T]
+        List of x positions where vertical lines will be placed.
+    fill : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `fill` attribute.
+    fill_opacity : float
+        Fill opacity value included in [0, 1].
+    stroke : Callable[[T], str] | str | None
+        Function which takes a data and returns a color applied for `stroke` attribute.
+    stroke_width : float
+        Stroke width value.
+    stroke_opacity : float
+        Stroke opacity value included in [0, 1].
+    stroke_dasharray : str | None
+        Stroke dasharray value.
+    opacity : float
+        General opacity value included in [0, 1].
+    """
+
+    def __init__(
+        self,
+        x: list[T],
+        fill: Callable[[T], str] | str | None = None,
+        fill_opacity: float = 1.0,
+        stroke: Callable[[T], str] | str | None = None,
+        stroke_width: float = 1.5,
+        stroke_opacity: float = 1.0,
+        stroke_dasharray: str | None = None,
+        opacity: float = 1.0,
+    ):
+        self._values = list(x)
+        self._x = getter(0)
+        self._y = getter(1)
+        self.x_label = None
+        self.y_label = None
+
+        self.x_domain = [min(self._values), max(self._values)]
+        self.y_domain = None
+        self.x_scaler_type = determine_scaler(self._values, Identity())
+        self.y_scaler_type = None
+
+        Style.__init__(
+            self,
+            data=[],
+            default_fill="none",
+            default_stroke="black",
+            fill=fill,
+            fill_opacity=fill_opacity,
+            stroke=stroke,
+            stroke_width=stroke_width,
+            stroke_opacity=stroke_opacity,
+            stroke_dasharray=stroke_dasharray,
+            opacity=opacity,
+        )
+
+    def apply(self, svg: Selection, ctx: Context):
+        """
+        Add horizontal lines on SVG content.
+
+        Parameters
+        ----------
+        svg : Selection
+            SVG Content
+        cxt: Context
+            Context
+        """
+        line = (
+            d3.line()
+            .x(
+                (lambda d: ctx.x(self._x(d).timestamp()))
+                if self.x_scaler_type == Scaler.TIME
+                else lambda d: ctx.x(self._x(d))
+            )
+            .y(lambda d: ctx.y(self._y(d)))
+        )
+        values = [
+            [[v, ctx.y.get_domain()[0]], [v, ctx.y.get_domain()[1]]]
+            for v in self._values
+        ]
+        (
+            svg.append("g")
+            .attr("class", "rule")
+            .select_all("rule")
+            .data(values)
+            .join("path")
+            .attr("stroke", self._stroke)
+            .attr("fill", self._fill)
+            .attr("stroke-width", self._stroke_width)
+            .attr("d", lambda d: line(d))
+        )
 
 class RuleY(Style[T]):
     """
@@ -55,7 +150,6 @@ class RuleY(Style[T]):
         self.y_domain = [min(self._values), max(self._values)]
         self.x_scaler_type = None
         self.y_scaler_type = determine_scaler(self._values, Identity())
-        self.legend_labels = None
 
         Style.__init__(
             self,
