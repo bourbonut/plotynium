@@ -1,5 +1,15 @@
 # Plotynium
 
+Plotynium is a library for creating static visuaalizations in Python influenced by [Observable Plot](https://observablehq.com/plot/).
+
+## Installation
+
+```bash
+pip install git+https://github.com/bourbonut/plotynium
+```
+
+It will be available soon on Pypi.
+
 ## Example
 
 ```py
