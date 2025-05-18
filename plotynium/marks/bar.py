@@ -9,9 +9,10 @@ from ..scaler import determine_scaler
 from ..transformers import getter
 from ..types import Data, T
 from .style import Style
+from .mark import Mark
 
 
-class BarX(Style[T]):
+class BarX(Style[T], Mark):
     """
     Marker for drawing horizontal bars based on given data.
 
@@ -55,6 +56,7 @@ class BarX(Style[T]):
         stroke_dasharray: str | None = None,
         opacity: float = 1.0,
     ):
+        Mark.__init__(self)
         sort = init_options(sort, SortOptions)
         if sort.by != "":
             data = sorted(data, key=getter(sort.by))
@@ -112,7 +114,7 @@ class BarX(Style[T]):
             .attr("stroke-width", self._stroke_width)
         )
 
-class BarY(Style[T]):
+class BarY(Style[T], Mark):
     """
     Marker for drawing vertical bars based on given data.
 
@@ -156,6 +158,7 @@ class BarY(Style[T]):
         stroke_dasharray: str | None = None,
         opacity: float = 1.0,
     ):
+        Mark.__init__(self)
         sort = init_options(sort, SortOptions)
         if sort.by != "":
             data = sorted(data, key=getter(sort.by))

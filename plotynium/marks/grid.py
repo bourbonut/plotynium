@@ -9,9 +9,10 @@ from ..domain import domain
 from ..scaler import determine_scaler
 from ..transformers import Constant, Identity
 from ..types import Data, T
+from .mark import Mark
 
 
-class GridX(Generic[T]):
+class GridX(Generic[T], Mark):
     """
     Marker for adding vertical lines from x ticks.
 
@@ -46,6 +47,7 @@ class GridX(Generic[T]):
         stroke_width: float = 1,
         stroke_dasharray: str | None = None,
     ):
+        Mark.__init__(self)
         self._data = data or d3.ticks(0, 1, 10)
         self._x = x or Identity()
         self._y1 = y1
@@ -55,13 +57,8 @@ class GridX(Generic[T]):
         self._stroke_width = stroke_width
         self._stroke_dasharray = stroke_dasharray
 
-        self.x_label = None
-        self.y_label = None
         self.x_domain = domain(self._data, self._x)
-        self.y_domain = None
         self.x_scaler_type = determine_scaler(self._data, self._x)
-        self.y_scaler_type = None
-        self.legend_labels = None
 
     def apply(self, svg: Selection, ctx: Context):
         """
@@ -98,7 +95,7 @@ class GridX(Generic[T]):
         )
 
 
-class GridY(Generic[T]):
+class GridY(Generic[T], Mark):
     """
     Marker for adding horizontal lines from y ticks.
 
@@ -133,6 +130,7 @@ class GridY(Generic[T]):
         stroke_width: float = 1,
         stroke_dasharray: str | None = None,
     ):
+        Mark.__init__(self)
         self._data = data or d3.ticks(0, 1, 10)
         self._x1 = x1
         self._x2 = x2
@@ -142,13 +140,8 @@ class GridY(Generic[T]):
         self._stroke_width = stroke_width
         self._stroke_dasharray = stroke_dasharray
 
-        self.x_label = None
-        self.y_label = None
-        self.x_domain = None
         self.y_domain = domain(self._data, self._y)
-        self.x_scaler_type = None
         self.y_scaler_type = determine_scaler(self._data, self._y)
-        self.legend_labels = None
 
     def apply(self, svg: Selection, ctx: Context):
         """

@@ -9,9 +9,10 @@ from ..scaler import Scaler, determine_scaler
 from ..transformers import Constant, getter
 from ..types import Data, Index, T
 from .style import Style
+from .mark import Mark
 
 
-class AreaY(Style[T]):
+class AreaY(Style[T], Mark):
     """
     Marker for drawing areas defined by y positions.
 
@@ -48,7 +49,9 @@ class AreaY(Style[T]):
     Raises
     ------
     RuntimeError
-        When incoherence found between 'y0' and 'y1' domains
+        When incoherence found between 'y0' and 'y1' domains.
+    ValueError
+        When 'y' is undefined or 'y1' and 'y2' are undefined.
     """
 
     def __init__(
@@ -66,6 +69,7 @@ class AreaY(Style[T]):
         stroke_dasharray: str | None = None,
         opacity: float = 1.0,
     ):
+        Mark.__init__(self)
         self._data = data
         self.x_label = x if isinstance(x, str) else None
         self.y_label = y if isinstance(y, str) else None

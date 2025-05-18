@@ -8,11 +8,12 @@ from ..scaler import determine_scaler
 from ..transformers import Constant, Identity, Symbol, getter
 from ..types import Data, T
 from .style import Style
+from .mark import Mark
 
 
 def center(scale: Callable) -> Callable[[T], float]:
     """
-    Centralize tick coordinates if `scale` argument has a `bandwidth`.
+    Centralize tick coordinates if `scale` argument has a `get_bandwidth`.
 
     Parameters
     ----------
@@ -34,7 +35,7 @@ def center(scale: Callable) -> Callable[[T], float]:
     return scale
 
 
-class Dot(Style[T]):
+class Dot(Style[T], Mark):
     """
     Marker for add dots (as symbols or circles) given point coordinates.
 
@@ -81,6 +82,7 @@ class Dot(Style[T]):
         stroke_dasharray: str | None = None,
         opacity: float = 1.0,
     ):
+        Mark.__init__(self)
         self._data = data
         self.x_label = x if isinstance(x, str) else None
         self.y_label = y if isinstance(y, str) else None
