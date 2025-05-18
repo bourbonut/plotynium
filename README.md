@@ -1,6 +1,6 @@
 # Plotynium
 
-Plotynium is a library for creating static visuaalizations in Python influenced by [Observable Plot](https://observablehq.com/plot/).
+Plotynium is a *Data Visualization* framework for Python, inspired by  [Observable Plot](https://observablehq.com/plot/).
 
 ## Installation
 
