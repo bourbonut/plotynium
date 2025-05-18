@@ -187,8 +187,7 @@ def plot(
         )
         if translate := ctx.canvas_translate:
             canvas_group.attr("transform", translate)
-    
-    if not only_legend:
+
         # Apply mark on SVG content
         for mark in marks:
             mark.apply(canvas_group, ctx)
