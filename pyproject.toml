@@ -10,5 +10,6 @@ dependencies = ["detroit>=2.3.0"]
 license = "MIT"
 
 [project.urls]
-Homepage="https://github.com/bourbonut/plotaclysm"
-Repository="https://github.com/bourbonut/plotaclysm"
+Homepage="https://github.com/bourbonut/plotynium"
+Repository="https://github.com/bourbonut/plotynium"
+Documentation="https://bourbonut.github.io/plotynium/"
