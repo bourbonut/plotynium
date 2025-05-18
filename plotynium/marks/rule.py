@@ -8,8 +8,9 @@ from ..scaler import Scaler, determine_scaler
 from ..transformers import Identity, getter
 from ..types import T
 from .style import Style
+from .mark import Mark
 
-class RuleX(Style[T]):
+class RuleX(Style[T], Mark):
     """
     Marker for adding vertical line given a list of x positions
 
@@ -44,16 +45,13 @@ class RuleX(Style[T]):
         stroke_dasharray: str | None = None,
         opacity: float = 1.0,
     ):
+        Mark.__init__(self)
         self._values = list(x)
         self._x = getter(0)
         self._y = getter(1)
-        self.x_label = None
-        self.y_label = None
 
         self.x_domain = [min(self._values), max(self._values)]
-        self.y_domain = None
         self.x_scaler_type = determine_scaler(self._values, Identity())
-        self.y_scaler_type = None
 
         Style.__init__(
             self,
@@ -105,7 +103,7 @@ class RuleX(Style[T]):
             .attr("d", lambda d: line(d))
         )
 
-class RuleY(Style[T]):
+class RuleY(Style[T], Mark):
     """
     Marker for adding horizontal line given a list of y positions
 
@@ -140,15 +138,12 @@ class RuleY(Style[T]):
         stroke_dasharray: str | None = None,
         opacity: float = 1.0,
     ):
+        Mark.__init__(self)
         self._values = list(y)
         self._x = getter(0)
         self._y = getter(1)
-        self.x_label = None
-        self.y_label = None
 
-        self.x_domain = None
         self.y_domain = [min(self._values), max(self._values)]
-        self.x_scaler_type = None
         self.y_scaler_type = determine_scaler(self._values, Identity())
 
         Style.__init__(
