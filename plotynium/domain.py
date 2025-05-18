@@ -1,9 +1,12 @@
-from datetime import datetime
 from collections.abc import Callable
 from operator import itemgetter
-from .types import T, Number, Data
 
-def domain(data: list[T], accessor: Callable[[T], Data]) -> tuple[Number, Number] | list[str]:
+from .types import Data, Number, T
+
+
+def domain(
+    data: list[T], accessor: Callable[[T], Data]
+) -> tuple[Number, Number] | list[str]:
     """
     Generates a domain given data and an accessor function
 
@@ -21,7 +24,7 @@ def domain(data: list[T], accessor: Callable[[T], Data]) -> tuple[Number, Number
         a list of `str` when data are `str`
     """
     sample = accessor(data[0])
-    if isinstance(sample, str): # Band case
+    if isinstance(sample, str):  # Band case
         uniques = set()
         values = []
         for value in map(accessor, data):
@@ -32,6 +35,7 @@ def domain(data: list[T], accessor: Callable[[T], Data]) -> tuple[Number, Number
         return values
     values = list(map(accessor, data))
     return [min(values), max(values)]
+
 
 def reduce(domains: list[tuple[Number, Number] | None]) -> tuple[Number, Number]:
     """
@@ -48,9 +52,10 @@ def reduce(domains: list[tuple[Number, Number] | None]) -> tuple[Number, Number]
         Domain (min, max) deduced from given domains; default `[0., 1.]`
     """
     domains = [domain for domain in domains if domain is not None]
-    mins = list(map(itemgetter(0), domains)) or [0.]
-    maxs = list(map(itemgetter(1), domains)) or [1.]
+    mins = list(map(itemgetter(0), domains)) or [0.0]
+    maxs = list(map(itemgetter(1), domains)) or [1.0]
     return [min(mins), max(maxs)]
+
 
 def unify(domains: list[tuple[Number, Number] | None]) -> tuple[Number, Number]:
     """

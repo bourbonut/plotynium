@@ -1,11 +1,14 @@
+from collections.abc import Callable
+
+import detroit as d3
+
 from ..types import Index, T
+from .default import DefaultTransformer
 from .getter import getter
 from .identity import Identity
-from .transformer import Transformer
 from .picker import LegendPicker
-from .default import DefaultTransformer
-from collections.abc import Callable
-import detroit as d3
+from .transformer import Transformer
+
 
 class Symbol(Transformer[T, str]):
     """
@@ -18,6 +21,7 @@ class Symbol(Transformer[T, str]):
     value : str | Index
         Index or key value for accessing data
     """
+
     def __init__(self, data: list[T], value: str | Index):
         self._value = getter(value)
         self._labels = sorted(set(map(self._value, data)))
@@ -95,11 +99,8 @@ class Symbol(Transformer[T, str]):
         if callable(value):
             return DefaultTransformer(data, value)
         elif len(data) > 0 and (
-            (
-                isinstance(value, str) and value in data[0]
-            ) or (
-                isinstance(value, int) and value < len(data[0])
-            )
+            (isinstance(value, str) and value in data[0])
+            or (isinstance(value, int) and value < len(data[0]))
         ):
             return Symbol(data, value)
         else:

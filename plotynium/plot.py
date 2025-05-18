@@ -1,13 +1,21 @@
-from .marks import AxisX, AxisY, GridX, GridY, Mark, check_types
-from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions, init_options
-from .context import Context
-from .properties import Margin 
-from .dimensions import dimensions
-from .scaler import determine_label, make_scaler
-from .legends import Legend
-
 import detroit as d3
 from detroit.selection import Selection
+
+from .context import Context
+from .dimensions import dimensions
+from .legends import Legend
+from .marks import AxisX, AxisY, GridX, GridY, Mark, check_types
+from .options import (
+    ColorOptions,
+    StyleOptions,
+    SymbolOptions,
+    XOptions,
+    YOptions,
+    init_options,
+)
+from .properties import Margin
+from .scaler import determine_label, make_scaler
+
 
 def plot(
     marks: list[Mark],
@@ -74,7 +82,11 @@ def plot(
     user_legend_option = color_options.legend or symbol_options.legend
     margin = Margin(margin_top, margin_left, margin_bottom, margin_right)
     width, height, canvas_properties, legend_properties = dimensions(
-        marks, user_legend_option, width, height, margin,
+        marks,
+        user_legend_option,
+        width,
+        height,
+        margin,
     )
 
     # Set labels
@@ -116,7 +128,7 @@ def plot(
     only_legend = len(marks) == 1 and check_types(Legend)(marks[0])
     only_axis_x = len(marks) == 1 and check_types(AxisX)(marks[0])
     only_axis_y = len(marks) == 1 and check_types(AxisY)(marks[0])
-    is_not_unique = not(only_legend or only_axis_x or only_axis_y)
+    is_not_unique = not (only_legend or only_axis_x or only_axis_y)
 
     # Checks if legend is True or if it exists
     legend_marks = list(filter(check_types(Legend), marks))
@@ -126,7 +138,11 @@ def plot(
         # Set x axis
         if not any(map(check_types(AxisX), marks)):
             x_ticks = x.ticks() if hasattr(x, "ticks") else x.get_domain()
-            x_tick_format = x.tick_format(x_options.count, x_options.specifier) if hasattr(x, "tick_format") else x.get_domain()
+            x_tick_format = (
+                x.tick_format(x_options.count, x_options.specifier)
+                if hasattr(x, "tick_format")
+                else x.get_domain()
+            )
             marks.append(
                 AxisX(
                     x_ticks,
@@ -139,7 +155,11 @@ def plot(
         # Set y axis
         if not any(map(check_types(AxisY), marks)):
             y_ticks = y.ticks() if hasattr(y, "ticks") else y.get_domain()
-            y_tick_format = y.tick_format(y_options.count, y_options.specifier) if hasattr(y, "tick_format") else y.get_domain()
+            y_tick_format = (
+                y.tick_format(y_options.count, y_options.specifier)
+                if hasattr(y, "tick_format")
+                else y.get_domain()
+            )
             marks.append(
                 AxisY(
                     y_ticks,
@@ -175,16 +195,10 @@ def plot(
         svg.style("color", ctx.color)
 
     if add_legend:
-        legend_group = (
-            svg.append("g")
-            .attr("aria-label", "legend")
-        )
+        legend_group = svg.append("g").attr("aria-label", "legend")
 
     if not only_legend:
-        canvas_group = (
-            svg.append("g")
-            .attr("aria-label", "canvas")
-        )
+        canvas_group = svg.append("g").attr("aria-label", "canvas")
         if translate := ctx.canvas_translate:
             canvas_group.attr("transform", translate)
 

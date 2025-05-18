@@ -1,5 +1,6 @@
-from plotynium.schemes import Scheme
 import pytest
+
+from plotynium.schemes import Scheme
 
 ALL_SCHEMES = [
     Scheme.CATEGORY_10,
@@ -15,8 +16,10 @@ ALL_SCHEMES = [
     Scheme.TABLEAU_10,
 ]
 
+
 def test_schemes_all_different():
     assert len(ALL_SCHEMES) == len(set(ALL_SCHEMES))
+
 
 @pytest.mark.parametrize("scheme", ALL_SCHEMES)
 def test_schemes_one_by_one(scheme):

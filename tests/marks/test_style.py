@@ -1,31 +1,37 @@
+import pytest
+
+from plotynium.interpolations import Interpolation
 from plotynium.marks.style import Style
 from plotynium.transformers import Color, Constant
-from plotynium.interpolations import Interpolation
-import pytest
+
 
 @pytest.fixture
 def data():
     return [{"foo": x, "bar": y} for x, y in zip(range(3), range(3))]
 
+
 @pytest.fixture
 def default_stroke():
     return "black"
+
 
 @pytest.fixture
 def default_fill():
     return "none"
 
+
 def test_style_default(data, default_fill, default_stroke):
     style = Style(data, default_stroke, default_fill)
-    assert style._fill_opacity == 1.
-    assert style._stroke_width == 1.
-    assert style._stroke_opacity == 1.
+    assert style._fill_opacity == 1.0
+    assert style._stroke_width == 1.0
+    assert style._stroke_opacity == 1.0
     assert style._stroke_dasharray is None
-    assert style._opacity == 1.
+    assert style._opacity == 1.0
     assert isinstance(style._stroke, Constant)
     assert style._stroke(None) == default_stroke
     assert isinstance(style._fill, Constant)
     assert style._fill(None) == default_fill
+
 
 def test_style_specific_values(data, default_fill, default_stroke):
     style = Style(
@@ -48,11 +54,14 @@ def test_style_specific_values(data, default_fill, default_stroke):
     assert isinstance(style._stroke, Color)
     assert isinstance(style._fill, Color)
 
+
 def test_style_scheme(data, default_fill, default_stroke, monkeypatch):
     counter = [0]
+
     def mock_set_color_scheme(self, scheme):
         counter[0] += 1
         return
+
     monkeypatch.setattr(
         Color,
         "set_color_scheme",

@@ -1,5 +1,6 @@
-from plotynium.interpolations import Interpolation
 import pytest
+
+from plotynium.interpolations import Interpolation
 
 ALL_INTERPOLATIONS = [
     Interpolation.BLUES,
@@ -42,8 +43,10 @@ ALL_INTERPOLATIONS = [
     Interpolation.YLORRD,
 ]
 
+
 def test_interpolations_all_different():
     assert len(ALL_INTERPOLATIONS) == len(set(ALL_INTERPOLATIONS))
+
 
 @pytest.mark.parametrize("interpolation", ALL_INTERPOLATIONS)
 def test_interpolations_one_by_one(interpolation):

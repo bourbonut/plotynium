@@ -1,12 +1,14 @@
 from collections.abc import Callable
+
 from detroit.selection import Selection
 
-from .style import Style
 from ..context import Context
 from ..domain import domain
 from ..scaler import determine_scaler
-from ..transformers import Constant, Symbol, getter, Identity
+from ..transformers import Constant, Identity, Symbol, getter
 from ..types import Data, T
+from .style import Style
+
 
 def center(scale: Callable) -> Callable[[T], float]:
     """
@@ -24,10 +26,13 @@ def center(scale: Callable) -> Callable[[T], float]:
     """
     if hasattr(scale, "get_bandwidth"):
         offset = max(0, scale.get_bandwidth()) / 2
+
         def scale_center(d):
             return scale(d) + offset
+
         return scale_center
     return scale
+
 
 class Dot(Style[T]):
     """
@@ -60,6 +65,7 @@ class Dot(Style[T]):
     opacity : float
         General opacity value included in [0, 1].
     """
+
     def __init__(
         self,
         data: list[T],
@@ -68,12 +74,12 @@ class Dot(Style[T]):
         r: Callable[[T], float] | float | None = None,
         symbol: Callable[[T], str] | str | None = None,
         fill: Callable[[T], str] | str | None = None,
-        fill_opacity: float = 1.,
+        fill_opacity: float = 1.0,
         stroke: Callable[[T], str] | str | None = None,
         stroke_width: float = 1.5,
-        stroke_opacity: float = 1.,
+        stroke_opacity: float = 1.0,
         stroke_dasharray: str | None = None,
-        opacity: float = 1.,
+        opacity: float = 1.0,
     ):
         self._data = data
         self.x_label = x if isinstance(x, str) else None
@@ -139,7 +145,10 @@ class Dot(Style[T]):
                 .select_all("symbol")
                 .data(self._data)
                 .join("g")
-                .attr("transform", lambda d: f"translate({x(self._x(d))}, {y(self._y(d))})")
+                .attr(
+                    "transform",
+                    lambda d: f"translate({x(self._x(d))}, {y(self._y(d))})",
+                )
                 .append("path")
                 .attr("d", self._symbol)
                 .attr("stroke", self._stroke)

@@ -1,19 +1,23 @@
-from ..schemes import Scheme
-from ..interpolations import Interpolation
-from ..types import Index, T, Data, ColorScheme
-from .identity import Identity
-from .getter import getter
-from .transformer import Transformer
-from .default import DefaultTransformer
-from .picker import LegendPicker
 from collections.abc import Callable
+
 import detroit as d3
+
+from ..interpolations import Interpolation
+from ..schemes import Scheme
+from ..types import ColorScheme, Data, Index, T
+from .default import DefaultTransformer
+from .getter import getter
+from .identity import Identity
+from .picker import LegendPicker
+from .transformer import Transformer
+
 
 def default_colorscheme(nb_labels: int) -> Interpolation | Scheme:
     if nb_labels > 10:
         return Interpolation.RAINBOW
     else:
         return Scheme.OBSERVABLE_10
+
 
 class QualitativeScaler:
     """
@@ -26,16 +30,20 @@ class QualitativeScaler:
     labels : list[str]
         List of labels
     """
+
     def __init__(self, labels: list[str]):
         nb_labels = len(labels)
         self._band = d3.scale_band(labels, [0, nb_labels])
-        self._sequential = d3.scale_sequential([0, nb_labels - 1], default_colorscheme(nb_labels))
+        self._sequential = d3.scale_sequential(
+            [0, nb_labels - 1], default_colorscheme(nb_labels)
+        )
 
     def __call__(self, d):
         return self._sequential(self._band(d))
 
     def set_interpolator(self, interpolator):
         self._sequential.set_interpolator(interpolator)
+
 
 class Color(Transformer[T, str]):
     """
@@ -48,6 +56,7 @@ class Color(Transformer[T, str]):
     value : str | Index | Callable[[T], Data]
         Index or key value for accessing data
     """
+
     def __init__(self, data: list[T], value: str | Index | Callable[[T], Data]):
         self._value = getter(value)
         data = list(map(self._value, data))
@@ -143,11 +152,8 @@ class Color(Transformer[T, str]):
         if callable(value):
             return DefaultTransformer(data, value)
         elif len(data) > 0 and (
-            (
-                isinstance(value, str) and value in data[0]
-            ) or (
-                isinstance(value, int) and value < len(data[0])
-            )
+            (isinstance(value, str) and value in data[0])
+            or (isinstance(value, int) and value < len(data[0]))
         ):
             return Color(data, value)
         else:

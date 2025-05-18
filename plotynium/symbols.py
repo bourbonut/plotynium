@@ -1,10 +1,13 @@
-import detroit as d3
 from enum import Enum
+
+import detroit as d3
+
 
 class SymbolFill(Enum):
     """
     All available symbols with `fill` attribute for changing its color
     """
+
     CIRCLE = d3.symbol_circle
     CROSS = d3.symbol_cross
     DIAMOND = d3.symbol_diamond
@@ -13,10 +16,12 @@ class SymbolFill(Enum):
     TRIANGLE = d3.symbol_triangle
     WYE = d3.symbol_wye
 
+
 class SymbolStroke(Enum):
     """
     All available symbols with `stroke` attribute for changing its color
     """
+
     ASTERISK = d3.symbol_asterisk
     CIRCLE = d3.symbol_circle
     DIAMOND = d3.symbol_diamond2

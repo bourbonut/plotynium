@@ -1,13 +1,13 @@
-from .dot import Dot
-from .area import AreaY
-from .line import Line
-from .bar import BarY
-from .rule import RuleY
-from .axis import AxisX, AxisY
-from .grid import GridX, GridY
-from .mark import Mark
-
 from collections.abc import Callable
+
+from .area import AreaY
+from .axis import AxisX, AxisY
+from .bar import BarY
+from .dot import Dot
+from .grid import GridX, GridY
+from .line import Line
+from .mark import Mark
+from .rule import RuleY
 
 __all__ = [
     "Dot",
@@ -23,7 +23,9 @@ __all__ = [
     "check_types",
 ]
 
+
 def check_types(*types: list[type[Mark]]) -> Callable[[Mark], bool]:
     def check_mark(mark: Mark) -> bool:
         return isinstance(mark, tuple(types))
+
     return check_mark

@@ -1,14 +1,15 @@
 from collections.abc import Callable
-from detroit.selection import Selection
 
 import detroit as d3
+from detroit.selection import Selection
 
-from .style import Style
+from ..context import Context
 from ..domain import domain, reduce
-from ..scaler import determine_scaler, Scaler
+from ..scaler import Scaler, determine_scaler
 from ..transformers import Constant, getter
 from ..types import Data, Index, T
-from ..context import Context
+from .style import Style
+
 
 class AreaY(Style[T]):
     """
@@ -49,6 +50,7 @@ class AreaY(Style[T]):
     RuntimeError
         When incoherence found between 'y0' and 'y1' domains
     """
+
     def __init__(
         self,
         data: list[T],
@@ -57,12 +59,12 @@ class AreaY(Style[T]):
         y1: Callable[[T], Data] | Index | str | None = None,
         y2: Callable[[T], Data] | Index | str | None = None,
         fill: Callable[[T], str] | str | None = None,
-        fill_opacity: float = 1.,
+        fill_opacity: float = 1.0,
         stroke: Callable[[T], str] | str | None = None,
-        stroke_width: float = 1.,
-        stroke_opacity: float = 1.,
+        stroke_width: float = 1.0,
+        stroke_opacity: float = 1.0,
         stroke_dasharray: str | None = None,
-        opacity: float = 1.,
+        opacity: float = 1.0,
     ):
         self._data = data
         self.x_label = x if isinstance(x, str) else None
@@ -77,7 +79,9 @@ class AreaY(Style[T]):
             self._y1 = getter(y or 1)
             self._y0 = Constant(0)
         else:
-            raise ValueError("'y' must be specified or 'y1' and 'y2' must be specified.")
+            raise ValueError(
+                "'y' must be specified or 'y1' and 'y2' must be specified."
+            )
 
         self.x_domain = domain(self._data, self._x)
         y0_domain = domain(self._data, self._y0)
@@ -141,4 +145,3 @@ class AreaY(Style[T]):
             .attr("stroke-width", self._stroke_width)
             .attr("d", area(self._data))
         )
-

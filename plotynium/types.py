@@ -1,6 +1,7 @@
+from typing import TypeAlias, TypeVar
+
 from .interpolations import Interpolation
 from .schemes import Scheme
-from typing import TypeVar, TypeAlias
 
 T = TypeVar("T")
 U = TypeVar("U")

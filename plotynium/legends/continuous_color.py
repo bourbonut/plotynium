@@ -1,5 +1,6 @@
-from detroit.selection import Selection
 import detroit as d3
+from detroit.selection import Selection
+
 
 class ContinuousLegend:
     def continuous_color_legend(self, svg: Selection):
@@ -28,8 +29,7 @@ class ContinuousLegend:
             .attr("transform", f"translate({margin_left}, {margin_top})")
         )
         (
-            legend
-            .append("g")
+            legend.append("g")
             .attr("aria-label", "legend gradient")
             .select_all("rect")
             .data(data)

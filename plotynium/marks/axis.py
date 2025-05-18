@@ -1,15 +1,16 @@
-from typing import Literal
-from detroit.selection import Selection
 from collections.abc import Callable
-from typing import Generic
-import detroit as d3
+from typing import Generic, Literal
 
-from .mark import Mark
-from ..transformers import Identity, Constant, getter
+import detroit as d3
+from detroit.selection import Selection
+
+from ..context import Context
 from ..domain import domain
 from ..scaler import determine_scaler
-from ..context import Context
+from ..transformers import Constant, Identity, getter
 from ..types import Data, T
+from .mark import Mark
+
 
 class AxisX(Generic[T], Mark):
     """
@@ -44,6 +45,7 @@ class AxisX(Generic[T], Mark):
     stroke_width : float
         Stroke width value.
     """
+
     def __init__(
         self,
         data: list[T] | None = None,
@@ -52,11 +54,11 @@ class AxisX(Generic[T], Mark):
         anchor: Literal["top", "bottom"] = "bottom",
         label: str | None = None,
         fill: str | None = None,
-        tick_rotate: float = 0.,
+        tick_rotate: float = 0.0,
         tick_size: int = 6,
         tick_format: Callable[[T], str] | None = None,
         stroke: str | None = None,
-        stroke_opacity: float = 1.,
+        stroke_opacity: float = 1.0,
         stroke_width: float = 1,
     ):
         Mark.__init__(self)
@@ -89,7 +91,11 @@ class AxisX(Generic[T], Mark):
         x = ctx.x
         y = ctx.y
 
-        dy = ctx.height - ctx.margin.bottom if self._anchor == "bottom" else ctx.margin.top
+        dy = (
+            ctx.height - ctx.margin.bottom
+            if self._anchor == "bottom"
+            else ctx.margin.top
+        )
         y = self._y or Constant(dy)
         dir = -1 if self._anchor == "top" else 1
 
@@ -109,9 +115,9 @@ class AxisX(Generic[T], Mark):
             .attr("transform", lambda d: f"translate({x(d) + offset}, {y(d)})")
             .attr("d", f"M0,0L0,{dir * self._tick_size}")
         )
-        if self._stroke_opacity != 1.:
+        if self._stroke_opacity != 1.0:
             ticks.attr("stroke-opacity", self._stroke_opacity)
-        if self._stroke_width != 1.:
+        if self._stroke_width != 1.0:
             ticks.attr("stroke-width", self._stroke_width)
 
         (
@@ -132,8 +138,8 @@ class AxisX(Generic[T], Mark):
             tx = (x.get_range()[0] + x.get_range()[1]) // 2
             ty = (
                 ctx.height - ctx.margin.bottom // 4
-                if self._anchor == "bottom" else
-                ctx.margin.top // 4
+                if self._anchor == "bottom"
+                else ctx.margin.top // 4
             )
             (
                 svg.append("g")
@@ -180,6 +186,7 @@ class AxisY(Generic[T], Mark):
     stroke_width : float
         Stroke width value.
     """
+
     def __init__(
         self,
         data: list[T] | None = None,
@@ -188,11 +195,11 @@ class AxisY(Generic[T], Mark):
         anchor: Literal["left", "right"] = "left",
         label: str | None = None,
         fill: str | None = None,
-        tick_rotate: float = 0.,
+        tick_rotate: float = 0.0,
         tick_size: int = 6,
         tick_format: Callable[[T], str] | None = None,
         stroke: str | None = None,
-        stroke_opacity: float = 1.,
+        stroke_opacity: float = 1.0,
         stroke_width: float = 1,
     ):
         Mark.__init__(self)
@@ -246,9 +253,9 @@ class AxisY(Generic[T], Mark):
             .attr("d", f"M0,0L{dir * self._tick_size},0")
         )
 
-        if self._stroke_opacity != 1.:
+        if self._stroke_opacity != 1.0:
             ticks.attr("stroke-opacity", self._stroke_opacity)
-        if self._stroke_width != 1.:
+        if self._stroke_width != 1.0:
             ticks.attr("stroke-width", self._stroke_width)
 
         (
@@ -269,8 +276,8 @@ class AxisY(Generic[T], Mark):
             tx = -(y.get_range()[0] + y.get_range()[1]) // 2
             ty = (
                 ctx.margin.left // 4
-                if self._anchor == "left" else
-                ctx.width - ctx.margin.right //  4
+                if self._anchor == "left"
+                else ctx.width - ctx.margin.right // 4
             )
             (
                 svg.append("g")

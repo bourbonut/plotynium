@@ -1,7 +1,9 @@
 from math import sqrt
-from .marks import AxisX, AxisY, Mark, check_types
+
 from .legends import Legend
+from .marks import AxisX, AxisY, Mark, check_types
 from .properties import CanvasProperties, LegendProperties, Margin
+
 
 def auto_width(
     canvas_properties: CanvasProperties,
@@ -31,13 +33,14 @@ def auto_width(
     int
         Width value
     """
-    if only_legend and has_legend: # only legend
+    if only_legend and has_legend:  # only legend
         return legend_properties.width
-    elif width is None: # no user width
+    elif width is None:  # no user width
         return max(canvas_properties.width, legend_properties.width)
-    else: # user width
+    else:  # user width
         canvas_properties.set_width(width)
         return max(width, legend_properties.width)
+
 
 def auto_height(
     canvas_properties: CanvasProperties,
@@ -56,7 +59,7 @@ def auto_height(
     canvas_properties : CanvasProperties
         Current canvas properties
     legend_properties : LegendProperties
-        Current legend properties   
+        Current legend properties
     only_axis : bool
         `True` if axis is the only mark
     axis_is_x : bool
@@ -74,21 +77,22 @@ def auto_height(
         Height value
     """
     legend_height = legend_properties.height
-    if (only_legend and has_legend) or (only_axis and axis_is_x): # only legend
+    if (only_legend and has_legend) or (only_axis and axis_is_x):  # only legend
         return legend_height
-    elif has_legend and height is None: # legend and no user height
+    elif has_legend and height is None:  # legend and no user height
         height = int(canvas_properties.width / sqrt(2))
         canvas_properties.set_height(height)
         canvas_properties.set_translate(0, legend_height)
         return legend_height + height
-    elif has_legend: # legend and user height
+    elif has_legend:  # legend and user height
         canvas_properties.set_height(height)
         canvas_properties.set_translate(0, legend_height)
         return legend_height + height
-    else: # no legend and user height
+    else:  # no legend and user height
         height = int(canvas_properties.width / sqrt(2))
         canvas_properties.set_height(height)
         return height
+
 
 def dimensions(
     marks: list[Mark],

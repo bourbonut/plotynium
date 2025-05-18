@@ -1,9 +1,11 @@
 from detroit.types import Scaler
+
+from .options import ColorOptions, StyleOptions, SymbolOptions, XOptions, YOptions
+from .properties import CanvasProperties, LegendProperties, Margin
 from .types import ColorScheme
-from .options import StyleOptions, ColorOptions, SymbolOptions, XOptions, YOptions
-from .properties import Margin, CanvasProperties, LegendProperties
 
 __all__ = ["Context"]
+
 
 class Context:
     """
@@ -36,6 +38,7 @@ class Context:
     y_label : str | None
         Y label
     """
+
     def __init__(
         self,
         canvas_properties: CanvasProperties,

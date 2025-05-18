@@ -1,7 +1,9 @@
-from .transformer import Transformer
-from .picker import LegendPicker
-from ..types import T
 from collections import OrderedDict
+
+from ..types import T
+from .picker import LegendPicker
+from .transformer import Transformer
+
 
 class Constant(Transformer[..., T]):
     """
@@ -12,6 +14,7 @@ class Constant(Transformer[..., T]):
     value : T
         Value which will be returned by calling `__call__` method
     """
+
     def __init__(self, value: T):
         self._value = value
         self._picker = LegendPicker()

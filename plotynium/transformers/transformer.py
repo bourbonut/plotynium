@@ -1,12 +1,11 @@
-from ..schemes import Scheme
-from ..interpolations import Interpolation
-from ..types import Index, U, V, ColorScheme
-from collections.abc import Callable
-from collections import OrderedDict
 from abc import ABC, abstractmethod
-from typing import TypeVar, Generic
+from collections.abc import Callable
+from typing import Generic, TypeVar
+
+from ..types import ColorScheme, Index, U, V
 
 TTransformer = TypeVar("TTransformer", bound="Transformer")
+
 
 class Transformer(Generic[U, V], ABC):
     """
@@ -21,8 +20,7 @@ class Transformer(Generic[U, V], ABC):
     """
 
     @abstractmethod
-    def __init__(self, data: list[U], value: str | Index | Callable[[U], V]):
-        ...
+    def __init__(self, data: list[U], value: str | Index | Callable[[U], V]): ...
 
     @abstractmethod
     def __call__(self, d: U) -> V:

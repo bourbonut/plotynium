@@ -1,10 +1,12 @@
-from plotynium.marks.bar import BarY
-from plotynium.transformers import Constant
-from plotynium.scaler import Scaler
-from tests.default_context import default_context
-import detroit as d3
 import random
 from copy import copy
+
+import detroit as d3
+
+from plotynium.marks.bar import BarY
+from plotynium.scaler import Scaler
+from plotynium.transformers import Constant
+from tests.default_context import default_context
 
 
 def test_bar_y_default():
@@ -17,15 +19,16 @@ def test_bar_y_default():
     assert bar_y.x_scaler_type == Scaler.BAND
     assert bar_y.y_scaler_type == Scaler.CONTINUOUS
 
-    assert bar_y._fill_opacity == 1.
-    assert bar_y._stroke_width == 1.
-    assert bar_y._stroke_opacity == 1.
+    assert bar_y._fill_opacity == 1.0
+    assert bar_y._stroke_width == 1.0
+    assert bar_y._stroke_opacity == 1.0
     assert bar_y._stroke_dasharray is None
-    assert bar_y._opacity == 1.
+    assert bar_y._opacity == 1.0
     assert isinstance(bar_y._stroke, Constant)
     assert bar_y._stroke(None) == "none"
     assert isinstance(bar_y._fill, Constant)
     assert bar_y._fill(None) == "black"
+
 
 def test_bar_y_sort_by():
     data = [
@@ -36,6 +39,7 @@ def test_bar_y_sort_by():
     random.shuffle(copied)
     bar_y = BarY(copied, x="letter", y="freq", sort={"by": "freq", "descending": True})
     assert bar_y._data == list(reversed(data))
+
 
 def test_bar_y_call():
     bar_y = BarY([[x, y] for x, y in zip("aaabbbcccdd", range(11))])

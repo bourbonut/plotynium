@@ -1,15 +1,16 @@
 from collections.abc import Callable
-from detroit.selection import Selection
 
 import detroit as d3
+from detroit.selection import Selection
 
-from .mark import Mark
-from .style import Style
+from ..context import Context
 from ..domain import domain
 from ..scaler import Scaler, determine_scaler
 from ..transformers import getter
 from ..types import Data, T
-from ..context import Context
+from .mark import Mark
+from .style import Style
+
 
 class Line(Style[T], Mark):
     """
@@ -38,18 +39,19 @@ class Line(Style[T], Mark):
     opacity : float
         General opacity value included in [0, 1].
     """
+
     def __init__(
         self,
         data: list[T],
         x: Callable[[T], Data] | str | None = None,
         y: Callable[[T], Data] | str | None = None,
         fill: Callable[[T], str] | str | None = None,
-        fill_opacity: float = 1.,
+        fill_opacity: float = 1.0,
         stroke: Callable[[T], str] | str | None = None,
-        stroke_width: float = 1.,
-        stroke_opacity: float = 1.,
+        stroke_width: float = 1.0,
+        stroke_opacity: float = 1.0,
         stroke_dasharray: str | None = None,
-        opacity: float = 1.,
+        opacity: float = 1.0,
     ):
         Mark.__init__(self)
         self._data = data

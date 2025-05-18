@@ -1,13 +1,14 @@
 from collections.abc import Callable
-from detroit.selection import Selection
 
 import detroit as d3
+from detroit.selection import Selection
 
 from ..context import Context
-from .style import Style
 from ..scaler import Scaler, determine_scaler
 from ..transformers import Identity, getter
 from ..types import T
+from .style import Style
+
 
 class RuleY(Style[T]):
     """
@@ -32,16 +33,17 @@ class RuleY(Style[T]):
     opacity : float
         General opacity value included in [0, 1].
     """
+
     def __init__(
         self,
         y: list[T],
         fill: Callable[[T], str] | str | None = None,
-        fill_opacity: float = 1.,
+        fill_opacity: float = 1.0,
         stroke: Callable[[T], str] | str | None = None,
         stroke_width: float = 1.5,
-        stroke_opacity: float = 1.,
+        stroke_opacity: float = 1.0,
         stroke_dasharray: str | None = None,
-        opacity: float = 1.,
+        opacity: float = 1.0,
     ):
         self._values = list(y)
         self._x = getter(0)
@@ -89,7 +91,10 @@ class RuleY(Style[T]):
                 else lambda d: ctx.y(self._y(d))
             )
         )
-        values = [[[ctx.x.get_domain()[0], v], [ctx.x.get_domain()[1], v]] for v in self._values]
+        values = [
+            [[ctx.x.get_domain()[0], v], [ctx.x.get_domain()[1], v]]
+            for v in self._values
+        ]
         (
             svg.append("g")
             .attr("class", "rule")

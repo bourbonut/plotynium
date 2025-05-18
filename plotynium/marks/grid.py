@@ -1,14 +1,15 @@
-from detroit.selection import Selection
 from collections.abc import Callable
 from typing import Generic
 
 import detroit as d3
+from detroit.selection import Selection
 
 from ..context import Context
-from ..transformers import Identity, Constant
 from ..domain import domain
 from ..scaler import determine_scaler
+from ..transformers import Constant, Identity
 from ..types import Data, T
+
 
 class GridX(Generic[T]):
     """
@@ -33,6 +34,7 @@ class GridX(Generic[T]):
     stroke_dasharray : str | None
         Stroke dasharray value.
     """
+
     def __init__(
         self,
         data: list[T] | None = None,
@@ -77,11 +79,7 @@ class GridX(Generic[T]):
         margin_bottom = ctx.margin.bottom
         y1 = self._y1 or Constant(margin_top)
         y2 = self._y2 or Constant(height - margin_bottom)
-        g = (
-            svg.append("g")
-            .attr("aria-label", "x-grid")
-            .attr("stroke", self._stroke)
-        )
+        g = svg.append("g").attr("aria-label", "x-grid").attr("stroke", self._stroke)
         if self._stroke_width:
             g.attr("stroke_width", self._stroke_width)
         if self._stroke_dasharray:
@@ -98,6 +96,7 @@ class GridX(Generic[T]):
             .attr("y1", y1)
             .attr("y2", y2)
         )
+
 
 class GridY(Generic[T]):
     """
@@ -122,6 +121,7 @@ class GridY(Generic[T]):
     stroke_dasharray : str | None
         Stroke dasharray value.
     """
+
     def __init__(
         self,
         data: list[T] | None = None,
@@ -166,11 +166,7 @@ class GridY(Generic[T]):
         margin_left = ctx.margin.left
         x1 = self._x1 or Constant(margin_left)
         x2 = self._x2 or Constant(width - margin_right)
-        g = (
-            svg.append("g")
-            .attr("aria-label", "y-grid")
-            .attr("stroke", self._stroke)
-        )
+        g = svg.append("g").attr("aria-label", "y-grid").attr("stroke", self._stroke)
         if self._stroke_width:
             g.attr("stroke_width", self._stroke_width)
         if self._stroke_dasharray:

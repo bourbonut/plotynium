@@ -1,6 +1,7 @@
 import polars as pl
 from sklearn import datasets, manifold
-import plotynium as plot
+
+import plotynium as ply
 
 nsamples = 1500
 spoints, scolors = datasets.make_s_curve(nsamples, random_state=0)
@@ -26,7 +27,7 @@ for title, method in lle_methods:
         2, pl.Series("color", scolors)
     )
     data = df.to_dicts()
-    plots[title] = plot.plot(marks=[plot.dot(data, x="colx", y="coly", stroke="color")])
+    plots[title] = ply.plot(marks=[ply.dot(data, x="colx", y="coly", stroke="color")])
 
 for i, (_, plot) in enumerate(plots.items()):
     with open(f"{lle_methods[i][1]}.svg", "w") as file:

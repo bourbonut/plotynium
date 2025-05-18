@@ -1,8 +1,11 @@
-from itertools import accumulate
 from functools import reduce
+from itertools import accumulate
 from operator import iadd, itemgetter
+
 from detroit.selection import Selection
+
 from .string_widths import STRING_WIDTHS
+
 
 class DiscreteLegend:
     def discrete_color_legend(self, svg: Selection):
@@ -18,7 +21,10 @@ class DiscreteLegend:
         square_size = 15
         ratio = self._font_size / 2
         labels = list(map(itemgetter(0), self._color_mapping))
-        lengths = [reduce(iadd, [STRING_WIDTHS.get(char, 1) for char in str(label)], 0) for label in labels]
+        lengths = [
+            reduce(iadd, [STRING_WIDTHS.get(char, 1) for char in str(label)], 0)
+            for label in labels
+        ]
         offsets = [0] + [2 * square_size + length * ratio for length in lengths[:-1]]
         offsets = list(accumulate(offsets))
         margin_top = self._properties.margin.top
@@ -33,9 +39,8 @@ class DiscreteLegend:
             .enter()
         )
 
-        g = (
-            legend.append("g")
-            .attr("transform", lambda _, i: f"translate({offsets[i]}, 0)")
+        g = legend.append("g").attr(
+            "transform", lambda _, i: f"translate({offsets[i]}, 0)"
         )
 
         (

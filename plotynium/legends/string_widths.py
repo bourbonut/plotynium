@@ -1,4 +1,3 @@
-import string
 
 STRING_WIDTHS = {
     "a": 1,

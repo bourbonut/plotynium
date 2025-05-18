@@ -1,14 +1,15 @@
 import detroit as d3
 from detroit.selection import Selection
-from ..types import ColorScheme
+
 from ..context import Context
-from ..transformers import Constant
-from .discrete_color import DiscreteLegend
-from .continuous_color import ContinuousLegend
-from .symbol import SymbolLegend
-from .default_scheme import default_colorscheme
 from ..marks import Mark
-from ..properties import LegendProperties, DEFAULT_SQUARE_SIZE, DEFAULT_SYMBOL_SIZE
+from ..properties import DEFAULT_SQUARE_SIZE, DEFAULT_SYMBOL_SIZE, LegendProperties
+from ..transformers import Constant
+from ..types import ColorScheme
+from .continuous_color import ContinuousLegend
+from .default_scheme import default_colorscheme
+from .discrete_color import DiscreteLegend
+from .symbol import SymbolLegend
 
 __all__ = ["Legend"]
 
@@ -67,10 +68,10 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         square_size: int = DEFAULT_SQUARE_SIZE,
         symbol_size: int = DEFAULT_SYMBOL_SIZE,
         fill: str | None = None,
-        fill_opacity: float = 1.,
+        fill_opacity: float = 1.0,
         stroke: str | None = None,
-        stroke_opacity: float = 1.,
-        stroke_width: float = 1.,
+        stroke_opacity: float = 1.0,
+        stroke_width: float = 1.0,
         font_size: int = 12,
         width: int = 240,
         height: int = 50,
@@ -80,7 +81,9 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         margin_right: int = 15,
     ):
         Mark.__init__(self)
-        self._color_mapping = color_mapping or [(str(x), "none") for x in d3.ticks(0, 1, 10)]
+        self._color_mapping = color_mapping or [
+            (str(x), "none") for x in d3.ticks(0, 1, 10)
+        ]
         self._symbol_mapping = symbol_mapping or []
         self._scheme = scheme
         self._square_size = square_size
@@ -127,9 +130,9 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         self._properties = ctx.legend_properties
         self._font_size = ctx.font_size
         self._scheme = (
-            self._scheme or
-            ctx.color_scheme or
-            default_colorscheme(len(self._color_mapping))
+            self._scheme
+            or ctx.color_scheme
+            or default_colorscheme(len(self._color_mapping))
         )
 
         # Adds the legend on the SVG given arguments

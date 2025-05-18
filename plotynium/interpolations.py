@@ -1,10 +1,13 @@
-import detroit as d3
 from enum import Enum
+
+import detroit as d3
+
 
 class Interpolation(Enum):
     """
     All available interpolations used mainly for color scheme
     """
+
     BLUES = d3.interpolate_blues
     BRBG = d3.interpolate_brbg
     BUGN = d3.interpolate_bugn

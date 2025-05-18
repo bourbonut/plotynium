@@ -1,14 +1,15 @@
-from plotynium.plot import plot
-from plotynium.interpolations import Interpolation
-from plotynium.marks.line import Line
-from plotynium.marks.grid import GridX, GridY
-from plotynium.marks.area import AreaY
-from plotynium.marks.dot import Dot
-from plotynium.marks.bar import BarY
-from plotynium.marks.rule import RuleY
+import pytest
 from detroit.selection.selection import Selection
 
-import pytest
+from plotynium.interpolations import Interpolation
+from plotynium.marks.area import AreaY
+from plotynium.marks.bar import BarY
+from plotynium.marks.dot import Dot
+from plotynium.marks.grid import GridX, GridY
+from plotynium.marks.line import Line
+from plotynium.marks.rule import RuleY
+from plotynium.plot import plot
+
 
 @pytest.mark.skip
 def test_plot_default():
@@ -16,6 +17,7 @@ def test_plot_default():
     assert isinstance(svg, Selection)
     g = svg.select_all("g")
     assert len(g.nodes()) == 4
+
 
 @pytest.mark.skip
 def test_plot_specific_arguments():
@@ -32,7 +34,7 @@ def test_plot_specific_arguments():
         y={"nice": False, "label": "y label"},
         color={"scheme": Interpolation.SINEBOW},
         style={"background": "black", "color": "white"},
-        symbol={"legend": True}
+        symbol={"legend": True},
     )
     assert isinstance(svg, Selection)
     string = str(svg)
@@ -52,7 +54,7 @@ def test_plot_specific_arguments():
         Dot([[x, y] for x, y in zip(range(11), range(11))]),
         BarY([[x, y] for x, y in zip("aaabbbcccdd", range(11))]),
         RuleY([0, 1]),
-    ]
+    ],
 )
 def test_plot_line(mark):
     svg = plot([mark])

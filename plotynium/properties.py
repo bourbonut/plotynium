@@ -15,11 +15,12 @@ __all__ = [
 
 TLegendProperties = TypeVar("LegendProperties", bound="LegendProperties")
 
-DEFAULT_CANVAS_WIDTH = 640 # without legend
+DEFAULT_CANVAS_WIDTH = 640  # without legend
 DEFAULT_LEGEND_WIDTH = 240
 DEFAULT_LEGEND_HEIGHT = 50
 DEFAULT_SQUARE_SIZE = 15
 DEFAULT_SYMBOL_SIZE = 5
+
 
 @dataclass
 class Margin:
@@ -37,6 +38,7 @@ class Margin:
     right : int
         Margin right value
     """
+
     top: int
     left: int
     bottom: int
@@ -56,6 +58,7 @@ class Properties:
     margin : Margin
         Margin values
     """
+
     def __init__(self, width: int, height: int, margin: Margin):
         self._width = width
         self._height = height
@@ -71,7 +74,7 @@ class Properties:
             Width value to set
         """
         self._width = width
-        
+
     def set_height(self, height: int):
         """
         Sets the height value.
@@ -146,6 +149,7 @@ class CanvasProperties(Properties):
     margin : Margin
         Margin values
     """
+
     def __init__(self):
         super().__init__(
             DEFAULT_CANVAS_WIDTH,
@@ -202,6 +206,7 @@ class LegendProperties(Properties):
     margin : Margin
         Margin values
     """
+
     def __init__(self):
         super().__init__(
             DEFAULT_LEGEND_WIDTH,
@@ -210,7 +215,7 @@ class LegendProperties(Properties):
                 (DEFAULT_LEGEND_HEIGHT - DEFAULT_SQUARE_SIZE // 2) // 2,
                 DEFAULT_SQUARE_SIZE,
                 (DEFAULT_LEGEND_HEIGHT - DEFAULT_SQUARE_SIZE // 2) // 2,
-                DEFAULT_SQUARE_SIZE
+                DEFAULT_SQUARE_SIZE,
             ),
         )
 

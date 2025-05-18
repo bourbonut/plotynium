@@ -1,14 +1,14 @@
+from typing import Callable
+
+from ..types import Index, U, V
 from .color import Color
-from .identity import Identity
 from .constant import Constant
 from .default import DefaultTransformer
-from .transformer import Transformer
-from .symbol import Symbol
-from .picker import LegendPicker
 from .getter import getter
-
-from typing import Callable
-from ..types import U, V, Index
+from .identity import Identity
+from .picker import LegendPicker
+from .symbol import Symbol
+from .transformer import Transformer
 
 __all__ = [
     "Color",
@@ -21,6 +21,7 @@ __all__ = [
     "init_transformer",
     "getter",
 ]
+
 
 def init_transformer(
     transformer_class: type[Transformer[U, V]],

@@ -1,8 +1,10 @@
-from .transformer import Transformer
+from collections import OrderedDict
+from typing import Callable
+
 from ..types import U, V
 from .picker import LegendPicker
-from typing import Callable
-from collections import OrderedDict
+from .transformer import Transformer
+
 
 class DefaultTransformer(Transformer[U, V]):
     """
@@ -16,10 +18,11 @@ class DefaultTransformer(Transformer[U, V]):
     value : Callable[[U], V]
         Function which takes a data and returns a value
     """
+
     def __init__(self, data: list[U], value: Callable[[U], V]):
         self._transform = value
         self._picker = LegendPicker()
- 
+
     def __call__(self, d: U) -> V:
         """
         Transforms a data into a value by applying the `value` function.

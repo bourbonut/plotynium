@@ -1,6 +1,7 @@
-import plotynium as ply
-from math import hypot
 import random
+from math import hypot
+
+import plotynium as ply
 
 data = [[random.random(), random.random()] for i in range(1000)]
 
@@ -13,15 +14,10 @@ plot = ply.plot(
     margin_top=30,
     margin_left=30,
     margin_right=30,
-    marks=[
-        ply.dot(
-            data,
-            stroke=lambda d: scheme(bool(hypot(*d) < 1))
-        )
-    ],
+    marks=[ply.dot(data, stroke=lambda d: scheme(bool(hypot(*d) < 1)))],
     # color={"legend": True},
-    x = {"nice": True},
-    y = {"nice": True},
+    x={"nice": True},
+    y={"nice": True},
 )
 
 with open("pi.svg", "w") as file:

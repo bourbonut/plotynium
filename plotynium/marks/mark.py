@@ -1,8 +1,11 @@
-from ..types import Number
-from ..scaler import Scaler
-from ..context import Context
-from detroit.selection import Selection
 from abc import ABC, abstractmethod
+
+from detroit.selection import Selection
+
+from ..context import Context
+from ..scaler import Scaler
+from ..types import Number
+
 
 class Mark(ABC):
     """
@@ -27,6 +30,7 @@ class Mark(ABC):
     _context : MarkContext | None
         Context of the mark which holds dimensions and color scheme
     """
+
     def __init__(self):
         self.x_label: str | None = None
         self.y_label: str | None = None

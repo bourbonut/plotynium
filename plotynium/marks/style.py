@@ -1,8 +1,9 @@
 from collections.abc import Callable
 from typing import Generic
 
-from ..transformers import Constant, Color
-from ..types import T, ColorScheme
+from ..transformers import Color, Constant
+from ..types import ColorScheme, T
+
 
 class Style(Generic[T]):
     """
@@ -31,18 +32,19 @@ class Style(Generic[T]):
     opacity : float
         General opacity value included in [0, 1].
     """
+
     def __init__(
         self,
         data: list[T],
         default_stroke: str,
         default_fill: str,
         fill: Callable[[T], str] | str | None = None,
-        fill_opacity: float = 1.,
+        fill_opacity: float = 1.0,
         stroke: Callable[[T], str] | str | None = None,
-        stroke_width: float = 1.,
-        stroke_opacity: float = 1.,
+        stroke_width: float = 1.0,
+        stroke_opacity: float = 1.0,
         stroke_dasharray: str | None = None,
-        opacity: float = 1.,
+        opacity: float = 1.0,
     ):
         self._fill = Color.try_init(data, fill, Constant(fill or default_fill))
         self._fill_opacity = fill_opacity

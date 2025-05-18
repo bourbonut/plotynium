@@ -1,5 +1,7 @@
-from ..types import U, V
 from typing import Generic
+
+from ..types import U, V
+
 
 class LegendPicker(Generic[U, V]):
     """
@@ -10,7 +12,7 @@ class LegendPicker(Generic[U, V]):
     ----------
     labels : dict[int, str] | None
         Specified labels
-        
+
     Examples
     --------
 
@@ -31,7 +33,7 @@ class LegendPicker(Generic[U, V]):
     ('0', 'blue')
     >>> picker[1]
     ('1', 'red')
-    
+
     With `labels` specified:
 
     >>> picker = LegendPicker(labels={0: "random", 1: "optimized"})
@@ -50,6 +52,7 @@ class LegendPicker(Generic[U, V]):
     >>> picker[1]
     ('optimized', 'red')
     """
+
     def __init__(self, labels: dict[int, str] | None = None):
         self._labels: dict[int, str] = labels or {}
         self._indices: dict[U, int] = {}
@@ -57,7 +60,7 @@ class LegendPicker(Generic[U, V]):
 
     def __call__(self, value: U, result: V) -> U:
         """
-        It keeps in memory the value as label. If the value is not found in memory, 
+        It keeps in memory the value as label. If the value is not found in memory,
         it makes a new label for this value, based on the current length of already
         stored values.
 
@@ -92,10 +95,7 @@ class LegendPicker(Generic[U, V]):
         tuple[str, V]
             `(label, value)`
         """
-        return (
-            self._labels.get(index, str(index)),
-            self._groups.get(index)
-        )
+        return (self._labels.get(index, str(index)), self._groups.get(index))
 
     def labels(self) -> list[str]:
         """
@@ -117,6 +117,6 @@ class LegendPicker(Generic[U, V]):
         list[tuple[str, V]]
             List of pairs (labels, colors)
         """
-        if self._groups == {0: 'none'}:
+        if self._groups == {0: "none"}:
             return []
         return [self[index] for index in self._groups]

@@ -1,15 +1,47 @@
-from .plot import plot
+from .interpolations import Interpolation
+from .legends import Legend as legend
+from .marks import (
+    AreaY as area_y,
+)
+from .marks import (
+    AxisX as axis_x,
+)
+from .marks import (
+    AxisY as axis_y,
+)
+from .marks import (
+    BarY as bar_y,
+)
 from .marks import (
     Dot as dot,
-    AreaY as area_y,
-    Line as line,
-    BarY as bar_y,
-    RuleY as rule_y,
-    AxisX as axis_x,
-    AxisY as axis_y,
+)
+from .marks import (
     GridX as grid_x,
+)
+from .marks import (
     GridY as grid_y,
 )
-from .legends import Legend as legend
+from .marks import (
+    Line as line,
+)
+from .marks import (
+    RuleY as rule_y,
+)
+from .plot import plot
 from .schemes import Scheme
-from .interpolations import Interpolation
+
+__all__ = [
+    "Interpolation",
+    "legend",
+    "area_y",
+    "axis_x",
+    "axis_y",
+    "bar_y",
+    "dot",
+    "grid_x",
+    "grid_y",
+    "line",
+    "rule_y",
+    "plot",
+    "Scheme",
+]

@@ -1,13 +1,15 @@
 from collections.abc import Callable
+
 from detroit.selection import Selection
 
-from .style import Style
-from ..options import SortOptions, init_options
-from ..transformers import getter
-from ..domain import domain
-from ..scaler import determine_scaler
-from ..types import T, Data
 from ..context import Context
+from ..domain import domain
+from ..options import SortOptions, init_options
+from ..scaler import determine_scaler
+from ..transformers import getter
+from ..types import Data, T
+from .style import Style
+
 
 class BarY(Style[T]):
     """
@@ -38,6 +40,7 @@ class BarY(Style[T]):
     opacity : float
         General opacity value included in [0, 1].
     """
+
     def __init__(
         self,
         data: list[T],
@@ -45,12 +48,12 @@ class BarY(Style[T]):
         y: Callable[[T], Data] | str | None = None,
         sort: SortOptions | dict | None = None,
         fill: Callable[[T], str] | str | None = None,
-        fill_opacity: float = 1.,
+        fill_opacity: float = 1.0,
         stroke: Callable[[T], str] | str | None = None,
-        stroke_width: float = 1.,
-        stroke_opacity: float = 1.,
+        stroke_width: float = 1.0,
+        stroke_opacity: float = 1.0,
         stroke_dasharray: str | None = None,
-        opacity: float = 1.,
+        opacity: float = 1.0,
     ):
         sort = init_options(sort, SortOptions)
         if sort.by != "":
