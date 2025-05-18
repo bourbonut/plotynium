@@ -236,7 +236,7 @@ class AxisY(Generic[T], Mark):
         x = self._x or Constant(dx)
         dir = -1 if self._anchor == "left" else 1
 
-        if hasattr(y, "bandwidth"):
+        if hasattr(y, "get_bandwidth"):
             offset = y.get_bandwidth() / 2
         else:
             offset = 0

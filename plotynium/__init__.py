@@ -10,6 +10,9 @@ from .marks import (
     AxisY as axis_y,
 )
 from .marks import (
+    BarX as bar_x,
+)
+from .marks import (
     BarY as bar_y,
 )
 from .marks import (
@@ -36,6 +39,7 @@ __all__ = [
     "area_y",
     "axis_x",
     "axis_y",
+    "bar_x",
     "bar_y",
     "dot",
     "grid_x",

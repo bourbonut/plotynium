@@ -2,7 +2,7 @@ from collections.abc import Callable
 
 from .area import AreaY
 from .axis import AxisX, AxisY
-from .bar import BarY
+from .bar import BarX, BarY
 from .dot import Dot
 from .grid import GridX, GridY
 from .line import Line
@@ -13,6 +13,7 @@ __all__ = [
     "Dot",
     "AreaY",
     "Line",
+    "BarX",
     "BarY",
     "RuleY",
     "AxisX",
