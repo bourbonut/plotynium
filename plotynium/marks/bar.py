@@ -97,15 +97,13 @@ class BarX(Style[T]):
         ctx : Context
             Context
         """
-        x_min = min(map(self._x, self._data))
-        # y = center(ctx.y, positive=False)
         (
             svg.append("g")
             .attr("class", "bars")
             .select_all()
             .data(self._data)
             .join("rect")
-            .attr("x", ctx.x(x_min))
+            .attr("x", ctx.x(ctx.x.get_domain()[0]))
             .attr("y", lambda d: ctx.y(self._y(d)))
             .attr("width", lambda d: ctx.x(self._x(d)) - ctx.x(0))
             .attr("height", ctx.y.get_bandwidth())
