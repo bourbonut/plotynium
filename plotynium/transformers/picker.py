@@ -77,7 +77,7 @@ class LegendPicker(Generic[U, V]):
             Same `result` without any modification
         """
         index = self._indices.setdefault(value, len(self._indices))
-        self._labels.setdefault(index, value)
+        self._labels.setdefault(index, value if value != result else index)
         self._groups[index] = result
         return result
 

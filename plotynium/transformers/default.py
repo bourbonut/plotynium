@@ -37,7 +37,19 @@ class DefaultTransformer(Transformer[U, V]):
         V
             Output of `value` function
         """
-        return self._picker(self._transform(d))
+        value = self._transform(d)
+        return self._picker(value, value)
+
+    def set_labels(self, labels: dict[int, str]):
+        """
+        Sets labels of the `LegendPicker` attribute.
+
+        Parameters
+        ----------
+        labels : dict[int, str]
+            Labels to set
+        """
+        self._picker = LegendPicker(labels)
 
     def get_mapping(self) -> OrderedDict[str, V]:
         """
