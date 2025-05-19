@@ -71,8 +71,6 @@ def plot(
     """
     # Prepare options
     marks = list(marks)
-    if len(marks) == 0:
-        raise ValueError("Empty list of marks")
     x_options = init_options(x, XOptions)
     y_options = init_options(y, YOptions)
     color_options = init_options(color, ColorOptions)
@@ -195,10 +193,10 @@ def plot(
         svg.style("color", ctx.color)
 
     if add_legend:
-        legend_group = svg.append("g").attr("aria-label", "legend")
+        legend_group = svg.append("g").attr("class", "legend")
 
     if not only_legend:
-        canvas_group = svg.append("g").attr("aria-label", "canvas")
+        canvas_group = svg.append("g").attr("class", "canvas")
         if translate := ctx.canvas_translate:
             canvas_group.attr("transform", translate)
 
