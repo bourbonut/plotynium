@@ -6,6 +6,7 @@ repo_url: https://github.com/bourbonut/plotynium
 theme:
   name: material
   logo: images/logo.svg
+  favicon: images/favicon.svg
   icon:
     repo: fontawesome/brands/github
   palette:
