@@ -23,7 +23,7 @@ plot = ply.plot(
     # style={"color": "#e6edf3"},
 )
 
-with open("bar.svg", "w") as file:
+with open("vbar.svg", "w") as file:
     file.write(str(plot))
 
 
@@ -40,9 +40,8 @@ plot = ply.plot(
             fill="steelblue",
         )
     ],
-    # margin_left=60,
-    # style={"color": "#e6edf3"},
+    style={"color": "#e6edf3"},
 )
 
-with open("rbar.svg", "w") as file:
+with open("hbar.svg", "w") as file:
     file.write(str(plot))
