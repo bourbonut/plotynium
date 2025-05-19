@@ -5,11 +5,13 @@ repo_url: https://github.com/bourbonut/plotynium
 
 theme:
   name: material
+  logo: images/logo.svg
   icon:
     repo: fontawesome/brands/github
   palette:
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
+      primary: amber
   features:
     - navigation.tabs
     - navigation.indexes
@@ -91,11 +93,13 @@ nav:
       - api/marks/area_y.md
       - api/marks/axis_x.md
       - api/marks/axis_y.md
+      - api/marks/bar_x.md
       - api/marks/bar_y.md
       - api/marks/dot.md
       - api/marks/grid_x.md
       - api/marks/grid_y.md
       - api/marks/line.md
+      - api/marks/mark.md
       - api/marks/rule_y.md
     - api/interpolations.md
     - api/schemes.md

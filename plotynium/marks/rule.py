@@ -75,7 +75,7 @@ class RuleX(Style[T], Mark):
         ----------
         svg : Selection
             SVG Content
-        cxt: Context
+        ctx: Context
             Context
         """
         line = (
@@ -168,7 +168,7 @@ class RuleY(Style[T], Mark):
         ----------
         svg : Selection
             SVG Content
-        cxt: Context
+        ctx: Context
             Context
         """
         line = (
