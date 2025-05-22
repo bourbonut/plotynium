@@ -99,6 +99,7 @@ nav:
       - api/marks/dot.md
       - api/marks/grid_x.md
       - api/marks/grid_y.md
+      - api/marks/legend.md
       - api/marks/line.md
       - api/marks/mark.md
       - api/marks/rule_y.md
