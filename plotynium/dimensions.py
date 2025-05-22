@@ -78,6 +78,7 @@ def auto_height(
     """
     legend_height = legend_properties.height
     if (only_legend and has_legend) or (only_axis and axis_is_x):  # only legend
+        canvas_properties.set_height(legend_height)
         return legend_height
     elif has_legend and height is None:  # legend and no user height
         height = int(canvas_properties.width / sqrt(2))
