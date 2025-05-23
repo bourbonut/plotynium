@@ -87,6 +87,8 @@ class AxisX(Generic[T], Mark):
         ----------
         svg : Selection
             SVG Content
+        ctx : Context
+            Context
         """
         x = ctx.x
         y = ctx.y
@@ -228,6 +230,8 @@ class AxisY(Generic[T], Mark):
         ----------
         svg : Selection
             SVG Content
+        ctx : Context
+            Context
         """
         x = ctx.x
         y = ctx.y
