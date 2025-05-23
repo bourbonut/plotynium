@@ -4,7 +4,7 @@ The [Dot][plotynium.marks.Dot] mark draws two-dimensional points (as circles or 
 
 ![](../images/dot.svg)
 
-```py
+```py hl_lines="18-23"
 import polars as pl
 from sklearn.datasets import load_iris
 
@@ -29,9 +29,11 @@ plot = ply.plot(
             stroke="species",
         )
     ],
-    color={"scheme": ply.Scheme.CATEGORY_10, "legend": True},
+    color={"scheme": ply.Scheme.CATEGORY_10, "legend": True}, # (1)!
 )
 
 with open("dot.svg", "w") as file:
     file.write(str(plot))
 ```
+
+1. Since there are 3 classes, it is recommanded to use a [`Scheme`][plotynium.Scheme] instead of an [`Interpolation`][plotynium.Interpolation]. See also [ColorSchemes](../colorschemes/interpolations.md).

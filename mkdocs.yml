@@ -102,10 +102,12 @@ nav:
       - api/marks/legend.md
       - api/marks/line.md
       - api/marks/mark.md
+      - api/marks/rule_x.md
       - api/marks/rule_y.md
     - api/interpolations.md
     - api/schemes.md
     - api/options.md
+    - api/context.md
     - api/types.md
  
 copyright: Copyright &copy; bourbonut
