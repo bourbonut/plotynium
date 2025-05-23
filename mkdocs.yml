@@ -110,6 +110,7 @@ nav:
     - api/schemes.md
     - api/options.md
     - api/context.md
+    - api/properties.md
     - api/types.md
  
 copyright: Copyright &copy; bourbonut

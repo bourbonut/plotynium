@@ -139,15 +139,6 @@ class CanvasProperties(Properties):
     Canvas properties which has default values for `width`, `height` and
     `margin` values and has two extra attributes `translate_x` and
     `translate_y` for canvas placement.
-
-    Parameters
-    ----------
-    width : int
-        Width value
-    height : int
-        Height value
-    margin : Margin
-        Margin values
     """
 
     def __init__(self):
@@ -196,15 +187,6 @@ class LegendProperties(Properties):
     """
     Legend properties which has default values for `width`, `height` and
     `margin` values.
-
-    Parameters
-    ----------
-    width : int
-        Width value
-    height : int
-        Height value
-    margin : Margin
-        Margin values
     """
 
     def __init__(self):
@@ -249,7 +231,7 @@ class LegendProperties(Properties):
 
         Returns
         -------
-        TLegendProperties
+        LegendProperties
             Legend properties filled with the given values
         """
         properties = LegendProperties()
