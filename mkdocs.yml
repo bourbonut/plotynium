@@ -1,5 +1,7 @@
 site_name: Plotynium
 site_url: https://bourbonut.github.io/plotynium
+site_description: Plotynium is a Data Visualization framework for Python, inspired by Observable Plot.
+site_author: Benjamin Bourbon
 
 repo_url: https://github.com/bourbonut/plotynium
 
