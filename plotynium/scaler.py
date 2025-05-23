@@ -86,7 +86,11 @@ def make_scaler(
     Returns
     -------
     D3Scaler
-        Linear scaler or time scaler or ordinal scaler
+        [`ScaleLinear`](https://detroit.readthedocs.io/en/latest/api/scale/linear.html#detroit.scale.linear.ScaleLinear)
+        or
+        [`ScaleTime`](https://detroit.readthedocs.io/en/latest/api/scale/time.html#detroit.scale.time.ScaleTime)
+        or
+        [`ScaleBand`](https://detroit.readthedocs.io/en/latest/api/scale/band.html#detroit.scale.band.ScaleBand)
     """
     scaler_type = reduce(scaler_types)
 

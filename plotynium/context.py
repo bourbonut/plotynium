@@ -30,9 +30,9 @@ class Context:
     symbol_options : SymbolOptions
         Symbol options
     x_scale : Scaler
-        X scale
+        X scale from [`detroit`](https://detroit.readthedocs.io/en/latest/api/types.html#detroit.types.Scaler)
     y_scale : Scaler
-        Y scale
+        Y scale from [`detroit`](https://detroit.readthedocs.io/en/latest/api/types.html#detroit.types.Scaler)
     x_label : str | None
         X label
     y_label : str | None
