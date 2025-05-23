@@ -69,6 +69,25 @@ def make_scaler(
     range_vals: list[int | float],
     nice: bool = True,
 ) -> D3Scaler:
+    """
+    Returns a scaler object from `detroit`.
+
+    Parameters
+    ----------
+    scaler_types : list[Scaler | None]
+        Scaler types collected in marks
+    domains : list[list | tuple[float, float]]
+        Domains collected in marks
+    range_vals : list[int | float]
+        Range values collected in marks
+    nice : bool
+        `True` to make the scaler's domain nicer
+
+    Returns
+    -------
+    D3Scaler
+        Linear scaler or time scaler or ordinal scaler
+    """
     scaler_type = reduce(scaler_types)
 
     if scaler_type == Scaler.CONTINUOUS:
