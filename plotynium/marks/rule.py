@@ -12,7 +12,7 @@ from .mark import Mark
 
 class RuleX(Style[T], Mark):
     """
-    Marker for adding vertical line given a list of x positions
+    Marker for adding vertical lines given a list of x positions
 
     Parameters
     ----------
@@ -105,7 +105,7 @@ class RuleX(Style[T], Mark):
 
 class RuleY(Style[T], Mark):
     """
-    Marker for adding horizontal line given a list of y positions
+    Marker for adding horizontal lines given a list of y positions
 
     Parameters
     ----------
