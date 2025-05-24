@@ -28,7 +28,7 @@ plot = plot.plot(
             x="letter",
             y="frequency",
             sort={"by": "frequency", "descending": True}, # (1)!
-            fill="steelblue",
+            fill="#ffc105",
         )
     ],
     margin_left=60,
@@ -68,7 +68,7 @@ plot = plot.plot(
             x="frequency",
             y="letter",
             sort={"by": "frequency", "descending": True}, # (1)!
-            fill="steelblue",
+            fill="#ffc105",
         )
     ],
     margin_left=60,

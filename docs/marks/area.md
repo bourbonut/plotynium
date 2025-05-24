@@ -31,7 +31,7 @@ plot = plot.plot(
             data=aapl.to_dicts(),
             x="date",
             y="close",
-            fill="steelblue",
+            fill="#ffc105",
         )
     ],
     x={"grid": True, "nice": False},

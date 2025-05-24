@@ -29,7 +29,7 @@ plot = ply.plot(
             data=aapl.to_dicts(),
             x="date",
             y="close",
-            stroke="steelblue",
+            stroke="#ffc105",
             stroke_width=1.5
         ),
         ply.rule_y([0]) # (1)!
