@@ -4,6 +4,8 @@ from .legends import Legend
 from .marks import AxisX, AxisY, Mark, check_types
 from .properties import CanvasProperties, LegendProperties, Margin
 
+__all__ = ["dimensions"]
+
 
 def auto_width(
     canvas_properties: CanvasProperties,
