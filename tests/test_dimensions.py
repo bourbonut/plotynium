@@ -1,9 +1,11 @@
-from plotynium.dimensions import auto_width, auto_height, dimensions
-from plotynium.properties import CanvasProperties, LegendProperties, Margin
+from math import sqrt
+
+import pytest
+from plotynium.dimensions import auto_height, auto_width, dimensions
 from plotynium.legends import Legend
 from plotynium.marks.axis import AxisX, AxisY
-from math import sqrt
-import pytest
+from plotynium.properties import CanvasProperties, LegendProperties, Margin
+
 
 @pytest.mark.parametrize(
     "only_legend, has_legend, width, expected_width",
