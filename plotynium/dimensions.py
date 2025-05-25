@@ -91,11 +91,11 @@ def auto_height(
         canvas_properties.set_height(height)
         canvas_properties.set_translate(0, legend_height)
         return legend_height + height
-    elif height is None: # no legend and user height
+    elif height is None:  # no legend and user height
         height = int(canvas_properties.width / sqrt(2))
         canvas_properties.set_height(height)
         return height
-    else: # no legend and user height
+    else:  # no legend and user height
         canvas_properties.set_height(height)
         return height
 

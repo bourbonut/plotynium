@@ -1,4 +1,3 @@
-
 STRING_WIDTHS = {
     "a": 1,
     "b": 1,

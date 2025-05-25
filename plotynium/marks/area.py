@@ -8,8 +8,8 @@ from ..domain import domain, reduce
 from ..scaler import Scaler, determine_scaler
 from ..transformers import Constant, getter
 from ..types import Data, Index, T
-from .style import Style
 from .mark import Mark
+from .style import Style
 
 
 class AreaY(Style[T], Mark):

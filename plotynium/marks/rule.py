@@ -7,8 +7,9 @@ from ..context import Context
 from ..scaler import Scaler, determine_scaler
 from ..transformers import Identity, getter
 from ..types import T
-from .style import Style
 from .mark import Mark
+from .style import Style
+
 
 class RuleX(Style[T], Mark):
     """
@@ -102,6 +103,7 @@ class RuleX(Style[T], Mark):
             .attr("stroke-width", self._stroke_width)
             .attr("d", lambda d: line(d))
         )
+
 
 class RuleY(Style[T], Mark):
     """

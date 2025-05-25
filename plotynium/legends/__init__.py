@@ -3,7 +3,7 @@ from detroit.selection import Selection
 
 from ..context import Context
 from ..marks import Mark
-from ..properties import DEFAULT_SQUARE_SIZE, DEFAULT_SYMBOL_SIZE, LegendProperties
+from ..properties import LegendProperties
 from ..transformers import Constant
 from ..types import ColorScheme
 from .continuous_color import ContinuousLegend

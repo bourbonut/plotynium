@@ -11,6 +11,8 @@ from .marks import (
 )
 from .marks import (
     BarX as bar_x,
+)
+from .marks import (
     BarY as bar_y,
 )
 from .marks import (
@@ -27,6 +29,8 @@ from .marks import (
 )
 from .marks import (
     RuleX as rule_x,
+)
+from .marks import (
     RuleY as rule_y,
 )
 from .plot import plot

@@ -8,8 +8,8 @@ from ..options import SortOptions, init_options
 from ..scaler import determine_scaler
 from ..transformers import getter
 from ..types import Data, T
-from .style import Style
 from .mark import Mark
+from .style import Style
 
 
 class BarX(Style[T], Mark):
@@ -113,6 +113,7 @@ class BarX(Style[T], Mark):
             .attr("stroke", self._stroke)
             .attr("stroke-width", self._stroke_width)
         )
+
 
 class BarY(Style[T], Mark):
     """

@@ -7,8 +7,8 @@ from ..domain import domain
 from ..scaler import determine_scaler
 from ..transformers import Constant, Identity, Symbol, getter
 from ..types import Data, T
-from .style import Style
 from .mark import Mark
+from .style import Style
 
 
 def center(scale: Callable) -> Callable[[T], float]:
