@@ -65,8 +65,8 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         color_mapping: list[tuple[str, str]] | None = None,
         symbol_mapping: list[tuple[str, str]] | None = None,
         scheme: ColorScheme | None = None,
-        square_size: int = DEFAULT_SQUARE_SIZE,
-        symbol_size: int = DEFAULT_SYMBOL_SIZE,
+        square_size: int = 15,
+        symbol_size: int = 5,
         fill: str | None = None,
         fill_opacity: float = 1.0,
         stroke: str | None = None,
@@ -91,7 +91,7 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         self._fill = Constant(fill or "black")
         self._fill_opacity = fill_opacity
         self._stroke = Constant(stroke or "black")
-        self._stroke_opactity = stroke_opacity
+        self._stroke_opacity = stroke_opacity
         self._stroke_width = stroke_width
         self._font_size = font_size
         self._properties = LegendProperties.new(
