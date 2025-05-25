@@ -1,3 +1,6 @@
+[![pages-build-deployment](https://github.com/bourbonut/plotynium/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/bourbonut/plotynium/actions/workflows/pages/pages-build-deployment)
+[![Ruff](https://img.shields.io/badge/code_style-ruff-2a1833)](https://github.com/astral-sh/ruff)
+
 # Plotynium
 
 Plotynium is a *Data Visualization* framework for Python, inspired by  [Observable Plot](https://observablehq.com/plot/).
