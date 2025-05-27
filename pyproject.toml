@@ -1,12 +1,20 @@
 [project]
 name = "plotynium"
+description="plotynium is a Data Visualization framework for Python, inspired by Observable Plot"
 version = "0.1.0"
 readme = "README.md"
 authors = [
   { name = "Benjamin BOURBON", email = "ben.bourbon06@gmail.com"},
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = ["detroit>=2.3.0"]
+classifiers = [
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Visualization",
+]
 license = "MIT"
 
 [project.urls]
