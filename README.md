@@ -53,5 +53,5 @@ with open("pca.svg", "w") as file:
 ```
 
 <p align="center">
-    <img src="./docs/images/pca.png"></img>
+    <img src="https://raw.githubusercontent.com/bourbonut/plotynium/refs/heads/main/docs/images/pca.svg?sanitize=true"></img>
 </p>
