@@ -1,0 +1,9 @@
+# Python dependencies required for development
+pytest
+ruff
+# Python dependencies required for documentation
+mkdocs-material
+mkdocstrings-python
+# Python dependencies required for examples
+scikit-learn
+polars
