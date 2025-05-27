@@ -127,9 +127,22 @@ class Dot(Style[T], Mark):
         x = center(ctx.x)
         y = center(ctx.y)
         if isinstance(self._symbol, Identity):
-            (
+            group = (
                 svg.append("g")
                 .attr("class", "dots")
+            )
+
+            if self._opacity != 1.0:
+                group.attr("opacity", self._opacity)
+            if self._stroke_opacity != 1.0:
+                group.attr("stroke-opacity", self._stroke_opacity)
+            if self._stroke_dasharray is not None:
+                group.attr("stroke-dasharray", self._stroke_dasharray)
+            if self._fill_opacity != 1.0:
+                group.attr("fill-opacity", self._fill_opacity)
+
+            (
+                group
                 .select_all("circle")
                 .data(self._data)
                 .join("circle")
@@ -141,9 +154,22 @@ class Dot(Style[T], Mark):
                 .attr("r", self._r)
             )
         else:
-            (
+            group = (
                 svg.append("g")
                 .attr("class", "dots")
+            )
+
+            if self._opacity != 1.0:
+                group.attr("opacity", self._opacity)
+            if self._stroke_opacity != 1.0:
+                group.attr("stroke-opacity", self._stroke_opacity)
+            if self._stroke_dasharray is not None:
+                group.attr("stroke-dasharray", self._stroke_dasharray)
+            if self._fill_opacity != 1.0:
+                group.attr("fill-opacity", self._fill_opacity)
+
+            (
+                group
                 .select_all("symbol")
                 .data(self._data)
                 .join("g")

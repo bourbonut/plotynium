@@ -99,9 +99,22 @@ class BarX(Style[T], Mark):
         ctx : Context
             Context
         """
-        (
+        group = (
             svg.append("g")
             .attr("class", "bars")
+        )
+
+        if self._opacity != 1.0:
+            group.attr("opacity", self._opacity)
+        if self._stroke_opacity != 1.0:
+            group.attr("stroke-opacity", self._stroke_opacity)
+        if self._stroke_dasharray is not None:
+            group.attr("stroke-dasharray", self._stroke_dasharray)
+        if self._fill_opacity != 1.0:
+            group.attr("fill-opacity", self._fill_opacity)
+
+        (
+            group
             .select_all()
             .data(self._data)
             .join("rect")
@@ -202,9 +215,22 @@ class BarY(Style[T], Mark):
         ctx : Context
             Context
         """
-        (
+        group = (
             svg.append("g")
             .attr("class", "bars")
+        )
+
+        if self._opacity != 1.0:
+            group.attr("opacity", self._opacity)
+        if self._stroke_opacity != 1.0:
+            group.attr("stroke-opacity", self._stroke_opacity)
+        if self._stroke_dasharray is not None:
+            group.attr("stroke-dasharray", self._stroke_dasharray)
+        if self._fill_opacity != 1.0:
+            group.attr("fill-opacity", self._fill_opacity)
+
+        (
+            group
             .select_all()
             .data(self._data)
             .join("rect")

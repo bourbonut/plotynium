@@ -140,7 +140,7 @@ class AreaY(Style[T], Mark):
             .y1(lambda d: ctx.y(self._y1(d)))
         )
 
-        (
+        area = (
             svg.append("g")
             .attr("class", "area")
             .append("path")
@@ -149,3 +149,12 @@ class AreaY(Style[T], Mark):
             .attr("stroke-width", self._stroke_width)
             .attr("d", area(self._data))
         )
+
+        if self._opacity != 1.0:
+            area.attr("opacity", self._opacity)
+        if self._stroke_opacity != 1.0:
+            area.attr("stroke-opacity", self._stroke_opacity)
+        if self._stroke_dasharray is not None:
+            area.attr("stroke-dasharray", self._stroke_dasharray)
+        if self._fill_opacity != 1.0:
+            area.attr("fill-opacity", self._fill_opacity)

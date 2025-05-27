@@ -103,9 +103,22 @@ class Line(Style[T], Mark):
             .y(lambda d: ctx.y(self._y(d)))
         )
 
-        (
+        group = (
             svg.append("g")
             .attr("class", "line")
+        )
+
+        if self._opacity != 1.0:
+            group.attr("opacity", self._opacity)
+        if self._stroke_opacity != 1.0:
+            group.attr("stroke-opacity", self._stroke_opacity)
+        if self._stroke_dasharray is not None:
+            group.attr("stroke-dasharray", self._stroke_dasharray)
+        if self._fill_opacity != 1.0:
+            group.attr("fill-opacity", self._fill_opacity)
+
+        (
+            group
             .select_all("path")
             .data(self.group())
             .enter()
