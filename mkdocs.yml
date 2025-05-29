@@ -78,6 +78,8 @@ nav:
   - Home: index.md
   - Introduction:
     - introduction.md
+  - Guide:
+    - guide/export.md
   - Marks:
     - Area: marks/area.md
     - Axis: marks/axis.md
