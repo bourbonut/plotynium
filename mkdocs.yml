@@ -79,7 +79,10 @@ nav:
   - Introduction:
     - introduction.md
   - Guide:
-    - guide/export.md
+    - Export:
+      - guide/export-cairosvg.md
+      - guide/export-typst.md
+      - guide/export-latex.md
   - Marks:
     - Area: marks/area.md
     - Axis: marks/axis.md
