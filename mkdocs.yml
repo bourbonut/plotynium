@@ -79,6 +79,8 @@ nav:
   - Introduction:
     - introduction.md
   - Guide:
+    - Visualization:
+      - guide/jupyter.md
     - Export:
       - guide/export-cairosvg.md
       - guide/export-typst.md
