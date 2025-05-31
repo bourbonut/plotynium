@@ -46,8 +46,8 @@ options:
                         output filename
 ```
 
-For instance, after running the example `examples/pca.py`, you can convert the SVG to PNG with `cairosvg`:
+For instance, after running the example [`examples/pca.py`](https://github.com/bourbonut/plotynium/blob/main/examples/pca.py), you can convert the SVG to PNG with `cairosvg`:
 
 ```bash
-python examples/pca.py && cairosvg pca.svg -o pca.png
+cairosvg pca.svg -o pca.png
 ```
