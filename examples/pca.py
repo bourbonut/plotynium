@@ -27,7 +27,7 @@ plot = ply.plot(
     ],
     color={"scheme": ply.Interpolation.RAINBOW},
     symbol={"legend": True},
-    style={"background": "#161b22", "color": "#e6edf3"},
+    style={"background": "#0d1117", "color": "#e6edf3"},
 )
 
 with open("pca.svg", "w") as file:

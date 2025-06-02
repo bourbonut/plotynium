@@ -46,7 +46,7 @@ plot = ply.plot(
     ],
     color={"scheme": ply.Interpolation.RAINBOW},
     symbol={"legend": True},
-    style={"background": "#161b22", "color": "#e6edf3"},
+    style={"background": "#0d1117", "color": "#e6edf3"},
 )
 
 with open("pca.svg", "w") as file:
@@ -54,5 +54,5 @@ with open("pca.svg", "w") as file:
 ```
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/bourbonut/plotynium/refs/heads/main/docs/images/pca.svg?sanitize=true"></img>
+    <img src="https://raw.githubusercontent.com/bourbonut/plotynium/refs/heads/main/docs/images/pca-github.svg?sanitize=true"></img>
 </p>
