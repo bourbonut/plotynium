@@ -4,11 +4,6 @@ hide:
     - navigation
 ---
 
-!!! warning inline end
-
-    `plotynium` is currently under development
-
-
 # Welcome
 
 Welcome to the [Plotynium](https://github.com/bourbonut/plotynium) framework documentation.
