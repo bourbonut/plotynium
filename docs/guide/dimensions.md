@@ -2,7 +2,7 @@
 
 You can change the dimensions of your visualization through [`plot`](../api/plot.md) parameters.
 
-```python hl_lines="17-22"
+```python hl_lines="16-21"
 import plotynium as ply
 from math import sin, pi
 import random
