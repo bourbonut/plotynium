@@ -88,7 +88,7 @@ def determine_label(labels: list[str | None]) -> str | None:
     str | None
         Unique label from the given list or undefined label as `None`
     """
-    labels = set(labels)
+    labels = set(labels) - {None}
     if len(labels) == 1:
         if label := labels.pop():
             return label
