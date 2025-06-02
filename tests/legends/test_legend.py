@@ -20,10 +20,10 @@ def test_init_legend():
     assert legend._square_size == 15
     assert legend._symbol_size == 5
     assert isinstance(legend._fill, Constant)
-    assert legend._fill("unknown") == "black"
+    assert legend._fill("unknown") == "currentColor"
     assert legend._fill_opacity == 1.
     assert isinstance(legend._stroke, Constant)
-    assert legend._stroke("unknown") == "black"
+    assert legend._stroke("unknown") == "currentColor"
     assert legend._stroke_opacity == 1.
     assert legend._stroke_width == 1.
     assert legend._font_size == 12
