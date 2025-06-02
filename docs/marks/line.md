@@ -34,7 +34,8 @@ plot = ply.plot(
         ),
         ply.rule_y([0]) # (1)!
     ],
-    x={"grid": True},
+    x={"grid": True, "label": ""},
+    y={"label": ""},
 )
 
 with open("line.svg", "w") as file:

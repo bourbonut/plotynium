@@ -22,7 +22,8 @@ plot = ply.plot(
         ),
         ply.rule_y([0]),  # , stroke="#e6edf3"
     ],
-    x={"grid": True},
+    x={"grid": True, "label": ""},
+    y={"label": ""},
     # style={"color": "#e6edf3"},
 )
 
