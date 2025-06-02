@@ -7,6 +7,7 @@ from detroit.types import Scaler as D3Scaler
 
 from .domain import reduce as domain_reduce
 from .domain import unify
+from .types import U, V
 
 
 class Scaler(Enum):
@@ -19,7 +20,22 @@ class Scaler(Enum):
     TIME = auto()
 
 
-def determine_scaler(data: list, accessor: Callable) -> Scaler:
+def determine_scaler(data: list[U], accessor: Callable[[U], V]) -> Scaler:
+    """
+    Determine the scaler type given data.
+
+    Parameters
+    ----------
+    data : list[U]
+        Data
+    accessor : Callable[[U], V]
+        Function to access data for each element in `data`
+
+    Returns
+    -------
+    Scaler
+        Scaler type
+    """
     sample = accessor(data[0])
     if isinstance(sample, str):
         return Scaler.BAND
@@ -30,10 +46,25 @@ def determine_scaler(data: list, accessor: Callable) -> Scaler:
 
 
 def reduce(scaler_types: list[Scaler | None]) -> Scaler:
+    """
+    Checks if all `scaler_types` are the same and returns a unique scaler type
+    if it is the case.
+
+    Parameters
+    ----------
+    scaler_types : list[Scaler | None]
+        List of scaler types
+
+    Returns
+    -------
+    Scaler
+        Unique scaler type
+    """
     scalers = set(scaler_types) - {None}
     if len(scalers) > 1:
         raise RuntimeError(
-            f"Found different scalers {scalers}. Some marks cannot be associated between each other."
+            f"Found different scalers {scalers}. Some marks cannot be"
+            "associated between each other."
         )
     elif len(scalers) == 0:
         return Scaler.CONTINUOUS
