@@ -1,4 +1,5 @@
 [![docs](https://github.com/bourbonut/plotynium/actions/workflows/docs.yml/badge.svg)](https://bourbonut.github.io/plotynium)
+[![CI](https://github.com/bourbonut/plotynium/actions/workflows/ci.yml/badge.svg)](https://github.com/bourbonut/plotynium/actions/workflows/ci.yml)
 [![Ruff](https://img.shields.io/badge/code_style-ruff-2a1833)](https://github.com/astral-sh/ruff)
 
 # Plotynium
