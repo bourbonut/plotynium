@@ -88,9 +88,9 @@ class Legend(DiscreteLegend, ContinuousLegend, SymbolLegend, Mark):
         self._scheme = scheme
         self._square_size = square_size
         self._symbol_size = symbol_size
-        self._fill = Constant(fill or "black")
+        self._fill = Constant(fill or "currentColor")
         self._fill_opacity = fill_opacity
-        self._stroke = Constant(stroke or "black")
+        self._stroke = Constant(stroke or "currentColor")
         self._stroke_opacity = stroke_opacity
         self._stroke_width = stroke_width
         self._font_size = font_size
