@@ -33,12 +33,26 @@ from .marks import (
 from .marks import (
     RuleY as rule_y,
 )
+from .options import (
+    ColorOptions,
+    SymbolOptions,
+    StyleOptions,
+    SortOptions,
+    XOptions,
+    YOptions,
+)
 from .plot import plot
 from .schemes import Scheme
 
 __all__ = [
+    "ColorOptions",
     "Interpolation",
-    "legend",
+    "Scheme",
+    "SortOptions",
+    "StyleOptions",
+    "SymbolOptions",
+    "XOptions",
+    "YOptions",
     "area_y",
     "axis_x",
     "axis_y",
@@ -47,9 +61,9 @@ __all__ = [
     "dot",
     "grid_x",
     "grid_y",
+    "legend",
     "line",
+    "plot",
     "rule_x",
     "rule_y",
-    "plot",
-    "Scheme",
 ]
