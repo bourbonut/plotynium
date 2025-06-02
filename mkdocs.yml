@@ -79,6 +79,11 @@ nav:
   - Introduction:
     - introduction.md
   - Guide:
+    - Customization:
+      - guide/marks.md
+      - guide/dimensions.md
+      - guide/options.md
+      - guide/legend.md
     - Visualization:
       - guide/browser.md
       - guide/jupyter.md
