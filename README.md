@@ -9,7 +9,7 @@ Plotynium is a *Data Visualization* framework for Python, inspired by  [Observab
 ## Installation
 
 ```bash
-pip install git+https://github.com/bourbonut/plotynium
+pip install plotynium
 ```
 
 It will be available soon on Pypi.
