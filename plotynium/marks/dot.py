@@ -127,10 +127,7 @@ class Dot(Style[T], Mark):
         x = center(ctx.x)
         y = center(ctx.y)
         if isinstance(self._symbol, Identity):
-            group = (
-                svg.append("g")
-                .attr("class", "dots")
-            )
+            group = svg.append("g").attr("class", "dots")
 
             if self._opacity != 1.0:
                 group.attr("opacity", self._opacity)
@@ -142,8 +139,7 @@ class Dot(Style[T], Mark):
                 group.attr("fill-opacity", self._fill_opacity)
 
             (
-                group
-                .select_all("circle")
+                group.select_all("circle")
                 .data(self._data)
                 .join("circle")
                 .attr("cx", lambda d: x(self._x(d)))
@@ -154,10 +150,7 @@ class Dot(Style[T], Mark):
                 .attr("r", self._r)
             )
         else:
-            group = (
-                svg.append("g")
-                .attr("class", "dots")
-            )
+            group = svg.append("g").attr("class", "dots")
 
             if self._opacity != 1.0:
                 group.attr("opacity", self._opacity)
@@ -169,8 +162,7 @@ class Dot(Style[T], Mark):
                 group.attr("fill-opacity", self._fill_opacity)
 
             (
-                group
-                .select_all("symbol")
+                group.select_all("symbol")
                 .data(self._data)
                 .join("g")
                 .attr(

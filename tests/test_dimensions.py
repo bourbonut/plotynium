@@ -18,7 +18,7 @@ from plotynium.properties import CanvasProperties, LegendProperties, Margin
         [True, False, 1000, 1000],
         [False, True, 1000, 1000],
         [True, True, 1000, 240],
-    ]
+    ],
 )
 def test_auto_width(
     only_legend,
@@ -27,9 +27,12 @@ def test_auto_width(
     expected_width,
 ):
     canvas_properties = CanvasProperties()
-    assert auto_width(
-        canvas_properties, LegendProperties(), only_legend, has_legend, width
-    ) == expected_width
+    assert (
+        auto_width(
+            canvas_properties, LegendProperties(), only_legend, has_legend, width
+        )
+        == expected_width
+    )
     if width is not None and not (only_legend and has_legend):
         assert canvas_properties.width == width
 
@@ -50,10 +53,19 @@ def test_auto_width(
         [True, False, False, False, None, None, int(640 / sqrt(2)), None],
         [True, True, False, False, None, None, 50, None],
         [False, False, True, True, None, None, 50, None],
-        [False, False, True, False, None, None, int(640 / sqrt(2)) + 50, int(640 / sqrt(2))],
+        [
+            False,
+            False,
+            True,
+            False,
+            None,
+            None,
+            int(640 / sqrt(2)) + 50,
+            int(640 / sqrt(2)),
+        ],
         [False, False, True, False, None, 200, 200 + 50, 200],
         [False, False, False, False, 200, 200, 200, None],
-    ]
+    ],
 )
 def test_auto_height(
     only_axis,
@@ -69,16 +81,20 @@ def test_auto_height(
     if width is not None:
         canvas_properties.set_width(width)
     legend_properties = LegendProperties()
-    assert auto_height(
-        canvas_properties,
-        legend_properties,
-        only_axis,
-        axis_is_x,
-        has_legend,
-        only_legend,
-        height,
-    ) == expected_height
+    assert (
+        auto_height(
+            canvas_properties,
+            legend_properties,
+            only_axis,
+            axis_is_x,
+            has_legend,
+            only_legend,
+            height,
+        )
+        == expected_height
+    )
     assert canvas_properties.height == (expected_canvas_height or expected_height)
+
 
 @pytest.mark.parametrize(
     (
@@ -96,15 +112,106 @@ def test_auto_height(
         "expected_legend_height"
     ),
     [
-        [[], False, None, None, None, 640, int(640 / sqrt(2)), None, None, Margin(0, 0, 0, 0), 240, 50],
-        [[], True, None, None, None, 640, int(640 / sqrt(2)) + 50, None, int(640 / sqrt(2)), Margin(0, 0, 0, 0), 240, 50],
-        [[], False, 500, None, None, 500, int(500 / sqrt(2)), None, None, Margin(0, 0, 0, 0), 240, 50],
+        [
+            [],
+            False,
+            None,
+            None,
+            None,
+            640,
+            int(640 / sqrt(2)),
+            None,
+            None,
+            Margin(0, 0, 0, 0),
+            240,
+            50,
+        ],
+        [
+            [],
+            True,
+            None,
+            None,
+            None,
+            640,
+            int(640 / sqrt(2)) + 50,
+            None,
+            int(640 / sqrt(2)),
+            Margin(0, 0, 0, 0),
+            240,
+            50,
+        ],
+        [
+            [],
+            False,
+            500,
+            None,
+            None,
+            500,
+            int(500 / sqrt(2)),
+            None,
+            None,
+            Margin(0, 0, 0, 0),
+            240,
+            50,
+        ],
         [[], False, None, 200, None, 640, 200, None, None, Margin(0, 0, 0, 0), 240, 50],
-        [[], False, None, None, Margin(1, 2, 3, 4), 640, int(640 / sqrt(2)), None, None, Margin(1, 2, 3, 4), 240, 50],
-        [[Legend(width=100)], False, None, None, None, 100, 50, 640, 50, Margin(0, 0, 0, 0), 100, 50],
-        [[AxisX()], False, None, None, None, 640, 50, 640, 50, Margin(0, 0, 0, 0), 240, 50],
-        [[AxisY()], False, None, None, None, 640, int(640 / sqrt(2)), None, None, Margin(0, 0, 0, 0), 240, 50],
-    ]
+        [
+            [],
+            False,
+            None,
+            None,
+            Margin(1, 2, 3, 4),
+            640,
+            int(640 / sqrt(2)),
+            None,
+            None,
+            Margin(1, 2, 3, 4),
+            240,
+            50,
+        ],
+        [
+            [Legend(width=100)],
+            False,
+            None,
+            None,
+            None,
+            100,
+            50,
+            640,
+            50,
+            Margin(0, 0, 0, 0),
+            100,
+            50,
+        ],
+        [
+            [AxisX()],
+            False,
+            None,
+            None,
+            None,
+            640,
+            50,
+            640,
+            50,
+            Margin(0, 0, 0, 0),
+            240,
+            50,
+        ],
+        [
+            [AxisY()],
+            False,
+            None,
+            None,
+            None,
+            640,
+            int(640 / sqrt(2)),
+            None,
+            None,
+            Margin(0, 0, 0, 0),
+            240,
+            50,
+        ],
+    ],
 )
 def test_dimensions(
     marks,

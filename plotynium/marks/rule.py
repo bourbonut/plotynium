@@ -92,10 +92,7 @@ class RuleX(Style[T], Mark):
             [[v, ctx.y.get_domain()[0]], [v, ctx.y.get_domain()[1]]]
             for v in self._values
         ]
-        group = (
-            svg.append("g")
-            .attr("class", "rule")
-        )
+        group = svg.append("g").attr("class", "rule")
 
         if self._opacity != 1.0:
             group.attr("opacity", self._opacity)
@@ -107,8 +104,7 @@ class RuleX(Style[T], Mark):
             group.attr("fill-opacity", self._fill_opacity)
 
         (
-            group
-            .select_all("rule")
+            group.select_all("rule")
             .data(values)
             .join("path")
             .attr("stroke", self._stroke)
@@ -199,10 +195,7 @@ class RuleY(Style[T], Mark):
             [[ctx.x.get_domain()[0], v], [ctx.x.get_domain()[1], v]]
             for v in self._values
         ]
-        group = (
-            svg.append("g")
-            .attr("class", "rule")
-        )
+        group = svg.append("g").attr("class", "rule")
 
         if self._opacity != 1.0:
             group.attr("opacity", self._opacity)
@@ -214,8 +207,7 @@ class RuleY(Style[T], Mark):
             group.attr("fill-opacity", self._fill_opacity)
 
         (
-            group
-            .select_all("rule")
+            group.select_all("rule")
             .data(values)
             .join("path")
             .attr("stroke", self._stroke)

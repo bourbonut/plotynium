@@ -2,6 +2,7 @@ from plotynium.legends import Legend
 from tests.default_context import default_context
 import detroit as d3
 
+
 def test_continuous_legend():
     legend = Legend()
 

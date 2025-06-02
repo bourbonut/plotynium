@@ -103,10 +103,7 @@ class Line(Style[T], Mark):
             .y(lambda d: ctx.y(self._y(d)))
         )
 
-        group = (
-            svg.append("g")
-            .attr("class", "line")
-        )
+        group = svg.append("g").attr("class", "line")
 
         if self._opacity != 1.0:
             group.attr("opacity", self._opacity)
@@ -118,8 +115,7 @@ class Line(Style[T], Mark):
             group.attr("fill-opacity", self._fill_opacity)
 
         (
-            group
-            .select_all("path")
+            group.select_all("path")
             .data(self.group())
             .enter()
             .append("path")

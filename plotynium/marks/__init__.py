@@ -42,6 +42,7 @@ def check_types(*types: list[type[Mark]]) -> Callable[[Mark], bool]:
         Function takes a `Mark` object as input and returns if the object is
         one of the types given by the `check_types` function itself.
     """
+
     def check_mark(mark: Mark) -> bool:
         return isinstance(mark, tuple(types))
 

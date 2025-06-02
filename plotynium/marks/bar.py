@@ -99,10 +99,7 @@ class BarX(Style[T], Mark):
         ctx : Context
             Context
         """
-        group = (
-            svg.append("g")
-            .attr("class", "bars")
-        )
+        group = svg.append("g").attr("class", "bars")
 
         if self._opacity != 1.0:
             group.attr("opacity", self._opacity)
@@ -114,8 +111,7 @@ class BarX(Style[T], Mark):
             group.attr("fill-opacity", self._fill_opacity)
 
         (
-            group
-            .select_all()
+            group.select_all()
             .data(self._data)
             .join("rect")
             .attr("x", ctx.x(ctx.x.get_domain()[0]))
@@ -215,10 +211,7 @@ class BarY(Style[T], Mark):
         ctx : Context
             Context
         """
-        group = (
-            svg.append("g")
-            .attr("class", "bars")
-        )
+        group = svg.append("g").attr("class", "bars")
 
         if self._opacity != 1.0:
             group.attr("opacity", self._opacity)
@@ -230,8 +223,7 @@ class BarY(Style[T], Mark):
             group.attr("fill-opacity", self._fill_opacity)
 
         (
-            group
-            .select_all()
+            group.select_all()
             .data(self._data)
             .join("rect")
             .attr("x", lambda d: ctx.x(self._x(d)))

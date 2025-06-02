@@ -2,6 +2,7 @@ from plotynium.legends import Legend
 from tests.default_context import default_context
 import detroit as d3
 
+
 def test_symbol_legend():
     colors = ("blue", "red", "green")
     symbols = d3.scale_ordinal(
@@ -9,7 +10,10 @@ def test_symbol_legend():
     )
     legend = Legend(
         [(f"label_{i}", color) for i, color in enumerate(colors)],
-        [(f"label_{i}", d3.symbol(symbols(f"label_{i}"))()) for i in range(len(colors))]
+        [
+            (f"label_{i}", d3.symbol(symbols(f"label_{i}"))())
+            for i in range(len(colors))
+        ],
     )
 
     svg = d3.create("svg")

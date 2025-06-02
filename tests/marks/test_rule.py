@@ -8,6 +8,7 @@ from plotynium.scaler import Scaler
 from plotynium.transformers import Constant
 from tests.default_context import default_context
 
+
 def test_rule_x_default():
     rule_x = RuleX([0, 1])
     assert rule_x.x_label is None
