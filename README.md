@@ -12,8 +12,6 @@ Plotynium is a *Data Visualization* framework for Python, inspired by  [Observab
 pip install plotynium
 ```
 
-It will be available soon on Pypi.
-
 ## Example
 
 ```py
