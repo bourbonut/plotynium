@@ -21,7 +21,7 @@ plot = ply.plot(
 with open("axis_x.svg", "w") as file:
     file.write(str(plot))
 ```
-The [AxisY][plotynium.marks.AxisX] mark makes an X axis.
+The [AxisY][plotynium.marks.AxisX] mark makes an Y axis.
 
 ![](../images/axis_y.svg)
 
