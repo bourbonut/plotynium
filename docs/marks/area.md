@@ -11,7 +11,6 @@ import polars as pl
 
 URL = (
     "https://static.observableusercontent.com/files/de259092d525c13bd10926ea"
-    "https://static.observableusercontent.com/files/de259092d525c13bd10926ea"
     "f7add45b15f2771a8b39bc541a5bba1e0206add4880eb1d876be8df469328a85243b7d8"
     "13a91feb8cc4966de582dc02e5f8609b7?response-content-disposition=attachme"
     "nt%3Bfilename*%3DUTF-8%27%27aapl.csv"
