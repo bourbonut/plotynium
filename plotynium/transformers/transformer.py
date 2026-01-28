@@ -1,10 +1,10 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from collections.abc import Callable
-from typing import Generic, TypeVar
+from typing import Generic
 
 from ..types import ColorScheme, Index, U, V
-
-TTransformer = TypeVar("TTransformer", bound="Transformer")
 
 
 class Transformer(Generic[U, V], ABC):

@@ -1,20 +1,25 @@
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import TypeVar
 
 from .interpolations import Interpolation
 from .schemes import Scheme
-from .types import Index, T
+from .types import Index
 
-TColorOptions = TypeVar("TColorOptions", bound="ColorOptions")
-TSymbolOptions = TypeVar("TSymbolOptions", bound="SymbolOptions")
-TStyleOptions = TypeVar("TStyleOptions", bound="StyleOptions")
-TSortOptions = TypeVar("TSortOptions", bound="SortOptions")
-TXOptions = TypeVar("TXOptions", bound="XOptions")
-TYOptions = TypeVar("TYOptions", bound="YOptions")
+
+class NewTrait(ABC):
+    @staticmethod
+    @abstractmethod
+    def new(values: dict | None = None) -> T: ...
+
+
+T = TypeVar("T", bound="NewTrait")
 
 
 @dataclass
-class ColorOptions:
+class ColorOptions(NewTrait):
     """
     Color options applied on circles, lines, rectangles or symbols
     when it is possible.
@@ -30,7 +35,7 @@ class ColorOptions:
     labels: dict[int, str] | None = field(default=None)
 
     @staticmethod
-    def new(values: dict | None = None) -> TColorOptions:
+    def new(values: dict | None = None) -> ColorOptions:
         default_values = ColorOptions()
         if values is None:
             return default_values
@@ -42,7 +47,7 @@ class ColorOptions:
 
 
 @dataclass
-class SymbolOptions:
+class SymbolOptions(NewTrait):
     """
     Symbol options used for dots mark when symbols are specified.
 
@@ -55,7 +60,7 @@ class SymbolOptions:
     legend: bool = field(default=False)
 
     @staticmethod
-    def new(values: dict | None = None) -> TSymbolOptions:
+    def new(values: dict | None = None) -> SymbolOptions:
         default_values = SymbolOptions()
         if values is None:
             return default_values
@@ -63,7 +68,7 @@ class SymbolOptions:
 
 
 @dataclass
-class StyleOptions:
+class StyleOptions(NewTrait):
     """
     Style options of the plot
 
@@ -85,7 +90,7 @@ class StyleOptions:
     font_family: str = field(default="sans-serif")
 
     @staticmethod
-    def new(values: dict | None = None) -> TStyleOptions:
+    def new(values: dict | None = None) -> StyleOptions:
         default_values = StyleOptions()
         if values is None:
             return default_values
@@ -98,7 +103,7 @@ class StyleOptions:
 
 
 @dataclass
-class SortOptions:
+class SortOptions(NewTrait):
     """
     Sort options for bar mark
 
@@ -114,7 +119,7 @@ class SortOptions:
     descending: bool = field(default=False)
 
     @staticmethod
-    def new(values: dict | None = None) -> TSortOptions:
+    def new(values: dict | None = None) -> SortOptions:
         default_values = SortOptions()
         if values is None:
             return default_values
@@ -125,7 +130,7 @@ class SortOptions:
 
 
 @dataclass
-class XOptions:
+class XOptions(NewTrait):
     """
     Options for x axis
 
@@ -146,7 +151,7 @@ class XOptions:
     specifier: str | None = field(default=None)
 
     @staticmethod
-    def new(values: dict | None = None) -> TXOptions:
+    def new(values: dict | None = None) -> XOptions:
         default_values = XOptions()
         if values is None:
             return default_values
@@ -160,7 +165,7 @@ class XOptions:
 
 
 @dataclass
-class YOptions:
+class YOptions(NewTrait):
     """
     Options for y axis
 
@@ -181,7 +186,7 @@ class YOptions:
     specifier: str | None = field(default=None)
 
     @staticmethod
-    def new(values: dict | None = None) -> TYOptions:
+    def new(values: dict | None = None) -> YOptions:
         default_values = YOptions()
         if values is None:
             return default_values

@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from math import sqrt
-from typing import TypeVar
 
 __all__ = [
     "CanvasProperties",
@@ -12,8 +13,6 @@ __all__ = [
     "LegendProperties",
     "Margin",
 ]
-
-TLegendProperties = TypeVar("LegendProperties", bound="LegendProperties")
 
 DEFAULT_CANVAS_WIDTH = 640  # without legend
 DEFAULT_LEGEND_WIDTH = 240
@@ -210,7 +209,7 @@ class LegendProperties(Properties):
         margin_left: int = 15,
         margin_bottom: int = 21,
         margin_right: int = 15,
-    ) -> TLegendProperties:
+    ) -> LegendProperties:
         """
         Returns legend properties given specific values.
 
