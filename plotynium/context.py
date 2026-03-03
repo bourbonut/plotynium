@@ -287,13 +287,13 @@ class Context:
         color_mappings = [self._color_mapping] + list(color_mappings)
         self._color_mapping = max(color_mappings, key=len)
 
-    def update_symbol_mapping(self, *symbol_mappings: tuple[list[tuple[str, str]]]):
+    def update_symbol_mapping(self, *symbol_mappings: list[tuple[str, str]]):
         """
         Sets the symbol mapping by prioritizing the longest symbol mapping list.
 
         Parameters
         ----------
-        symbol_mappings : tuple[list[tuple[str, str]]]
+        symbol_mappings : list[tuple[str, str]]
             Several list of pairs (label, symbol path)
         """
         symbol_mappings = [self._symbol_mapping] + list(symbol_mappings)

@@ -1,5 +1,3 @@
-from collections import OrderedDict
-
 from ..types import T
 from .picker import LegendPicker
 from .transformer import Transformer
@@ -30,13 +28,13 @@ class Identity(Transformer[T, T]):
         """
         return self._picker(value, value)
 
-    def get_mapping(self) -> OrderedDict[str, T]:
+    def get_mapping(self) -> list[tuple[str, T]]:
         """
         Returns the mapping of the picker.
 
         Returns
         -------
-        OrderedDict[str, T]
+        list[tuple[str, T]]
             Ordered dictionary where keys are labels and values are generally
             colors.
         """
