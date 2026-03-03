@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import TypeAlias, TypeVar
 
 from .interpolations import Interpolation
@@ -7,6 +8,6 @@ T = TypeVar("T")
 U = TypeVar("U")
 V = TypeVar("V")
 Number: TypeAlias = int | float
-Data: TypeAlias = Number | str
+Data: TypeAlias = Number | str | datetime
 Index: TypeAlias = int
 ColorScheme: TypeAlias = Scheme | Interpolation

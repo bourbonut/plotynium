@@ -3,7 +3,7 @@ from detroit.scale.band import ScaleBand
 from detroit.scale.linear import ScaleLinear
 
 from plotynium.marks.dot import Dot, center
-from plotynium.scaler import Scaler
+from plotynium.scaler import ScalerType
 from plotynium.transformers import Constant, Identity, Symbol
 from tests.default_context import default_context
 
@@ -21,8 +21,8 @@ def test_dot_default():
     assert dot.y_label is None
     assert dot.x_domain == [0, 10]
     assert dot.y_domain == [0, 10]
-    assert dot.x_scaler_type == Scaler.CONTINUOUS
-    assert dot.y_scaler_type == Scaler.CONTINUOUS
+    assert dot.x_scaler_type == ScalerType.CONTINUOUS
+    assert dot.y_scaler_type == ScalerType.CONTINUOUS
 
     assert isinstance(dot._r, Constant)
     assert dot._r(None) == 3
@@ -49,8 +49,8 @@ def test_dot_symbol():
     assert dot.y_label == "y"
     assert dot.x_domain == [0, 10]
     assert dot.y_domain == [0, 10]
-    assert dot.x_scaler_type == Scaler.CONTINUOUS
-    assert dot.y_scaler_type == Scaler.CONTINUOUS
+    assert dot.x_scaler_type == ScalerType.CONTINUOUS
+    assert dot.y_scaler_type == ScalerType.CONTINUOUS
 
     assert isinstance(dot._r, Constant)
     assert dot._r(None) == 3

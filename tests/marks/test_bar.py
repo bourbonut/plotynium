@@ -4,7 +4,7 @@ from copy import copy
 import detroit as d3
 
 from plotynium.marks.bar import BarY
-from plotynium.scaler import Scaler
+from plotynium.scaler import ScalerType
 from plotynium.transformers import Constant
 from tests.default_context import default_context
 
@@ -16,8 +16,8 @@ def test_bar_y_default():
     assert bar_y.y_label is None
     assert bar_y.x_domain == ["a", "b", "c", "d"]
     assert bar_y.y_domain == [0, 10]
-    assert bar_y.x_scaler_type == Scaler.BAND
-    assert bar_y.y_scaler_type == Scaler.CONTINUOUS
+    assert bar_y.x_scaler_type == ScalerType.BAND
+    assert bar_y.y_scaler_type == ScalerType.CONTINUOUS
 
     assert bar_y._fill_opacity == 1.0
     assert bar_y._stroke_width == 1.0

@@ -3,7 +3,7 @@ import pytest
 
 from plotynium.marks.axis import AxisX, AxisY
 from plotynium.properties import CanvasProperties, Margin
-from plotynium.scaler import Scaler
+from plotynium.scaler import ScalerType
 from plotynium.transformers import Identity
 from tests.default_context import default_context
 
@@ -15,7 +15,7 @@ def test_axis_x_default():
     assert axis_x.y_label is None
     assert axis_x.x_domain == [0.0, 1.0]
     assert axis_x.y_domain is None
-    assert axis_x.x_scaler_type == Scaler.CONTINUOUS
+    assert axis_x.x_scaler_type == ScalerType.CONTINUOUS
     assert axis_x.y_scaler_type is None
 
     assert axis_x._anchor == "bottom"
@@ -58,7 +58,7 @@ def test_axis_y_default():
     assert axis_y.x_domain is None
     assert axis_y.y_domain == [0.0, 1.0]
     assert axis_y.x_scaler_type is None
-    assert axis_y.y_scaler_type == Scaler.CONTINUOUS
+    assert axis_y.y_scaler_type == ScalerType.CONTINUOUS
 
     assert axis_y._anchor == "left"
     assert axis_y._tick_rotate == 0.0

@@ -4,7 +4,7 @@ import detroit as d3
 import pytest
 
 from plotynium.marks.line import Line
-from plotynium.scaler import Scaler
+from plotynium.scaler import ScalerType
 from plotynium.transformers import Constant
 from tests.default_context import default_context
 
@@ -16,8 +16,8 @@ def test_line_default():
     assert line.y_label is None
     assert line.x_domain == [0, 10]
     assert line.y_domain == [0, 10]
-    assert line.x_scaler_type == Scaler.CONTINUOUS
-    assert line.y_scaler_type == Scaler.CONTINUOUS
+    assert line.x_scaler_type == ScalerType.CONTINUOUS
+    assert line.y_scaler_type == ScalerType.CONTINUOUS
 
     assert line._fill_opacity == 1.0
     assert line._stroke_width == 1.0

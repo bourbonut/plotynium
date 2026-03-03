@@ -4,7 +4,7 @@ import detroit as d3
 import pytest
 
 from plotynium.marks.rule import RuleX, RuleY
-from plotynium.scaler import Scaler
+from plotynium.scaler import ScalerType
 from plotynium.transformers import Constant
 from tests.default_context import default_context
 
@@ -15,7 +15,7 @@ def test_rule_x_default():
     assert rule_x.y_label is None
     assert rule_x.x_domain == [0, 1]
     assert rule_x.y_domain is None
-    assert rule_x.x_scaler_type == Scaler.CONTINUOUS
+    assert rule_x.x_scaler_type == ScalerType.CONTINUOUS
     assert rule_x.y_scaler_type is None
 
     assert rule_x._fill_opacity == 1.0
@@ -47,7 +47,7 @@ def test_rule_y_default():
     assert rule_y.x_domain is None
     assert rule_y.y_domain == [0, 1]
     assert rule_y.x_scaler_type is None
-    assert rule_y.y_scaler_type == Scaler.CONTINUOUS
+    assert rule_y.y_scaler_type == ScalerType.CONTINUOUS
 
     assert rule_y._fill_opacity == 1.0
     assert rule_y._stroke_width == 1.5

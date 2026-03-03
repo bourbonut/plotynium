@@ -2,7 +2,7 @@ import detroit as d3
 
 from plotynium.marks.grid import GridX, GridY
 from plotynium.properties import CanvasProperties, Margin
-from plotynium.scaler import Scaler
+from plotynium.scaler import ScalerType
 from tests.default_context import default_context
 
 
@@ -14,7 +14,7 @@ def test_grid_x_default():
     assert grid_x.y_label is None
     assert grid_x.x_domain == [0.0, 1.0]
     assert grid_x.y_domain is None
-    assert grid_x.x_scaler_type == Scaler.CONTINUOUS
+    assert grid_x.x_scaler_type == ScalerType.CONTINUOUS
     assert grid_x.y_scaler_type is None
 
     assert grid_x._stroke == "currentColor"
@@ -49,7 +49,7 @@ def test_grid_y_default():
     assert grid_y.x_domain is None
     assert grid_y.y_domain == [0.0, 1.0]
     assert grid_y.x_scaler_type is None
-    assert grid_y.y_scaler_type == Scaler.CONTINUOUS
+    assert grid_y.y_scaler_type == ScalerType.CONTINUOUS
 
     assert grid_y._stroke == "currentColor"
     assert grid_y._stroke_width == 1.0
