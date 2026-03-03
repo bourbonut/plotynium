@@ -3,9 +3,8 @@ from collections.abc import Callable
 from detroit.selection import Selection
 
 from ..context import Context
-from ..domain import domain
+from ..domain import Domain
 from ..options import SortOptions, init_options
-from ..scaler import determine_scaler
 from ..transformers import getter
 from ..types import Data, T
 from .mark import Mark
@@ -59,9 +58,7 @@ class BarX(Style[T], Mark):
         Mark.__init__(self)
         sort = init_options(sort, SortOptions)
         if sort.by != "":
-            data = sorted(data, key=getter(sort.by))
-            if sort.descending:
-                data = list(reversed(data))
+            data = sorted(data, key=getter(sort.by), reverse=sort.descending)
 
         self._data = data
         self.x_label = x if isinstance(x, str) else None
@@ -69,10 +66,8 @@ class BarX(Style[T], Mark):
         self._x = getter(x or 0)
         self._y = getter(y or 1)
 
-        self.x_domain = domain(self._data, self._x)
-        self.y_domain = domain(self._data, self._y)
-        self.x_scaler_type = determine_scaler(self._data, self._x)
-        self.y_scaler_type = determine_scaler(self._data, self._y)
+        self.x_domain = Domain.from_data(self._data, self._x)
+        self.y_domain = Domain.from_data(self._data, self._y)
 
         Style.__init__(
             self,
@@ -171,9 +166,7 @@ class BarY(Style[T], Mark):
         Mark.__init__(self)
         sort = init_options(sort, SortOptions)
         if sort.by != "":
-            data = sorted(data, key=getter(sort.by))
-            if sort.descending:
-                data = list(reversed(data))
+            data = sorted(data, key=getter(sort.by), reverse=sort.descending)
 
         self._data = data
         self.x_label = x if isinstance(x, str) else None
@@ -181,10 +174,8 @@ class BarY(Style[T], Mark):
         self._x = getter(x or 0)
         self._y = getter(y or 1)
 
-        self.x_domain = domain(self._data, self._x)
-        self.y_domain = domain(self._data, self._y)
-        self.x_scaler_type = determine_scaler(self._data, self._x)
-        self.y_scaler_type = determine_scaler(self._data, self._y)
+        self.x_domain = Domain.from_data(self._data, self._x)
+        self.y_domain = Domain.from_data(self._data, self._y)
 
         Style.__init__(
             self,

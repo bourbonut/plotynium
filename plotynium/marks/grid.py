@@ -5,8 +5,7 @@ import detroit as d3
 from detroit.selection import Selection
 
 from ..context import Context
-from ..domain import domain
-from ..scaler import determine_scaler
+from ..domain import Domain
 from ..transformers import Constant, Identity
 from ..types import Data, T
 from .mark import Mark
@@ -57,8 +56,7 @@ class GridX(Generic[T], Mark):
         self._stroke_width = stroke_width
         self._stroke_dasharray = stroke_dasharray
 
-        self.x_domain = domain(self._data, self._x)
-        self.x_scaler_type = determine_scaler(self._data, self._x)
+        self.x_domain = Domain.from_data(self._data, self._x)
 
     def apply(self, svg: Selection, ctx: Context):
         """
@@ -140,8 +138,7 @@ class GridY(Generic[T], Mark):
         self._stroke_width = stroke_width
         self._stroke_dasharray = stroke_dasharray
 
-        self.y_domain = domain(self._data, self._y)
-        self.y_scaler_type = determine_scaler(self._data, self._y)
+        self.y_domain = Domain.from_data(self._data, self._y)
 
     def apply(self, svg: Selection, ctx: Context):
         """

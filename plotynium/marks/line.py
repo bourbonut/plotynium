@@ -4,8 +4,8 @@ import detroit as d3
 from detroit.selection import Selection
 
 from ..context import Context
-from ..domain import domain
-from ..scaler import Scaler, determine_scaler
+from ..domain import Domain
+from ..scaler import ScalerType
 from ..transformers import getter
 from ..types import Data, T
 from .mark import Mark
@@ -61,10 +61,8 @@ class Line(Style[T], Mark):
         self._x = getter(x or 0)
         self._y = getter(y or 1)
 
-        self.x_domain = domain(self._data, self._x)
-        self.y_domain = domain(self._data, self._y)
-        self.x_scaler_type = determine_scaler(self._data, self._x)
-        self.y_scaler_type = determine_scaler(self._data, self._y)
+        self.x_domain = Domain.from_data(self._data, self._x)
+        self.y_domain = Domain.from_data(self._data, self._y)
 
         Style.__init__(
             self,
@@ -97,7 +95,7 @@ class Line(Style[T], Mark):
             d3.line()
             .x(
                 (lambda d: ctx.x(self._x(d)))
-                if self.x_scaler_type == Scaler.CONTINUOUS
+                if self.x_domain.type == ScalerType.CONTINUOUS
                 else (lambda d: ctx.x(self._x(d).timestamp()))
             )
             .y(lambda d: ctx.y(self._y(d)))

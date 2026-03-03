@@ -5,8 +5,7 @@ import detroit as d3
 from detroit.selection import Selection
 
 from ..context import Context
-from ..domain import domain
-from ..scaler import determine_scaler
+from ..domain import Domain
 from ..transformers import Constant, Identity, getter
 from ..types import Data, T
 from .mark import Mark
@@ -76,8 +75,7 @@ class AxisX(Generic[T], Mark):
         self._stroke_width = stroke_width
 
         self.x_label = self._label
-        self.x_domain = domain(self._data, self._x)
-        self.x_scaler_type = determine_scaler(self._data, self._x)
+        self.x_domain = Domain.from_data(self._data, self._x)
 
     def apply(self, svg: Selection, ctx: Context):
         """
@@ -219,8 +217,7 @@ class AxisY(Generic[T], Mark):
         self._stroke_width = stroke_width
 
         self.y_label = self._label
-        self.y_domain = domain(self._data, self._y)
-        self.y_scaler_type = determine_scaler(self._data, self._y)
+        self.y_domain = Domain.from_data(self._data, self._y)
 
     def apply(self, svg: Selection, ctx: Context):
         """

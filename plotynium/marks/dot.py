@@ -3,8 +3,7 @@ from collections.abc import Callable
 from detroit.selection import Selection
 
 from ..context import Context
-from ..domain import domain
-from ..scaler import determine_scaler
+from ..domain import Domain
 from ..transformers import Constant, Identity, Symbol, getter
 from ..types import Data, T
 from .mark import Mark
@@ -89,10 +88,8 @@ class Dot(Style[T], Mark):
         self._x = getter(x or 0)
         self._y = getter(y or 1)
 
-        self.x_domain = domain(self._data, self._x)
-        self.y_domain = domain(self._data, self._y)
-        self.x_scaler_type = determine_scaler(self._data, self._x)
-        self.y_scaler_type = determine_scaler(self._data, self._y)
+        self.x_domain = Domain.from_data(self._data, self._x)
+        self.y_domain = Domain.from_data(self._data, self._y)
 
         self._r = r if callable(r) else Constant(r or 3)
         self._symbol = Symbol.try_init(data, symbol)

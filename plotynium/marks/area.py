@@ -4,8 +4,8 @@ import detroit as d3
 from detroit.selection import Selection
 
 from ..context import Context
-from ..domain import domain, reduce
-from ..scaler import Scaler, determine_scaler
+from ..domain import Domain
+from ..scaler_type import ScalerType
 from ..transformers import Constant, getter
 from ..types import Data, Index, T
 from .mark import Mark
@@ -87,22 +87,17 @@ class AreaY(Style[T], Mark):
                 "'y' must be specified or 'y1' and 'y2' must be specified."
             )
 
-        self.x_domain = domain(self._data, self._x)
-        y0_domain = domain(self._data, self._y0)
-        y1_domain = domain(self._data, self._y1)
+        self.x_domain = Domain.from_data(self._data, self._x)
+        y0_domain = Domain.from_data(self._data, self._y0)
+        y1_domain = Domain.from_data(self._data, self._y1)
 
-        self.x_scaler_type = determine_scaler(self._data, self._x)
-        y0_scaler_type = determine_scaler(self._data, self._y0)
-        y1_scaler_type = determine_scaler(self._data, self._y1)
-        if y0_scaler_type == y1_scaler_type:
-            self.y_scaler_type = y0_scaler_type
-        else:
+        if y0_domain.type != y1_domain.type:
             raise RuntimeError(
                 "Incoherence between 'y0' and 'y1' domains "
                 f"(found y0 domain: {y0_domain} and y1 domain : {y1_domain})"
             )
 
-        self.y_domain = reduce([y0_domain, y1_domain])
+        self.y_domain = Domain.reduce([y0_domain, y1_domain])
 
         Style.__init__(
             self,
@@ -133,7 +128,7 @@ class AreaY(Style[T], Mark):
             d3.area()
             .x(
                 (lambda d: ctx.x(self._x(d)))
-                if self.x_scaler_type == Scaler.CONTINUOUS
+                if self.x_domain.type == ScalerType.CONTINUOUS
                 else (lambda d: ctx.x(self._x(d).timestamp()))
             )
             .y0(lambda d: ctx.y(self._y0(d)))

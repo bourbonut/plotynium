@@ -4,8 +4,9 @@ import detroit as d3
 from detroit.selection import Selection
 
 from ..context import Context
-from ..scaler import Scaler, determine_scaler
-from ..transformers import Identity, getter
+from ..domain import Domain
+from ..scaler import ScalerType
+from ..transformers import getter
 from ..types import T
 from .mark import Mark
 from .style import Style
@@ -51,8 +52,7 @@ class RuleX(Style[T], Mark):
         self._x = getter(0)
         self._y = getter(1)
 
-        self.x_domain = [min(self._values), max(self._values)]
-        self.x_scaler_type = determine_scaler(self._values, Identity())
+        self.x_domain = Domain.from_data(self._values)
 
         Style.__init__(
             self,
@@ -83,7 +83,7 @@ class RuleX(Style[T], Mark):
             d3.line()
             .x(
                 (lambda d: ctx.x(self._x(d).timestamp()))
-                if self.x_scaler_type == Scaler.TIME
+                if self.x_domain.type == ScalerType.TIME
                 else lambda d: ctx.x(self._x(d))
             )
             .y(lambda d: ctx.y(self._y(d)))
@@ -154,8 +154,7 @@ class RuleY(Style[T], Mark):
         self._x = getter(0)
         self._y = getter(1)
 
-        self.y_domain = [min(self._values), max(self._values)]
-        self.y_scaler_type = determine_scaler(self._values, Identity())
+        self.y_domain = Domain.from_data(self._values)
 
         Style.__init__(
             self,
@@ -187,7 +186,7 @@ class RuleY(Style[T], Mark):
             .x(lambda d: ctx.x(self._x(d)))
             .y(
                 (lambda d: ctx.y(self._y(d).timestamp()))
-                if self.y_scaler_type == Scaler.TIME
+                if self.y_domain.type == ScalerType.TIME
                 else lambda d: ctx.y(self._y(d))
             )
         )

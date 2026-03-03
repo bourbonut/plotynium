@@ -3,8 +3,7 @@ from abc import ABC, abstractmethod
 from detroit.selection import Selection
 
 from ..context import Context
-from ..scaler import Scaler
-from ..types import Number
+from ..domain import Domain
 
 
 class Mark(ABC):
@@ -34,10 +33,8 @@ class Mark(ABC):
     def __init__(self):
         self.x_label: str | None = None
         self.y_label: str | None = None
-        self.x_domain: tuple[Number, Number] | list[str] | None = None
-        self.y_domain: tuple[Number, Number] | list[str] | None = None
-        self.x_scaler_type: Scaler | None = None
-        self.y_scaler_type: Scaler | None = None
+        self.x_domain: Domain | None = None
+        self.y_domain: Domain | None = None
 
     @abstractmethod
     def apply(self, svg: Selection, ctx: Context):
