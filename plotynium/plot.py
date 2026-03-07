@@ -1,6 +1,7 @@
 import detroit as d3
 from detroit.selection import Selection
 
+from .common import unique_str
 from .context import Context
 from .dimensions import dimensions
 from .legends import Legend
@@ -14,7 +15,7 @@ from .options import (
     init_options,
 )
 from .properties import Margin
-from .scaler import determine_label, make_scaler
+from .scaler import make_scaler
 
 
 def plot(
@@ -91,21 +92,20 @@ def plot(
     x_label = x_options.label
     y_label = y_options.label
     if x_label is None and y_label is None:
-        x_label = determine_label([mark.x_label for mark in marks])
-        y_label = determine_label([mark.y_label for mark in marks])
+        x_label = unique_str([mark.x_label for mark in marks])
+        y_label = unique_str([mark.y_label for mark in marks])
 
     # Set scalers
-    x_scaler_types = [mark.x_scaler_type for mark in marks]
-    y_scaler_types = [mark.y_scaler_type for mark in marks]
-
-    x_domains = [mark.x_domain for mark in marks]
-    y_domains = [mark.y_domain for mark in marks]
-
-    x_ranges = [margin.left, canvas_properties.width - margin.right]
-    y_ranges = [canvas_properties.height - margin.bottom, margin.top]
-
-    x = x_scale = make_scaler(x_scaler_types, x_domains, x_ranges, nice=x_options.nice)
-    y = y_scale = make_scaler(y_scaler_types, y_domains, y_ranges, nice=y_options.nice)
+    x_scale = make_scaler(
+        [mark.x_domain for mark in marks if mark.x_domain is not None],
+        [margin.left, canvas_properties.width - margin.right],
+        nice=x_options.nice,
+    )
+    y_scale = make_scaler(
+        [mark.y_domain for mark in marks if mark.y_domain is not None],
+        [canvas_properties.height - margin.bottom, margin.top],
+        nice=y_options.nice,
+    )
 
     # Creates a context shared between marks and legend
     ctx = Context(
@@ -135,11 +135,11 @@ def plot(
     if is_not_unique:
         # Set x axis
         if not any(map(check_types(AxisX), marks)):
-            x_ticks = x.ticks() if hasattr(x, "ticks") else x.get_domain()
+            x_ticks = x_scale.ticks() if hasattr(x, "ticks") else x_scale.get_domain()
             x_tick_format = (
-                x.tick_format(x_options.count, x_options.specifier)
+                x_scale.tick_format(x_options.count, x_options.specifier)
                 if hasattr(x, "tick_format")
-                else x.get_domain()
+                else x_scale.get_domain()
             )
             marks.append(
                 AxisX(
@@ -152,11 +152,11 @@ def plot(
 
         # Set y axis
         if not any(map(check_types(AxisY), marks)):
-            y_ticks = y.ticks() if hasattr(y, "ticks") else y.get_domain()
+            y_ticks = y_scale.ticks() if hasattr(y, "ticks") else y_scale.get_domain()
             y_tick_format = (
-                y.tick_format(y_options.count, y_options.specifier)
+                y_scale.tick_format(y_options.count, y_options.specifier)
                 if hasattr(y, "tick_format")
-                else y.get_domain()
+                else y_scale.get_domain()
             )
             marks.append(
                 AxisY(
@@ -169,12 +169,12 @@ def plot(
 
         # Set x grid
         if not any(map(check_types(GridX), marks)) and x_options.grid or grid:
-            x_ticks = x.ticks() if hasattr(x, "ticks") else x.get_domain()
+            x_ticks = x_scale.ticks() if hasattr(x, "ticks") else x_scale.get_domain()
             marks.append(GridX(x_ticks))
 
         # Set y grid
         if not any(map(check_types(GridY), marks)) and y_options.grid or grid:
-            y_ticks = y.ticks() if hasattr(y, "ticks") else y.get_domain()
+            y_ticks = y_scale.ticks() if hasattr(y, "ticks") else y_scale.get_domain()
             marks.append(GridY(y_ticks))
 
     svg = (

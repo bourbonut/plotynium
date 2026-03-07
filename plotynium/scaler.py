@@ -1,5 +1,7 @@
 import detroit as d3
-from detroit.types import Scaler as D3Scaler
+from detroit.scale.band import ScaleBand
+from detroit.scale.linear import ScaleLinear
+from detroit.scale.time import ScaleTime
 
 from .domain import Domain
 from .scaler_type import ScalerType
@@ -9,7 +11,7 @@ def make_scaler(
     domains: list[Domain],
     range_vals: list[int | float],
     nice: bool = True,
-) -> D3Scaler:
+) -> ScaleBand | ScaleLinear[int | float] | ScaleTime:
     """
     Returns a scaler object from `detroit`.
 
@@ -24,7 +26,7 @@ def make_scaler(
 
     Returns
     -------
-    D3Scaler
+    ScaleBand | ScaleLinear[int | float] | ScaleTime
         [`ScaleLinear`](https://detroit.readthedocs.io/en/latest/api/scale/linear.html#detroit.scale.linear.ScaleLinear)
         or
         [`ScaleTime`](https://detroit.readthedocs.io/en/latest/api/scale/time.html#detroit.scale.time.ScaleTime)
@@ -51,6 +53,6 @@ def make_scaler(
             raise RuntimeError("Undefined scaler")
 
     if nice and scaler_type in [ScalerType.CONTINUOUS, ScalerType.TIME]:
-        scaler = scaler.nice()
+        scaler = scaler.nice()  # type: ignore
 
-    return scaler
+    return scaler  # type: ignore

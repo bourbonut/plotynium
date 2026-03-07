@@ -26,14 +26,14 @@ __all__ = [
 ]
 
 
-def check_types(*types: list[type[Mark]]) -> Callable[[Mark], bool]:
+def check_types(*types: type[Mark]) -> Callable[[Mark], bool]:
     """
     Builds a function for checking different mark types
 
 
     Parameters
     ----------
-    types : list[type[Mark]]
+    types : type[Mark]
         Mark types to be checked
 
     Returns

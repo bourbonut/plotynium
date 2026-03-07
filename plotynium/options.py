@@ -1,25 +1,15 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import TypeVar
+from typing import overload
 
 from .interpolations import Interpolation
 from .schemes import Scheme
 from .types import Index
 
 
-class NewTrait(ABC):
-    @staticmethod
-    @abstractmethod
-    def new(values: dict | None = None) -> T: ...
-
-
-T = TypeVar("T", bound="NewTrait")
-
-
 @dataclass
-class ColorOptions(NewTrait):
+class ColorOptions:
     """
     Color options applied on circles, lines, rectangles or symbols
     when it is possible.
@@ -34,8 +24,8 @@ class ColorOptions(NewTrait):
     legend: bool = field(default=False)
     labels: dict[int, str] | None = field(default=None)
 
-    @staticmethod
-    def new(values: dict | None = None) -> ColorOptions:
+    @classmethod
+    def new(cls, values: dict | None = None) -> ColorOptions:
         default_values = ColorOptions()
         if values is None:
             return default_values
@@ -47,7 +37,7 @@ class ColorOptions(NewTrait):
 
 
 @dataclass
-class SymbolOptions(NewTrait):
+class SymbolOptions:
     """
     Symbol options used for dots mark when symbols are specified.
 
@@ -59,16 +49,16 @@ class SymbolOptions(NewTrait):
 
     legend: bool = field(default=False)
 
-    @staticmethod
-    def new(values: dict | None = None) -> SymbolOptions:
-        default_values = SymbolOptions()
+    @classmethod
+    def new(cls, values: dict | None = None) -> SymbolOptions:
+        default_values = cls()
         if values is None:
             return default_values
-        return SymbolOptions(legend=values.get("legend", default_values.legend))
+        return cls(legend=values.get("legend", default_values.legend))
 
 
 @dataclass
-class StyleOptions(NewTrait):
+class StyleOptions:
     """
     Style options of the plot
 
@@ -89,12 +79,12 @@ class StyleOptions(NewTrait):
     font_size: int = field(default=12)
     font_family: str = field(default="sans-serif")
 
-    @staticmethod
-    def new(values: dict | None = None) -> StyleOptions:
-        default_values = StyleOptions()
+    @classmethod
+    def new(cls, values: dict | None = None) -> StyleOptions:
+        default_values = cls()
         if values is None:
             return default_values
-        return StyleOptions(
+        return cls(
             background=values.get("background", default_values.background),
             color=values.get("color", default_values.color),
             font_size=values.get("font_size", default_values.font_size),
@@ -103,7 +93,7 @@ class StyleOptions(NewTrait):
 
 
 @dataclass
-class SortOptions(NewTrait):
+class SortOptions:
     """
     Sort options for bar mark
 
@@ -118,19 +108,19 @@ class SortOptions(NewTrait):
     by: Index | str = field(default="")
     descending: bool = field(default=False)
 
-    @staticmethod
-    def new(values: dict | None = None) -> SortOptions:
-        default_values = SortOptions()
+    @classmethod
+    def new(cls, values: dict | None = None) -> SortOptions:
+        default_values = cls()
         if values is None:
             return default_values
-        return SortOptions(
+        return cls(
             by=values.get("by", default_values.by),
             descending=values.get("descending", default_values.descending),
         )
 
 
 @dataclass
-class XOptions(NewTrait):
+class XOptions:
     """
     Options for x axis
 
@@ -150,12 +140,12 @@ class XOptions(NewTrait):
     count: int | None = field(default=None)
     specifier: str | None = field(default=None)
 
-    @staticmethod
-    def new(values: dict | None = None) -> XOptions:
-        default_values = XOptions()
+    @classmethod
+    def new(cls, values: dict | None = None) -> XOptions:
+        default_values = cls()
         if values is None:
             return default_values
-        return XOptions(
+        return cls(
             nice=values.get("nice", default_values.nice),
             grid=values.get("grid", default_values.grid),
             label=values.get("label", default_values.label),
@@ -165,7 +155,7 @@ class XOptions(NewTrait):
 
 
 @dataclass
-class YOptions(NewTrait):
+class YOptions:
     """
     Options for y axis
 
@@ -185,12 +175,12 @@ class YOptions(NewTrait):
     count: int | None = field(default=None)
     specifier: str | None = field(default=None)
 
-    @staticmethod
-    def new(values: dict | None = None) -> YOptions:
-        default_values = YOptions()
+    @classmethod
+    def new(cls, values: dict | None = None) -> YOptions:
+        default_values = cls()
         if values is None:
             return default_values
-        return YOptions(
+        return cls(
             nice=values.get("nice", default_values.nice),
             grid=values.get("grid", default_values.grid),
             label=values.get("label", default_values.label),
@@ -199,7 +189,39 @@ class YOptions(NewTrait):
         )
 
 
-def init_options(values: T | dict | None, option_class: type[T]) -> T:
+@overload
+def init_options(
+    values: ColorOptions | dict | None, option_class: type[ColorOptions]
+): ...
+
+
+@overload
+def init_options(
+    values: SymbolOptions | dict | None, option_class: type[SymbolOptions]
+): ...
+
+
+@overload
+def init_options(
+    values: StyleOptions | dict | None, option_class: type[StyleOptions]
+): ...
+
+
+@overload
+def init_options(
+    values: SortOptions | dict | None, option_class: type[SortOptions]
+): ...
+
+
+@overload
+def init_options(values: XOptions | dict | None, option_class: type[XOptions]): ...
+
+
+@overload
+def init_options(values: YOptions | dict | None, option_class: type[YOptions]): ...
+
+
+def init_options(values, option_class):
     """
     Initialize an option class from dictionary values
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from datetime import MAXYEAR, MINYEAR, datetime
 from operator import itemgetter
-from typing import Any
+from typing import overload
 
 from .common import UniqueVariant, unique
 from .scaler_type import ScalerType
@@ -24,9 +24,16 @@ class Domain:
 
     __slots__ = "values", "scaler_type"
 
-    def __init__(
-        self, values: list[int | float | str | datetime], scaler_type: ScalerType
-    ):
+    @overload
+    def __init__(self, values: list[int | float], scaler_type: ScalerType): ...
+
+    @overload
+    def __init__(self, values: list[str], scaler_type: ScalerType): ...
+
+    @overload
+    def __init__(self, values: list[datetime], scaler_type: ScalerType): ...
+
+    def __init__(self, values, scaler_type):
         self.values = values
         self.type = scaler_type
 
