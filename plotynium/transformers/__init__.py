@@ -5,6 +5,7 @@ from .color import Color
 from .constant import Constant
 from .default import DefaultTransformer
 from .getter import getter
+from .group import Group
 from .identity import Identity
 from .picker import LegendPicker
 from .symbol import Symbol

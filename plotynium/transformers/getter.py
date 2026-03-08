@@ -6,6 +6,10 @@ from ..types import Data, T
 
 
 @overload
+def getter(value: None) -> None: ...
+
+
+@overload
 def getter(value: str) -> itemgetter[str]: ...
 
 
@@ -24,12 +28,17 @@ def getter(value):
 
     Parameters
     ----------
-    value : str | Callable[[T], Data]
+    value : int | str | Callable[[T], Data]
         Key value, index or function for accessing value
 
     Returns
     -------
-    Callable[[int], Data] | Callable[[str], Data] | Callable[[T], Data]
+    itemgetter[int] | itemgetter[str]| Callable[[T], Data] | None
         Accessor function
     """
-    return value if callable(value) else itemgetter(value)
+    if value is None:
+        return None
+    elif callable(value):
+        return value
+    else:
+        return itemgetter(value)
